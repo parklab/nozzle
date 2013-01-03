@@ -1,0 +1,870 @@
+/*
+ * Nozzle R Package - CSS Styles
+ *
+ * Copyright 2011, Broad Institute / Havard Medical School
+ * Authored and maintained by Nils Gehlenborg (nils@hms.harvard.edu)
+ */
+
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+/*
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, //ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+// HTML5 display-role reset for older browsers
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+
+//ol, ul {
+//	list-style: none;
+//}
+
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+*/
+/* -------------------*/
+
+
+#mask
+ {
+   position: fixed;
+   left: 0px; 
+   right: 0px; 
+   top: 0px; 
+   bottom: 0px; 
+   background-color: #eeeeee;
+   z-index: 99;
+}
+
+p {
+	margin: 0;
+	margin-bottom: 5px;
+	font-family: Georgia, "Times New Roman", Times, serif;	
+}
+
+/* @group menu */
+
+.menubar {
+	position: relative;
+	z-index: 100;
+	font: bold x-small "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	text-transform: uppercase;	
+}
+
+
+.menuitem {
+	display: inline-block;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	margin-right: 10px;
+	border: 1px solid #ccc;
+	color: #666666;	
+	cursor: pointer;
+	border-radius: 0.55ex;
+	background-color: #eeeeee;
+}
+
+.menuitem a {
+	text-decoration: none;
+	color: #666666;
+}
+
+.menuitem a:visited {
+	color: #666666;
+}
+
+.menuitem.separator {
+	background-color: transparent;
+	display: inline-block;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	margin-right: 10px;
+	margin-left: 10px;
+	border: 0px;
+	color: #666666;	
+	cursor: pointer;
+}
+
+.menuitem.deactivated {
+	cursor: default;
+	color: #cccccc;	
+}
+
+.menuitem.highlighted {
+	color: #eee;	
+	background-color: #666;
+	border-color: #666;
+	margin-right: 0px;
+	float: right;
+}
+
+.menuitem:hover {
+	-webkit-box-shadow: 0px 0px 5px black;
+	-moz-box-shadow: 0px 0px 5px black;
+	-opera-box-shadow: 0px 0px 5px black;
+	box-shadow: 0px 0px 5px black;	
+}
+
+.menuitem.deactivated:hover {
+	-webkit-box-shadow: 0px 0px 0px black;
+	-moz-box-shadow: 0px 0px 0px black;
+	-opera-box-shadow: 0px 0px 0px black;
+	box-shadow: 0px 0px 0px black;		
+}
+
+.menuitem.separator:hover {
+	-webkit-box-shadow: 0px 0px 0px black;
+	-moz-box-shadow: 0px 0px 0px black;
+	-opera-box-shadow: 0px 0px 0px black;
+	box-shadow: 0px 0px 0px black;		
+}
+
+
+
+.menu {
+	padding-top: 7px;	
+	top: 0;
+	left: 0;
+	right: 0;
+	position: absolute;
+}
+
+.menu {
+	visibility: hidden;
+}
+
+
+
+
+/* @end */
+
+/* @group bar */
+
+.bar {
+	text-transform: none;
+}
+
+
+
+/* @end */
+
+/* @group button */
+
+.button {
+	font: bold small "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	text-transform: uppercase;
+	padding-right: 3px;	
+	position: relative;
+	top: -0.5ex;
+	padding-left: 3px;
+	cursor: pointer;
+	/*color: #777777;
+	background-color: #e4e4e4;*/
+	border: 1px #ddd solid;	
+	color: #666;
+	border-radius: 0.55ex;
+}
+
+.button:hover  {
+	-webkit-box-shadow: 0px 0px 5px black;
+	-moz-box-shadow: 0px 0px 5px black;
+	-opera-box-shadow: 0px 0px 5px black;
+	box-shadow: 0px 0px 5px black;	
+}
+
+.button:active  {
+	-webkit-box-shadow: 0px 0px 20px #000000;
+	-moz-box-shadow: 0px 0px 20px #000000;
+	-opera-box-shadow: 0px 0px 20px #000000;
+	box-shadow: 0px 0px 20px #000000;	
+}
+
+.button.contenttoggle {
+	font: bold small "Courier New", Courier, mono;
+	margin-right: 5px;
+}
+
+.button.evidencetoggle {
+	font: bold small "Courier New", Courier, mono;
+
+	display: block;
+	z-index: 11;
+	border-radius: 0.55ex;
+	
+	background-color: #eee;	
+	color: #666666;	
+	border: 1px solid #ccc;
+	
+	position: absolute;
+}
+
+.button.evidencetoggle a {
+	color: #666666;	
+}
+
+
+.meta .button {
+	margin-right: 5px;
+	top: -0.3ex;
+}
+
+
+
+/* @end */
+
+.report {
+	background-color: #eeeeee;
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	position: relative;
+}
+
+/* height from http://www.dave-woods.co.uk/?p=144*/
+body {
+	margin: 0px;	
+	padding: 0px;	
+}
+
+
+.report .frame {
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+}
+
+.report .main {
+	/*width: 100%;*/
+	/*max-width: 1000px;*/
+	/*min-height: 90%;*/
+	/*height: 400px;*/
+	font-family: sans-serif;
+	margin-right: auto;
+	margin-left: auto;
+	padding-top: 10px;
+	padding-bottom: 20px;		
+	padding-left: 30px;
+	padding-right: 30px;		
+	background-color: #ffffff;
+	
+	-webkit-box-shadow: 0px 0px 5px black;
+	-moz-box-shadow: 0px 0px 5px black;
+	-opera-box-shadow: 0px 0px 5px black;
+	box-shadow: 0px 0px 5px black;
+	
+	/*left: 50%;
+	margin-left: -500px;*/
+	overflow: auto;
+	position: absolute;
+	bottom: 0px;
+	top: 20px;
+	right: 0px;
+	left: 0px;
+	
+	border-top: 5px solid #91bfc0; /*#666666;*/
+}
+
+.report .main {
+	position: static;
+	overflow: visible;
+
+	-webkit-box-shadow: 0 0 0;
+	-moz-box-shadow: 0 0 0;
+	-opera-box-shadow: 0 0 0;
+	box-shadow: 0 0 0;
+
+	border-top: 0;
+}
+
+
+.report .title {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font: bold xx-large "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	color: #000;
+}
+
+.report .maintainer {
+	margin-top: 0px;
+	margin-bottom: 5px;
+	font: small Georgia, "Times New Roman", Times, serif;
+	color: #666;
+	font-style: italic;
+}
+
+.report .maintainer a {
+	color: #333;
+}
+
+.report .maintainer .name {
+	font-style: normal;
+	color: #333;
+}
+
+.report .copyright {
+	margin-top: 30px;
+	margin-bottom: 5px;
+	text-align: center;
+}
+
+.report .copyright .notice {
+	font: small Georgia, "Times New Roman", Times, serif;
+	color: #666;
+	font-style: italic;
+}
+
+.report .copyright .notice .owner a {
+	color: #333;
+}
+
+.report .copyright .notice .owner {
+	color: #333;
+	font-style: normal;
+}
+
+
+.report strong {
+	font-weight: bold;
+}
+
+.report em {
+	font-style: italic;
+}
+
+.report .parameter {
+	display: inline-block;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-style: italic;
+	text-decoration: inherit;
+}
+
+.report .value {
+	display: inline-block;
+	font-style: italic;
+	text-decoration: inherit;	
+}
+
+.report .filename {
+	display: inline-block;
+	font: smaller "Courier New", Courier, mono;
+}
+
+.report .code {
+	display: inline-block;
+	font: smaller "Courier New", Courier, mono;
+}
+
+.report .arguments {
+	display: compact;
+}
+
+
+.section {
+	margin-bottom: 5px;
+	margin-top: 5px;
+	padding: 0;
+}
+
+.subsection {
+	margin-bottom: 5px;
+	padding: 0;
+}
+
+
+.sectionheader {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	padding-bottom: 3px;
+	font-weight: bold;
+	text-indent: -25px;
+	padding-left: 25px;
+}
+
+.sectionbody {
+	font: medium Georgia, "Times New Roman", Times, serif;
+}
+
+.section .sectionbody {
+	margin-bottom: 0px;
+	margin-top: 0px;
+	margin-left: 28px;
+	padding-bottom: 5px;
+}
+
+.subsection .sectionbody {
+	padding-bottom: 5px;
+	margin-bottom: 10px;
+	margin-top: 0px;
+	margin-left: 0px;
+}
+
+.subsubsection .sectionbody {
+	padding-bottom: 5px;
+	margin-left: 0px;
+}
+
+
+.sectionbody a {
+	color: #777777;
+}
+
+.sectionbody a:hover {
+	color: #444444;
+}
+
+
+.section .sectionheader {
+	margin-top: 15px;
+	margin-bottom: 5px;
+	font: bold x-large "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	text-transform: none;
+	color: #426566;	
+}
+
+.subsection .sectionheader {
+	margin-top: 0px;
+	margin-bottom: 3px;
+	margin-left: -28px;
+	border-bottom: 0px solid black;	
+	font: bold large "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	text-transform: none;
+	color: #749899;
+}
+
+.subsubsection .sectionheader {
+	margin-top: 5px;
+	margin-bottom: 3px;
+	margin-left: 0px;	
+	border-bottom: 0px solid black;	
+	font: bold medium "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	text-transform: none;
+	color: #91bfc0;
+}
+
+.meta {
+	border-top: 1px dotted #d0d0d0;
+	border-bottom: 1px dotted #d0d0d0;
+}
+
+.section.meta {
+	margin-top: 30px;
+	padding-bottom: 8px;
+	border-top: 1px dotted #d0d0d0;
+	border-bottom: 1px dotted #d0d0d0;
+	margin-bottom: 30px;
+}
+
+.meta .sectionheader {
+	color: #999;
+	font-size: 90%;
+}
+
+.meta .sectionbody {
+	color: #999;
+	font-size: 90%;
+}
+
+.meta .button {
+	border: 0px;
+	color: #999;	
+}
+
+.meta .button:hover  {
+	-webkit-box-shadow: 0px 0px 0px red;
+	-moz-box-shadow: 0px 0px 0px red;
+	-opera-box-shadow: 0px 0px 0px red;
+	box-shadow: 0px 0px 0px red;	
+}
+
+.meta .button:active  {
+	-webkit-box-shadow: 0px 0px 0px #000000;
+	-moz-box-shadow: 0px 0px 0px #000000;
+	-opera-box-shadow: 0px 0px 0px #000000;
+	box-shadow: 0px 0px 0px #000000;	
+}
+
+
+/* @end */
+
+
+.significant {
+	/*background-color: #ffdacc;*/
+}
+
+
+div.significant {
+	/*background-color: white;*/
+}
+
+
+span.summary {
+	color: #919191;
+	cursor: default;
+	width: 11px;
+	height: 11px;
+	display: inline-block;
+	position: relative;
+	border-radius: 15ex;
+	top: -1px;
+}
+
+span.significant {
+	background-color: #db4105;
+}
+
+span.significant.deactivated {
+	background-color: #ffdbcd;
+}
+
+span.significant.deactivated:hover {
+	-webkit-box-shadow: 0px 0px 5px #db4105;
+	-moz-box-shadow: 0px 0px 5px #db4105;
+	-opera-box-shadow: 0px 0px 5px #db4105;
+	box-shadow: 0px 0px 5px #db4105;
+}
+
+span.significant:hover {
+	-webkit-box-shadow: 0px 0px 5px #db4105;
+	-moz-box-shadow: 0px 0px 5px #db4105;
+	-opera-box-shadow: 0px 0px 5px #db4105;
+	box-shadow: 0px 0px 5px #db4105;
+}
+
+
+/* @group reference */
+
+.reference {
+	text-indent: -25px;
+	padding-left: 25px;
+	padding-bottom: 5px;
+}
+
+
+
+/* @end */
+
+/* @group results and evidence */
+
+span.result {
+	background-color: #e0eff6;
+	color: #0773ba;
+	padding-right: 0.5ex;
+	padding-left: 0.5ex;
+	padding-top: 0.1ex;
+	padding-bottom: 0.1ex;
+	border-radius: 0.55ex;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+span.result.noevidence {
+	text-decoration: none;
+	cursor: default;
+}
+
+span.result:hover  {
+	-webkit-box-shadow: 0px 0px 5px black;
+	-moz-box-shadow: 0px 0px 5px black;
+	-opera-box-shadow: 0px 0px 5px black;
+	box-shadow: 0px 0px 5px black;	
+}
+
+span.result:active  {
+	-webkit-box-shadow: 0px 0px 20px #000000;
+	-moz-box-shadow: 0px 0px 20px #000000;
+	-opera-box-shadow: 0px 0px 20px #000000;
+	box-shadow: 0px 0px 20px #000000;	
+}
+
+span.result.noevidence:hover {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-opera-box-shadow: none;
+	box-shadow: none;	
+}
+
+span.result.significant {
+	color: #db4105;
+	background-color: #ffdacc;
+	border-color: #ffdacc;
+}
+
+
+span.result.active {
+	border-color: #0773ba;
+	color: #ffffff;
+	background-color: #0773ba;
+}
+
+.evidence {
+	border-top: 5px solid;
+	border-color: #60a8c8;
+	
+	display: block;
+	position: absolute;
+	left: 0px;
+	right:  0px;
+	bottom: 0px;	
+	background-color: #e0eff6;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 0px;
+	padding-bottom: 10px;
+
+	margin: 0px;	
+	
+	-webkit-box-shadow: 0px 0px 5px #000000;
+	-moz-box-shadow: 0px 0px 5px #000000;
+	-opera-box-shadow: 0px 0px 5px #000000;
+	box-shadow: 0px 0px 5px #000000;
+	overflow: auto;
+	z-index: 10;
+}
+
+.evidence p {
+	margin-top: 10px;
+}
+
+.evidence .sectionheader {
+	color: #0773ba;
+	margin-left: 0px;
+}
+
+.evidence .section .sectionheader {
+	padding-bottom: 5px;
+	font: bold x-large "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+.evidence .subsection .sectionheader {
+	padding-bottom: 5px;
+	font: bold large "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+.evidence .subsubsection .sectionheader {
+	padding-bottom: 5px;
+	font: bold medium "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+.evidence .sectionbody {
+	margin: 0;	
+}
+
+/*
+.overlay {
+	background-color: rgba(0,0,0,0.90);
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 0;
+ 	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+body.overlaid
+{
+ 	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+*/
+
+
+/* @end */
+
+/* @group resulttable */
+
+.resulttable td.significant {
+	background-color: #ffc2e4;
+}
+
+.resulttable {
+	font-size: small;
+	border-style: none;
+	border-width: 0px;
+	border-collapse: collapse;
+	margin-right: auto;
+	margin-left: auto;
+	font: small Georgia, "Times New Roman", Times, serif;
+}
+
+.resulttable td {
+	font-size: small;
+	padding-right: 1ex;
+	padding-left: 1ex;
+	padding-top: 0.75ex;
+	padding-bottom: 0.75ex;
+}
+
+
+.resulttable tr {
+}
+
+.resulttable thead {
+	font-weight: bold;	
+	border-bottom: 1px solid #919191;
+	border-collapse: separate;
+	vertical-align: top;	
+}
+
+.resulttable thead th {
+	padding-left: 5px;
+	padding-right: 5px;		
+}
+
+.resulttable.sortabletable thead th {
+	cursor: pointer;
+}
+
+.resulttable.sortabletable thead th.headerSortUp { 
+	color: #426566;
+} 
+
+.resulttable.sortabletable thead th.headerSortDown { 
+	color: #426566;
+} 
+
+
+.resulttable tbody {
+}
+
+.resulttable tbody tr:nth-child(even) {
+	background-color: #e4e4e4;
+}
+
+.resulttable thead tr {
+}
+
+
+
+/* @end */
+
+/* @group table and figure */
+
+.table {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid #e4e4e4;
+	padding: 10px;
+}
+
+.evidence .table {
+	border-color:  #60a8c8;
+}
+
+
+.figure {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid #e4e4e4;
+	padding: 10px;
+}
+
+.evidence .figure {
+	border-color:  #60a8c8;
+}
+
+.figure .image img {
+	display: block;
+	cursor: pointer;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/* for SVG */
+.figure .image object {
+	display: block;
+	cursor: pointer;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+
+.caption {
+	margin-top: 0px;
+	margin-bottom: 10px;
+	font: small "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+.caption a.download {
+	color: #797979;
+	background-color: #e4e4e4;
+	text-decoration: none;
+	text-transform: uppercase;
+	font: x-small "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	padding: 2px 4px 2px 4px;
+	border-radius: 0.5em;
+	float: right;
+	position: relative;
+	top: -20px;
+}
+
+.evidence .caption a.download {
+	color: #ffffff;
+	background-color: #60a8c8;
+}
+
+
+.caption a.download:hover  {
+	-webkit-box-shadow: 0px 0px 5px black;
+	-moz-box-shadow: 0px 0px 5px black;
+	-opera-box-shadow: 0px 0px 5px black;
+	box-shadow: 0px 0px 5px black;	
+}
+
+.caption a.download:active  {
+	-webkit-box-shadow: 0px 0px 20px #000000;
+	-moz-box-shadow: 0px 0px 20px #000000;
+	-opera-box-shadow: 0px 0px 20px #000000;
+	box-shadow: 0px 0px 20px #000000;	
+}
+
+
+
+
+
+/* @end */
+

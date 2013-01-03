@@ -1,0 +1,10 @@
+Package: Nozzle.R1
+Type: Package
+Title: Nozzle Reports
+Version: 0.3-1
+Date: 2012-04-11
+Author: Nils Gehlenborg <nils@hms.harvard.edu>
+Maintainer: Nils Gehlenborg <nils@hms.harvard.edu>
+Description: Nozzle is a report generation library that uses HTML, CSS (cascading style sheets), JavaScript and semantic markup.
+License: LGPL-2
+LazyLoad: yes

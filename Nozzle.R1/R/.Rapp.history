@@ -1,0 +1,4165 @@
+(450 + 175 + 10)/6
+(450 + 175 + 10) * 18
+(450 + 175 + 10) * 18 + 375
+( ( 450 + 175 + 10) * 18 + 375 + 50 )
+( ( 450 + 175 + 10) * 18 + 375 + 50 ) / ( 18 * 8 )
+dc <- 15
+( ( 450 + 175 + 10) * dc + 375 + 50 ) / ( dc * 8 )
+( 450 + 175 + 10) * dc + 375 + 50 )
+( 450 + 175 + 10) * dc + 375 + 50
+dc = 18
+( 450 + 175 + 10) * dc + 375 + 50
+( ( 450 + 175 + 10) * dc + 375 + 50 ) / ( dc * 8 )
+dc = 10
+( 450 + 175 + 10) * dc + 375 + 50
+( ( 450 + 175 + 10) * dc + 375 + 50 ) / ( dc * 8 )
+300000000/900
+350 / 2
+175 / 2
+87.5 / 2
+43.75 / 2
+21.875 / 2
+11 / 2
+5.5 / 2
+2.75 / 2
+log2( 250000000 )
+log2( 250000000 ) / 5
+256 ** 2
+sum( 250 * 10 ** seq( 0, 6 ) )
+sum( 10 ** seq( 0, 6 ) )
+seq( 0, 6 )
+10 ** 1
+sum( 250 * 10 ** seq( 0, 6 ) )
+sum( 250 * 10 ** seq( 0, 6 ) ) / 1000
+sum( 250 * 10 ** seq( 0, 6 ) ) / 1000000
+c( "Nils", "DMV", "RMV")
+l <- c( "Nils", "DMV", "RMV")
+"Nils" %in% l
+"Nis" %in% l
+"Nil;" %in% l
+"Nil" %in% l
+runif( 1, min=0, max=1000 )
+floor( runif( 1, min=0, max=1000 ) )
+floor( runif( min=0, max=1000 ) )
+?save
+source( "nozzle.R")
+# nozzle.R - Report Library for Firehose TCGA Pipeline#
+##
+# Author: Nils Gehlenborg / Harvard Medical School & Broad Institute of MIT & Harvard#
+##
+# License, etc.#
+#
+# TODO: make sure that every id appears only once in the report#
+# TODO: use unique ids per report#
+# TODO: use unique class names: "nz_"????#
+# TODO: introduce subsubsection in JS and CSS#
+#
+# Missing#
+# - identifier markup (with class info?) -> switch result summary to "button" before or after text???#
+#
+#
+# --- global variables ----------------------------------------------------------------------------#
+#
+.nozzleEnv <- new.env();#
+#
+.ELEMENT.REPORT <- "_report_";#
+.ELEMENT.SECTION <- "_section_";#
+.ELEMENT.SUBSECTION <- "_subsection_";#
+.ELEMENT.SUBSUBSECTION <- "_subsubsection_";#
+.ELEMENT.PARAGRAPH <- "_paragraph_";#
+.ELEMENT.LIST <- "_list_";#
+.ELEMENT.PARAMETERLIST <- "_list_";#
+.ELEMENT.TABLE <- "_table_";#
+.ELEMENT.FIGURE <- "_figure_";#
+.ELEMENT.CITATION <- "_citation_";#
+.ELEMENT.RESULT <- "_result_";#
+#
+.SEVERITY.LOG <- 0;#
+.SEVERITY.WARNING <- 1;#
+.SEVERITY.ERROR <- 2;#
+#
+DEFAULT.REPORT.FILENAME <- "report";#
+#
+# location relative to inst diretory of package#
+.NOZZLE.JAVASCRIPT.PATH <- "js";#
+.NOZZLE.JAVASCRIPT.FILE <- "nozzle.js";#
+.NOZZLE.CSS.PATH <- "css";#
+.NOZZLE.CSS.FILE <- "nozzle.css";#
+#
+# the ordering is important. It must be public < tcga < private.#
+PROTECTION.PUBLIC <- 0;#
+PROTECTION.TCGA <- 5;#
+PROTECTION.PRIVATE <- 10;#
+#
+# output types#
+HTML.REPORT = "html_standalone";#
+HTML.FRAGMENT = "html_fragment";#
+RDATA.REPORT = "rdata";#
+#
+#
+.REFERENCE.STRING <- "##REF##";#
+#
+.onLoad <- function( libname, pkgname )#
+{#
+	.initEnvCounter( ".FIGURE.COUNTER" );#
+	.initEnvCounter( ".TABLE.COUNTER" );#
+	.initEnvCounter( ".CITATION.COUNTER" );#
+#
+	.initEnvCounter( ".ELEMENT.ID" );#
+	.initEnvCounter( ".RESULT.ID" );#
+	#
+	# TODO: check if files exist#
+	assign( "cssCode", readLines( file.path( system.file( .NOZZLE.CSS.PATH, package=pkgname ), .NOZZLE.CSS.FILE ) ), env=.nozzleEnv );#
+	assign( "javaScriptCode", readLines( file.path( system.file( .NOZZLE.JAVASCRIPT.PATH, package=pkgname ), .NOZZLE.JAVASCRIPT.FILE ) ), env=.nozzleEnv );	#
+}#
+#
+#
+#
+# --- utility functions ----------------------------------------------------------------------------#
+#
+.increaseEnvCounter <- function( counter, environment=.nozzleEnv )#
+{#
+	assign( counter, get( counter, env=.nozzleEnv ) + 1, env=environment );#
+	#
+	return ( get( counter, env=environment )  );#
+}#
+#
+.initEnvCounter <- function( counter, environment=.nozzleEnv )#
+{#
+	assign( counter, 0, env=environment );#
+}#
+#
+.getNextElementId <- function()#
+{#
+	return ( .increaseEnvCounter( ".ELEMENT.ID" ) );#
+}#
+#
+#
+.initNumbers <- function()#
+{#
+	.initEnvCounter( ".FIGURE.COUNTER" );#
+	.initEnvCounter( ".TABLE.COUNTER" );#
+	.initEnvCounter( ".CITATION.COUNTER" );#
+}#
+#
+#
+.getNextFigureNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".FIGURE.COUNTER" ) );#
+}#
+#
+.getNextTableNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".TABLE.COUNTER" ) );#
+}#
+#
+.getNextCitationNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".CITATION.COUNTER" ) );#
+}#
+#
+.getNextResultId <- function()#
+{#
+	return ( .increaseEnvCounter( ".RESULT.ID" ) );#
+}#
+#
+#
+# TODO: update this to use a UUID#
+.newReportId <- function()#
+{#
+	return ( .concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) ) );#
+}#
+#
+#
+.removeProtectedElements <- function( element, level )#
+{#
+	if ( element$protection > level )#
+	{#
+		return ( NULL );#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		retainedElements <- list();#
+		#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .removeProtectedElements( element$elements[[i]], level );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				retainedElements[[length( retainedElements ) + 1]] <- result;#
+			}						#
+		}#
+		#
+		element$elements <- retainedElements;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+#
+.updateNumberedElements <- function( element )#
+{#
+	if ( element$type == .ELEMENT.FIGURE )#
+	{#
+		element$number <- .getNextFigureNumber();#
+	}#
+#
+	if ( element$type == .ELEMENT.TABLE )#
+	{#
+		element$number <- .getNextTableNumber();#
+	}#
+#
+	if ( element$type == .ELEMENT.CITATION )#
+	{#
+		element$number <- .getNextCitationNumber();#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateNumberedElements( element$elements[[i]] );#
+		}#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+.getReference <- function( referenceId, element )#
+{#
+	if ( element$id == referenceId )#
+	{#
+		if ( element$type == .ELEMENT.CITATION )#
+		{#
+			return ( .concat( "[", element$number, "]" ) );		#
+		}#
+		#
+		return ( .concat( element$niceType, " ", element$number ) );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .getReference( referenceId, element$elements[[i]] );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				return ( result );#
+			}				#
+		}#
+	}#
+	#
+	return ( NULL );#
+}#
+#
+#
+.updateReferences <- function( element, report )#
+{#
+	if ( !is.null( element$text ) )#
+	{#
+		if ( is.list( element$text ) )#
+		{#
+			updatedText = "";#
+			#
+			for ( i in 1:length( element$text ) )#
+			{#
+				if ( is.list( element$text[[i]] ) )#
+				{#
+					next();#
+				}#
+				#
+				if ( substr( element$text[[i]], 0, nchar( .REFERENCE.STRING ) ) == .REFERENCE.STRING )#
+				{#
+					referenceId <- substr( element$text[[i]], nchar( .REFERENCE.STRING ) + 1, nchar( element$text[[i]] ) );#
+					referenceText <- .getReference( referenceId, report );#
+					#
+					if ( is.null( referenceText ) )#
+					{#
+						stop( paste( "Element", referenceId, "is referenced but not included in the report." ) );#
+					}#
+					#
+					updatedText <- paste( updatedText, referenceText, sep="" );#
+				}#
+				else#
+				{#
+					updatedText <-paste( updatedText, element$text[[i]], sep="" );#
+				}								#
+			}			#
+			#
+			element$text <- updatedText;#
+		}#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateReferences( element$elements[[i]], report );#
+		}#
+	}		#
+#
+	return ( element );#
+}#
+#
+#
+.updateResults <- function( element, report )#
+{#
+	if ( !is.null( element$text ) )#
+	{#
+		if ( is.list( element$text ) )#
+		{#
+			updatedList = list();#
+			j = 1;#
+			#
+			for ( i in 1:length( element$text ) )#
+			{#
+				if ( is.list( element$text[[i]] ) )#
+				{#
+					# TODO: check if this is really of type result!!!!#
+					result <- element$text[[i]];#
+					#
+					if ( result$isSignificant == TRUE )#
+					{					#
+						updatedList[[j]] <- .tag( "span", id=.concat( "resultid_", result$resultId ), class=c( "result", "significant" ) );#
+					}#
+					else#
+					{#
+						updatedList[[j]] <- .tag( "span", id=.concat( "resultid_", result$resultId ), class=c( "result" ) );#
+					}#
+					j <- j + 1;#
+					#
+					result <- .updateReferences( result, report );#
+					#
+					updatedList[[j]] <- result$title;#
+					j <- j + 1;#
+					#
+					updatedList[[j]] <- .tag( "/span" );#
+					j <- j + 1;#
+					#
+					# add the result linked from the result summary to this element:#
+					element$elements[[length( element$elements ) + 1]] <- result;#
+				}#
+				else#
+				{#
+					updatedList[[j]] <-element$text[[i]];#
+					j <- j + 1;#
+				}				#
+			}			#
+			#
+			element$text <- updatedList;#
+		}#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateResults( element$elements[[i]], report );#
+		}#
+	}		#
+#
+	return ( element );#
+}#
+#
+#
+.log <- function( issue, severity=.SEVERITY.LOG )#
+{			#
+	message <- issue;#
+	#
+	if ( isList( issue ) )#
+	{#
+		# ignore severity#
+		message <- issue$message;#
+		severity <- issue$severity;#
+	}#
+	#
+	if ( severity == .SEVERITY.LOG )#
+	{#
+		cat( "Log:", message, "\n" );#
+	}#
+	#
+	if ( severity == .SEVERITY.WARN )#
+	{#
+		warning( message );#
+	}#
+	#
+	if ( severity == .SEVERITY.STOP )#
+	{#
+		stop( message );#
+	}#
+	#
+	cat( "Log:", message, "\n" );	#
+}#
+#
+#
+# --- element construction -------------------------------------------------------------------------#
+#
+.newElement <- function( elementType, title=NULL, text=NULL, niceType=NULL, domId=NULL, protection=PROTECTION.PUBLIC )#
+{#
+	element <- list( type = elementType );#
+	element$elements <- list();#
+	element$protection <- protection;#
+	#
+	# TODO: create unique id		#
+	element$id <- .getNextElementId();#
+#
+	if ( !missing( title ) )#
+	{#
+		element$title <- title;#
+	}#
+	#
+	if ( !missing( text ) )#
+	{	#
+		element$text <- text;#
+	}#
+	#
+	if ( !missing( niceType ) )#
+	{	#
+		element$niceType <- niceType;#
+	}#
+	#
+	if ( !missing( domId ) )#
+	{#
+		element$domId <- domId;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+newReport <- function( ... )#
+{#
+	if ( !missing( ... ) )#
+	{#
+		element <- .newGeneralReport( ... );#
+	}#
+	else#
+	{#
+		element <- .newGeneralReport( "Report" );#
+	}#
+	#
+	overview <- newSection( "Overview" );#
+	overview$domId <- "overview";#
+#
+	introduction <- newSubSection( "Introduction" );#
+	introduction$domId <- "introduction";#
+#
+	summary <- newSubSection( "Summary" );#
+	summary$domId  <- "summary";#
+#
+	results <- newSection( "Results" );#
+	results$domId  <- "results";#
+#
+	methods <- newSection( "Methods & Data" );#
+	methods$domId <- "methods";	#
+#
+	input <- newSubSection( "Input" );#
+	input$domId <- "input";#
+#
+	references <- newSubSection( "References" )#
+	references$domId <- "references";#
+	#
+	element$predefined <- list();#
+	element$predefined$overviewId <- overview$id;#
+	element$predefined$introductionId <- introduction$id;#
+	element$predefined$summaryId <- summary$id;#
+	element$predefined$resultsId <- results$id;#
+	element$predefined$methodsId <- methods$id;#
+	element$predefined$inputId <- input$id;#
+	element$predefined$referencesId <- references$id;#
+	#
+	element$reportId <- .newReportId();#
+#
+	element <- addTo( parent=element, addTo( parent=overview, introduction, summary ) );#
+	element <- addTo( parent=element, results );#
+	element <- addTo( parent=element, addTo( parent=methods, input, references ) );#
+}#
+#
+#
+.newGeneralReport <- function( ... )#
+{#
+	element <- .newElement( .ELEMENT.REPORT, .concat( ... ) );#
+	#
+	return ( element );#
+}#
+#
+.#
+#
+.addToElementById <- function( element, id, ... )#
+{	#
+	if ( element$id == id )#
+	{#
+		element <- addTo( parent=element, ... );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .addToElementById( element$elements[[i]], id, ... );#
+		}#
+	}#
+	#
+	return ( element );	#
+}#
+#
+.getElementById <- function( element, id )#
+{	#
+	if ( element$id == id )#
+	{#
+		return ( element );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .getElementById( element$elements[[i]], id );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				return ( result );#
+			}#
+		}#
+	}#
+	#
+	return ( NULL );	#
+}#
+#
+# removes element the given id from the tree using breadth-first search#
+.removeElementById <- function( element, id )#
+{	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		newElements <- list();#
+		#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			if ( element$elements[[i]]$id != id )#
+			{#
+				newElements[[length( newElements ) + 1]] <- element$elements[[i]];								#
+			}#
+		}#
+		#
+		element$elements <- newElements;#
+		#
+		if ( length( element$elements ) > 0 )#
+		{			#
+			for ( i in 1:length( element$elements ) )#
+			{#
+				element$elements[[i]] <- .removeElementById( element$elements[[i]], id );#
+			}		#
+		}#
+	}#
+	#
+	return ( element );	#
+}#
+#
+#
+addToResults <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$resultsId, ... ) ); #
+}#
+#
+addToMethods <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$methodsId, ... ) ); #
+}#
+#
+addToIntroduction <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$introductionId, ... ) ); #
+}#
+#
+addToSummary <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$summaryId, ... ) ); #
+}#
+#
+addToInput <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$inputId, ... ) ); #
+}#
+#
+addToReferences <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$referencesId, ... ) ); #
+}#
+#
+#
+newSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+newSubSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SUBSECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+newSubSubSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SUBSUBSECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+.writeSection <- function ( element, file, level="" )#
+{#
+	if ( is.null( element$domId ) )#
+	{	#
+		.write( .tag( "div", class=.concat( level, "section" ) ), file );#
+	}#
+	else#
+	{#
+		.write( .tag( "div", class=.concat( level, "section" ), id=element$domId ), file );#
+	}#
+#
+	.write( .tag( "div", class="sectionheader" ), file );#
+	.write( element$title, file );#
+	.write( .tag( "/div" ), file );#
+	#
+	.write( .tag( "div", class="sectionbody" ), file );#
+	.writeElements( element, file );#
+	.write( .tag( "/div" ), file );#
+#
+	.write( .tag( "/div" ), file );	#
+}#
+#
+#
+newList <- function( ..., isNumbered=FALSE, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.LIST, protection=protection );#
+	#
+	element$isNumbered <- isNumbered;#
+	#
+	if ( missing( ... ) )#
+	{#
+		return ( element );#
+	}	#
+	#
+	args <- list( ... );#
+	#
+	# TODO: run the same checks in "addTo"#
+	for ( i in 1:length( args ) )#
+	{#
+		if ( args[[i]]$type == .ELEMENT.PARAGRAPH ||#
+			args[[i]]$type == .ELEMENT.LIST ||#
+			args[[i]]$type == .ELEMENT.RESULT )#
+		{#
+			element$elements[[length( element$elements ) + 1]] <- args[[i]];#
+		}#
+		else#
+		{#
+			stop( "Report elements of type ", args[[i]]$element$type, " can not be added to a list." );#
+		}#
+	}#
+	#
+	return ( element );#
+}#
+#
+.writeList <- function( element, file )#
+{#
+	if ( element$isNumbered == TRUE )#
+	{#
+		.write( .tag( "ol" ), file );	#
+	}#
+	else#
+	{#
+		.write( .tag( "ul" ), file );			#
+	}#
+	#
+	for ( i in 1:length( element$elements ) )#
+	{#
+		if ( element$elements[[i]]$type != .ELEMENT.LIST )#
+		{#
+			.write( .tag( "li" ), file );		#
+			.writeElement( element$elements[[i]], file );		#
+			.write( .tag( "/li" ), file );#
+		}#
+		else#
+		{		#
+			.writeElement( element$elements[[i]], file );		#
+		}#
+	}#
+#
+	if ( element$isNumbered == TRUE )#
+	{#
+		.write( .tag( "/ol" ), file );	#
+	}	#
+	else#
+	{#
+		.write( .tag( "/ul" ), file );			#
+	}#
+}#
+#
+#
+newFigure <- function( file, ..., fileHighRes=NA, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.FIGURE, niceType="Figure", protection=protection );#
+	#
+	element$imageFilename <- file;#
+	element$imageFilenameHighRes <- fileHighRes;#
+	#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+#
+.writeFigure <- function ( element, file )#
+{#
+	.write( .tag( "div", class="figure", id=.concat( "figure_", element$number ) ), file );#
+#
+	.write(	.tag( "div", class="caption" ), file );#
+	.write( .tag( "p" ), file );#
+	#
+	# "Table 1: " ...#
+	.write( asStrong( element$niceType, "&nbsp;", element$number, ".&nbsp;" ), file );#
+	#
+	if ( !is.na( element$imageFilenameHighRes ) )#
+	{#
+		.write( .tag( "a", class="download", other=.concat( "href=\"", element$imageFilenameHighRes , "\"" ) ), "Get High-res Image", .tag( "/a" ), file );	#
+	}#
+	.write( element$text, file );#
+	.write( .tag( "/p" ), file );#
+	.write( .tag( "/div" ), file ); # caption#
+#
+	.write( .tag( "div", class="image" ), file );#
+	.write( .tag( "img", other=.concat( "src=\"", element$imageFilename, "\"/" ) ), file );#
+	.write( .tag( "/div" ), file ); # image#
+																#
+	.write( .tag( "/div" ), file ); # figure#
+}#
+#
+#
+newTable <- function( table, ..., file=NA, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.TABLE, niceType="Table", protection=protection );#
+#
+	element$table <- table;#
+	element$tableFilename <- file;#
+	#
+	element$resultList <- list();#
+	element$resultIndices <- array( dim=dim( table ) );#
+	#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+#
+.writeTable <- function ( element, file )#
+{	#
+	.write( .tag( "div", class="table", id=.concat( "table_", element$number ) ), file );#
+							#
+	.write(	.tag( "div", class="caption" ), file );#
+	.write( .tag( "p" ), file );#
+	#
+	.write( asStrong( element$niceType, "&nbsp;", element$number, ".&nbsp;" ), file );#
+#
+	# "Figure 1: " ...#
+	if ( !is.na( element$tableFilename ) )#
+	{#
+		.write( .tag( "a", class="download", other=.concat( "href=\"", element$tableFilename, "\"" ) ), "Get Full Table", .tag( "/a" ), file );	#
+	}#
+#
+	.write( element$text, file );#
+	.write( .tag( "/p" ), file );#
+	.write( .tag( "/div" ), file ); # caption#
+#
+	.write( .tag( "table", class="resulttable" ), file );#
+	#
+	# --- table header ---#
+#
+	.write( .tag( "thead" ), file );#
+	.write( .tag( "tr" ), file );#
+	#
+	# write column names#
+	for( c in 1:dim( element$table )[2] )#
+	{#
+		.write( .tag( "td" ), file );#
+		.write( colnames( element$table )[c], file );#
+		.write( .tag( "/td" ), file );#
+	}#
+		#
+	.write( .tag( "/tr" ), file );#
+	.write( .tag( "/thead" ), file );#
+	#
+	#
+	# --- table body ---#
+#
+	.write( .tag( "tbody" ), file );#
+	#
+	for( r in 1:dim( element$table )[1] )#
+	{#
+		.write( .tag( "tr" ), file );#
+		#
+		for( c in 1:dim( element$table )[2] )#
+		{#
+			.write( .tag( "td" ), file );#
+			#
+			resultIndex <- element$resultIndices[r,c];#
+			#
+			if ( !is.na( resultIndex ) )#
+			{#
+				result <- element$resultList[[resultIndex]];#
+				#
+				if ( result$isSignificant )#
+				{					#
+					.write( .tag( "span", class=c( "result", "significant" ), id=.concat( "resultid_", result$resultId ) ), file );#
+				}#
+				else#
+				{#
+					.write( .tag( "span", class=c( "result" ), id=.concat( "resultid_", result$resultId ) ), file );#
+				}#
+			}#
+			#
+			.write( element$table[r,c], file );#
+			#
+			if ( !is.na( resultIndex ) )#
+			{#
+				.write( .tag( "/span" ), file );#
+			}#
+#
+			.write( .tag( "/td" ), file );						#
+		}		#
+		#
+		.write( .tag( "/tr" ), file );#
+	}#
+		#
+	.write( .tag( "/tbody" ), file );#
+	#
+	.write( .tag( "/table" ), file ); # resultstable#
+	#
+	.write( .tag( "/div" ), file ); # table	#
+#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );																		#
+}#
+#
+#
+#
+newCitation <- function( authors="", title, publication="", issue="", number="", pages="", year="", url="" )#
+{#
+	element <- .newElement( .ELEMENT.CITATION, niceType="Citation" );#
+	#
+	element$authors <- authors;#
+	element$year <- year;#
+	element$title <- title;#
+	element$publication <- publication;#
+	element$publicationIssue <- issue;#
+	element$publicationNumber <- number;#
+	element$pages <- pages;#
+	element$url <- url;	#
+	#
+	return ( element );#
+}#
+#
+newJournalCitation <- function( authors, title, publication, issue, number, pages, year, url="" )#
+{#
+	return ( newCitation( authors=authors, title=title, publication=publication, issue=issue, number=number, pages=pages, year=year, url=url ) );#
+}#
+#
+newWebCitation <- function( authors, title, url )#
+{#
+	return ( newCitation( authors=authors, title=title, url=url ) );#
+}#
+#
+#
+.writeCitation <- function( element, file )#
+{#
+	.write( .tag( "div", class="reference", id=.concat( "reference_", element$number ) ), file );#
+	#
+	.write( "[", element$number, "] ", nobreak=TRUE, file );#
+#
+	if ( element$authors != "" )#
+	{#
+		.write( element$authors, ", ", nobreak=TRUE, file );#
+	}#
+#
+	if ( element$title != "" ) # only required field#
+	{#
+		.write( asLink( url=element$url, element$title ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" )#
+	{#
+		.write( ", ", asEmph( element$publication ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" && element$publicationIssue != "" )#
+	{#
+		.write( " ", asStrong( element$publicationIssue ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" && element$publicationIssue != "" && element$publicationNumber != "" )#
+	{#
+		.write( "(", element$publicationNumber, ")", nobreak=TRUE, file );#
+	}#
+#
+	if ( element$pages != "" )#
+	{#
+		.write( ":", element$pages, nobreak=TRUE, file );#
+	}#
+	#
+	if ( element$year != "" )#
+	{#
+		.write( " (",element$year, ")", nobreak=TRUE, file );#
+	}#
+	#
+	.write( .tag( "/div" ), file ); # reference	#
+}#
+#
+#
+newParagraph <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.PARAGRAPH, protection=protection );#
+#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+.writeParagraph <- function ( element, file )#
+{#
+	.write( .tag( "p" ), file );#
+	.write( element$text, file );#
+	#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );	#
+	#
+	.write( .tag( "/p" ), file );	#
+}#
+#
+#
+# does not need a write function, writing is provided by .writeList#
+newParameterList <- function( ..., separator=" = ", protection=PROTECTION.PUBLIC )#
+{#
+	element <- newList( isNumbered=FALSE, protection=protection );#
+	#
+	args <- list( ... );#
+	#
+	if ( length( args ) < 2 )#
+	{#
+		stop( "At least one parameter-value pair has to be provided to parameter list." );#
+	}#
+	#
+	if ( length( args ) %% 2 != 0 )#
+	{#
+		stop( "Number of elements in parameter list is not multiple of 2." );#
+	}#
+	#
+	j <- 1;#
+	#
+	for ( i in 1:(length( args )/2) )#
+	{#
+		element <- addTo( parent=element, newParagraph( args[[j]], separator, args[[j+1]] ) );#
+		#
+		j <- j + 2;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+.writeParagraph <- function ( element, file )#
+{#
+	.write( .tag( "p" ), file );#
+	.write( element$text, file );#
+	#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );	#
+	#
+	.write( .tag( "/p" ), file );	#
+}#
+#
+#
+newResult <- function( ..., isSignificant=FALSE, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.RESULT, .concat( ... ), protection=protection );#
+#
+	element$resultId <- .getNextResultId();#
+	element$isSignificant <- isSignificant;#
+	#
+	return ( element );#
+}#
+#
+#
+.writeResult <- function ( element, file )#
+{#
+	.write( .tag( "div", class="evidence", id=.concat( "evidenceid_", element$resultId ) ), file );#
+#
+	.writeElements( element, file );#
+#
+	.write( .tag( "/div" ), file );	#
+}#
+#
+#
+addTo <- function( parent, ..., row=NA, column=NA )#
+{#
+	args <- list( ... );#
+	#
+	if ( parent$type == .ELEMENT.TABLE )#
+	{#
+		if ( !missing( row ) && !missing( column ) )#
+		{			#
+			if ( length( args ) == 1 )#
+			{#
+				if ( args[[1]]$type == .ELEMENT.RESULT )#
+				{#
+					parent <- .addResult( table=parent, row=row, column=column, result=args[[1]] );#
+					#
+					return ( parent );#
+				}#
+			}#
+		}#
+	}#
+	#
+	#
+	if ( length( args ) > 0 )#
+	{#
+		for ( i in 1:length( args ) )#
+		{#
+			parent$elements[[length( parent$elements ) + 1]] <- args[[i]];	#
+		}	#
+	}#
+		#
+	return ( parent );#
+}#
+#
+#
+.addResult <- function( table, row, column, result )#
+{#
+	# !!! do not change the order of the following two lines!!!#
+	table$resultList[[length( table$resultList ) + 1]] <- result;	#
+	table$resultIndices[row,column] = length( table$resultList );#
+	#
+	# add result right after table#
+	table$elements[[length( table$elements ) + 1]] <- result;	#
+	#
+	return ( table );#
+}#
+#
+#
+#
+asReference <- function( element )#
+{#
+	# TODO: create link if requested#
+	# TODO: check for type!#
+	return ( paste( .REFERENCE.STRING, element$id, sep="" ) );#
+}#
+#
+asSummary <- function( result )#
+{#
+	return ( result );#
+}#
+#
+#
+asLink <- function( url, ... )#
+{#
+	# TODO: open link in new window if requested		#
+	#
+	args <- list( ... );#
+	#
+	if ( missing( url ) && length( args ) == 0 )#
+	{#
+		stop( "Unable to create link without URL or link text." );#
+	}	#
+	#
+	if ( url == "" || missing( url ) )#
+	{#
+		return ( .concat( args ) );	# just print text but do not create a link#
+	}#
+	#
+	if ( length( args ) == 0 )#
+	{#
+		args <- url; # print URL as link text#
+	}#
+	#
+	return ( .concat( .tag( "a", other=.concat( "href=\"", url, "\"" ) ), args, .tag( "/a" ) ) );#
+}#
+#
+#
+#asIdentifier <- function( label, class=NA, column=NA, row=NA )#
+#{#
+#	if ( missing( class ) && missing( label ) )#
+#	{#
+#		stop( "Unable to create identifier without class or label." );#
+#	}	#
+#	#
+#	if ( missing( class ) )#
+#	{#
+#		return ( label ); # just print text#
+#	}#
+#	#
+#	return ( .concat( "<span class=\"identifier ", class, "\">", label, "</span>" ) );#
+#}#
+#
+#
+asStrong <- function( ... )#
+{#
+	return ( .concat( .tag( "strong" ), ..., .tag( "/strong" ) ) );#
+}#
+#
+#
+asEmph <- function( ... )#
+{#
+	return ( .concat( .tag( "em" ), ..., .tag( "/em" ) ) );#
+}#
+#
+#
+asParameter <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="parameter" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asValue <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="value" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asFilename <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="filename" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asCode <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="code" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+.concat <- function( ... )#
+{#
+	if ( length( list( ... ) ) == 0 )#
+	{#
+		return ( "" );#
+	}#
+	#
+	return ( paste( ..., sep="" ) );#
+}#
+#
+#
+# helper function: writes a line of html code#
+.write <- function( ..., nobreak=FALSE, file )#
+{#
+  if ( missing( file ) )#
+  {#
+	args <- list( ... );#
+  	file <- args[[length( args )]];#
+  	args[[length( args )]] <- "";#
+  }  #
+  #
+  if ( nobreak )#
+  {  #
+  	cat( paste( args, sep="" ), file=file, sep="" );#
+  }#
+  else#
+  {#
+  	cat( paste( args, sep="" ), "\n", file=file, sep="" );#
+  }#
+}#
+#
+#
+.tag <- function( tag, id=NA, class=NA, other=NA )#
+{#
+	idString <- "";#
+	classString <- "";#
+	otherString <- "";#
+	#
+	if ( !missing( id ) )#
+	{#
+		# TODO: set a per report id prefix, update JS to prefix all queries with that prefix#
+		reportId <- "";		#
+		#
+		idString <- .concat( " id=\"", .concat( reportId, id ), "\"" );	#
+	}#
+#
+	if ( !missing( class ) )#
+	{#
+		classString <- .concat( " class=\"", paste( class, sep=" ", collapse=" " ), "\"" );	#
+	}#
+	#
+	if ( !missing( other ) )#
+	{#
+		otherString <- .concat( " ", other );#
+	}#
+	#
+	return ( .concat( "<", tag, idString, classString, otherString, ">" ) );#
+}#
+#
+#
+#
+.writeElement <- function( element, file )#
+{#
+	if ( element$type == .ELEMENT.PARAGRAPH )#
+	{#
+		.writeParagraph( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.SECTION )#
+	{#
+		.writeSection( element, file, "" );#
+	}#
+#
+	if ( element$type == .ELEMENT.SUBSECTION )#
+	{#
+		.writeSection( element, file, "sub" );#
+	}#
+#
+	if ( element$type == .ELEMENT.SUBSUBSECTION )#
+	{#
+		.writeSection( element, file, "subsub" );#
+	}#
+#
+	if ( element$type == .ELEMENT.LIST )#
+	{#
+		.writeList( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.FIGURE )#
+	{#
+		.writeFigure( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.TABLE )#
+	{#
+		.writeTable( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.CITATION )#
+	{#
+		.writeCitation( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.RESULT )#
+	{#
+		.writeResult( element, file );#
+	}#
+}#
+#
+#
+.writeElements <- function( element, file )#
+{#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			.writeElement( element$elements[[i]], file );#
+		}#
+	}#
+}#
+#
+#
+writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, output=c( HTML.REPORT, HTML.FRAGMENT, RDATA.REPORT ), level=PROTECTION.PUBLIC )#
+{	#
+	# check if input and references contain any reports, if not, remove those sections#
+	references <- .getElementById( report, report$predefined$referencesId );#
+	input <- .getElementById( report, report$predefined$inputId );#
+	#
+	if ( !is.null( references ) )#
+	{		#
+		# remove reference section#
+		report <- .removeElementById( report, references$id );#
+#
+		if ( length( references$elements ) > 0 )#
+		{#
+			# there are some references, insert them at the end of the methods section#
+			report <- addToMethods( report, references );#
+		}					#
+	}#
+#
+	if ( !is.null( input ) )#
+	{#
+		if ( length( input$elements ) == 0 )#
+		{#
+			# no input, remove the empty section#
+			report <- .removeElementById( report, input$id );#
+		}#
+	}#
+	#
+	# write as requested output types	#
+	if ( HTML.REPORT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".html" ), debug, output, level );		#
+	}#
+	#
+	if ( HTML.FRAGMENT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".fragment.html" ), debug, output, level );#
+	}#
+	#
+	if ( RDATA.REPORT %in% output )#
+	{#
+		save( report, file=.concat( filename, ".RData" ) );		#
+	}#
+}#
+#
+#
+.writeGeneralReport <- function( report, filename, debug=FALSE, output=HTML.REPORT, level=PROTECTION.PUBLIC )#
+{#
+	# initialize counters for all numbered objects (figures, tables, references, etc.)#
+	.initNumbers();#
+							#
+	report <- .removeProtectedElements( report, level );#
+	#
+	report <- .updateResults( report, report=report );#
+	report <- .updateNumberedElements( report );#
+	report <- .updateReferences( report, report=report );#
+		#
+	file <- file( filename, "w" );#
+	#
+	# write file header if in debug mode or if writing standalone report#
+	if ( output == HTML.REPORT || debug )#
+	{#
+		.write( .tag( "html" ), file );#
+		#
+		.write( .tag( "head" ), file );#
+		.write( .tag( "title" ), file );#
+		.write( report$title, file );#
+		.write( .tag( "/title" ), file );#
+		.write( .tag( "/head" ), file );#
+		#
+		.write( .tag( "body" ), file );#
+	}	#
+	#
+	.write( .tag( "div", class="report", id=report$reportId ), file );#
+	.write( .tag( "div", class="main" ), file );#
+	#
+	# insert CSS#
+	.write( .tag( "style" ), file );#
+	.write( paste( get( "cssCode", env=.nozzleEnv ), collapse="\n" ), file );#
+	.write( .tag( "/style" ), file );#
+	#
+	# insert JavaScript#
+	# TODO: embedded JQuery code in standalones, do not include in fragments#
+	if ( output == HTML.REPORT )#
+	{#
+		.write( "<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js\"></script>", file );#
+	}#
+#
+	.write( "<script type=\"text/javascript\">", file );#
+	.write( paste( get( "javaScriptCode", env=.nozzleEnv ), collapse="\n" ), file );#
+	.write( "</script>", file );#
+	#
+	# TODO: replace this with correct FH call for final release#
+	.write( "<script type=\"text/javascript\">jQuery(document).ready( function() { initialize(); });</script>", file );#
+	#
+			#
+	# write content	#
+	.write( .tag( "div", class="title" ), report$title, .tag( "/div" ), file );#
+	#
+	for ( i in 1:length( report$elements ) )#
+	{#
+		.writeElement( report$elements[[i]], file );		#
+	}#
+#
+	.write( .tag( "/div" ), file ); # main#
+	.write( .tag( "/div" ), file ); # report#
+	#
+	# write file footer if in debug mode or standalone report#
+	if ( output == HTML.REPORT || debug )#
+	{	#
+		.write( .tag( "/body" ), file );#
+		#
+		.write( .tag( "/html" ), file );	#
+	}#
+	#
+	close( file );#
+}
+source( "nozzle.R")
+source( "nozzle.R")
+traceback()
+	return ( .concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) ) );
+	.concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) );
+	.concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) );
+	.concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) );
+	.concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) );
+	.concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) );
+?eval
+source( "nozzle.R")
+# nozzle.R - Report Library for Firehose TCGA Pipeline#
+##
+# Author: Nils Gehlenborg / Harvard Medical School & Broad Institute of MIT & Harvard#
+##
+# License, etc.#
+#
+# TODO: make sure that every id appears only once in the report#
+# TODO: use unique ids per report#
+# TODO: use unique class names: "nz_"????#
+# TODO: introduce subsubsection in JS and CSS#
+#
+# Missing#
+# - identifier markup (with class info?) -> switch result summary to "button" before or after text???#
+#
+#
+# --- global variables ----------------------------------------------------------------------------#
+#
+.nozzleEnv <- new.env();#
+#
+.ELEMENT.REPORT <- "_report_";#
+.ELEMENT.SECTION <- "_section_";#
+.ELEMENT.SUBSECTION <- "_subsection_";#
+.ELEMENT.SUBSUBSECTION <- "_subsubsection_";#
+.ELEMENT.PARAGRAPH <- "_paragraph_";#
+.ELEMENT.LIST <- "_list_";#
+.ELEMENT.PARAMETERLIST <- "_list_";#
+.ELEMENT.TABLE <- "_table_";#
+.ELEMENT.FIGURE <- "_figure_";#
+.ELEMENT.CITATION <- "_citation_";#
+.ELEMENT.RESULT <- "_result_";#
+#
+.SEVERITY.LOG <- 0;#
+.SEVERITY.WARNING <- 1;#
+.SEVERITY.ERROR <- 2;#
+#
+DEFAULT.REPORT.FILENAME <- "report";#
+#
+# location relative to inst diretory of package#
+.NOZZLE.JAVASCRIPT.PATH <- "js";#
+.NOZZLE.JAVASCRIPT.FILE <- "nozzle.js";#
+.NOZZLE.CSS.PATH <- "css";#
+.NOZZLE.CSS.FILE <- "nozzle.css";#
+#
+# the ordering is important. It must be public < tcga < private.#
+PROTECTION.PUBLIC <- 0;#
+PROTECTION.TCGA <- 5;#
+PROTECTION.PRIVATE <- 10;#
+#
+# output types#
+HTML.REPORT = "html_standalone";#
+HTML.FRAGMENT = "html_fragment";#
+RDATA.REPORT = "rdata";#
+#
+#
+.REFERENCE.STRING <- "##REF##";#
+#
+.onLoad <- function( libname, pkgname )#
+{#
+	.initEnvCounter( ".FIGURE.COUNTER" );#
+	.initEnvCounter( ".TABLE.COUNTER" );#
+	.initEnvCounter( ".CITATION.COUNTER" );#
+#
+	.initEnvCounter( ".ELEMENT.ID" );#
+	.initEnvCounter( ".RESULT.ID" );#
+	#
+	# TODO: check if files exist#
+	assign( "cssCode", readLines( file.path( system.file( .NOZZLE.CSS.PATH, package=pkgname ), .NOZZLE.CSS.FILE ) ), env=.nozzleEnv );#
+	assign( "javaScriptCode", readLines( file.path( system.file( .NOZZLE.JAVASCRIPT.PATH, package=pkgname ), .NOZZLE.JAVASCRIPT.FILE ) ), env=.nozzleEnv );	#
+}#
+#
+#
+#
+# --- utility functions ----------------------------------------------------------------------------#
+#
+.increaseEnvCounter <- function( counter, environment=.nozzleEnv )#
+{#
+	assign( counter, get( counter, env=.nozzleEnv ) + 1, env=environment );#
+	#
+	return ( get( counter, env=environment )  );#
+}#
+#
+.initEnvCounter <- function( counter, environment=.nozzleEnv )#
+{#
+	assign( counter, 0, env=environment );#
+}#
+#
+.getNextElementId <- function()#
+{#
+	return ( .increaseEnvCounter( ".ELEMENT.ID" ) );#
+}#
+#
+#
+.initNumbers <- function()#
+{#
+	.initEnvCounter( ".FIGURE.COUNTER" );#
+	.initEnvCounter( ".TABLE.COUNTER" );#
+	.initEnvCounter( ".CITATION.COUNTER" );#
+}#
+#
+#
+.getNextFigureNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".FIGURE.COUNTER" ) );#
+}#
+#
+.getNextTableNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".TABLE.COUNTER" ) );#
+}#
+#
+.getNextCitationNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".CITATION.COUNTER" ) );#
+}#
+#
+.getNextResultId <- function()#
+{#
+	return ( .increaseEnvCounter( ".RESULT.ID" ) );#
+}#
+#
+#
+# TODO: update this to use a UUID#
+.newReportId <- function()#
+{#
+	return ( .concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) ) );#
+}#
+#
+#
+.removeProtectedElements <- function( element, level )#
+{#
+	if ( element$protection > level )#
+	{#
+		return ( NULL );#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		retainedElements <- list();#
+		#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .removeProtectedElements( element$elements[[i]], level );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				retainedElements[[length( retainedElements ) + 1]] <- result;#
+			}						#
+		}#
+		#
+		element$elements <- retainedElements;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+#
+.updateNumberedElements <- function( element )#
+{#
+	if ( element$type == .ELEMENT.FIGURE )#
+	{#
+		element$number <- .getNextFigureNumber();#
+	}#
+#
+	if ( element$type == .ELEMENT.TABLE )#
+	{#
+		element$number <- .getNextTableNumber();#
+	}#
+#
+	if ( element$type == .ELEMENT.CITATION )#
+	{#
+		element$number <- .getNextCitationNumber();#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateNumberedElements( element$elements[[i]] );#
+		}#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+.getReference <- function( referenceId, element )#
+{#
+	if ( element$id == referenceId )#
+	{#
+		if ( element$type == .ELEMENT.CITATION )#
+		{#
+			return ( .concat( "[", element$number, "]" ) );		#
+		}#
+		#
+		return ( .concat( element$niceType, " ", element$number ) );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .getReference( referenceId, element$elements[[i]] );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				return ( result );#
+			}				#
+		}#
+	}#
+	#
+	return ( NULL );#
+}#
+#
+#
+.updateReferences <- function( element, report )#
+{#
+	if ( !is.null( element$text ) )#
+	{#
+		if ( is.list( element$text ) )#
+		{#
+			updatedText = "";#
+			#
+			for ( i in 1:length( element$text ) )#
+			{#
+				if ( is.list( element$text[[i]] ) )#
+				{#
+					next();#
+				}#
+				#
+				if ( substr( element$text[[i]], 0, nchar( .REFERENCE.STRING ) ) == .REFERENCE.STRING )#
+				{#
+					referenceId <- substr( element$text[[i]], nchar( .REFERENCE.STRING ) + 1, nchar( element$text[[i]] ) );#
+					referenceText <- .getReference( referenceId, report );#
+					#
+					if ( is.null( referenceText ) )#
+					{#
+						stop( paste( "Element", referenceId, "is referenced but not included in the report." ) );#
+					}#
+					#
+					updatedText <- paste( updatedText, referenceText, sep="" );#
+				}#
+				else#
+				{#
+					updatedText <-paste( updatedText, element$text[[i]], sep="" );#
+				}								#
+			}			#
+			#
+			element$text <- updatedText;#
+		}#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateReferences( element$elements[[i]], report );#
+		}#
+	}		#
+#
+	return ( element );#
+}#
+#
+#
+.updateResults <- function( element, report )#
+{#
+	if ( !is.null( element$text ) )#
+	{#
+		if ( is.list( element$text ) )#
+		{#
+			updatedList = list();#
+			j = 1;#
+			#
+			for ( i in 1:length( element$text ) )#
+			{#
+				if ( is.list( element$text[[i]] ) )#
+				{#
+					# TODO: check if this is really of type result!!!!#
+					result <- element$text[[i]];#
+					#
+					if ( result$isSignificant == TRUE )#
+					{					#
+						updatedList[[j]] <- .tag( "span", id=.concat( "resultid_", result$resultId ), class=c( "result", "significant" ) );#
+					}#
+					else#
+					{#
+						updatedList[[j]] <- .tag( "span", id=.concat( "resultid_", result$resultId ), class=c( "result" ) );#
+					}#
+					j <- j + 1;#
+					#
+					result <- .updateReferences( result, report );#
+					#
+					updatedList[[j]] <- result$title;#
+					j <- j + 1;#
+					#
+					updatedList[[j]] <- .tag( "/span" );#
+					j <- j + 1;#
+					#
+					# add the result linked from the result summary to this element:#
+					element$elements[[length( element$elements ) + 1]] <- result;#
+				}#
+				else#
+				{#
+					updatedList[[j]] <-element$text[[i]];#
+					j <- j + 1;#
+				}				#
+			}			#
+			#
+			element$text <- updatedList;#
+		}#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateResults( element$elements[[i]], report );#
+		}#
+	}		#
+#
+	return ( element );#
+}#
+#
+#
+.log <- function( issue, severity=.SEVERITY.LOG )#
+{			#
+	message <- issue;#
+	#
+	if ( isList( issue ) )#
+	{#
+		# ignore severity#
+		message <- issue$message;#
+		severity <- issue$severity;#
+	}#
+	#
+	if ( severity == .SEVERITY.LOG )#
+	{#
+		cat( "Log:", message, "\n" );#
+	}#
+	#
+	if ( severity == .SEVERITY.WARN )#
+	{#
+		warning( message );#
+	}#
+	#
+	if ( severity == .SEVERITY.STOP )#
+	{#
+		stop( message );#
+	}#
+	#
+	cat( "Log:", message, "\n" );	#
+}#
+#
+#
+# --- element construction -------------------------------------------------------------------------#
+#
+.newElement <- function( elementType, title=NULL, text=NULL, niceType=NULL, domId=NULL, protection=PROTECTION.PUBLIC )#
+{#
+	element <- list( type = elementType );#
+	element$elements <- list();#
+	element$protection <- protection;#
+	#
+	# TODO: create unique id		#
+	element$id <- .getNextElementId();#
+#
+	if ( !missing( title ) )#
+	{#
+		element$title <- title;#
+	}#
+	#
+	if ( !missing( text ) )#
+	{	#
+		element$text <- text;#
+	}#
+	#
+	if ( !missing( niceType ) )#
+	{	#
+		element$niceType <- niceType;#
+	}#
+	#
+	if ( !missing( domId ) )#
+	{#
+		element$domId <- domId;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+newReport <- function( ... )#
+{#
+	if ( !missing( ... ) )#
+	{#
+		element <- .newGeneralReport( ... );#
+	}#
+	else#
+	{#
+		element <- .newGeneralReport( "Report" );#
+	}#
+	#
+	overview <- newSection( "Overview" );#
+	overview$domId <- "overview";#
+#
+	introduction <- newSubSection( "Introduction" );#
+	introduction$domId <- "introduction";#
+#
+	summary <- newSubSection( "Summary" );#
+	summary$domId  <- "summary";#
+#
+	results <- newSection( "Results" );#
+	results$domId  <- "results";#
+#
+	methods <- newSection( "Methods & Data" );#
+	methods$domId <- "methods";	#
+#
+	input <- newSubSection( "Input" );#
+	input$domId <- "input";#
+#
+	references <- newSubSection( "References" )#
+	references$domId <- "references";#
+	#
+	element$predefined <- list();#
+	element$predefined$overviewId <- overview$id;#
+	element$predefined$introductionId <- introduction$id;#
+	element$predefined$summaryId <- summary$id;#
+	element$predefined$resultsId <- results$id;#
+	element$predefined$methodsId <- methods$id;#
+	element$predefined$inputId <- input$id;#
+	element$predefined$referencesId <- references$id;#
+	#
+	element$reportId <- .newReportId();#
+#
+	element <- addTo( parent=element, addTo( parent=overview, introduction, summary ) );#
+	element <- addTo( parent=element, results );#
+	element <- addTo( parent=element, addTo( parent=methods, input, references ) );#
+}#
+#
+#
+.newGeneralReport <- function( ... )#
+{#
+	element <- .newElement( .ELEMENT.REPORT, .concat( ... ) );#
+	#
+	return ( element );#
+}#
+#
+.#
+#
+.addToElementById <- function( element, id, ... )#
+{	#
+	if ( element$id == id )#
+	{#
+		element <- addTo( parent=element, ... );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .addToElementById( element$elements[[i]], id, ... );#
+		}#
+	}#
+	#
+	return ( element );	#
+}#
+#
+.getElementById <- function( element, id )#
+{	#
+	if ( element$id == id )#
+	{#
+		return ( element );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .getElementById( element$elements[[i]], id );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				return ( result );#
+			}#
+		}#
+	}#
+	#
+	return ( NULL );	#
+}#
+#
+# removes element the given id from the tree using breadth-first search#
+.removeElementById <- function( element, id )#
+{	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		newElements <- list();#
+		#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			if ( element$elements[[i]]$id != id )#
+			{#
+				newElements[[length( newElements ) + 1]] <- element$elements[[i]];								#
+			}#
+		}#
+		#
+		element$elements <- newElements;#
+		#
+		if ( length( element$elements ) > 0 )#
+		{			#
+			for ( i in 1:length( element$elements ) )#
+			{#
+				element$elements[[i]] <- .removeElementById( element$elements[[i]], id );#
+			}		#
+		}#
+	}#
+	#
+	return ( element );	#
+}#
+#
+#
+addToResults <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$resultsId, ... ) ); #
+}#
+#
+addToMethods <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$methodsId, ... ) ); #
+}#
+#
+addToIntroduction <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$introductionId, ... ) ); #
+}#
+#
+addToSummary <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$summaryId, ... ) ); #
+}#
+#
+addToInput <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$inputId, ... ) ); #
+}#
+#
+addToReferences <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$referencesId, ... ) ); #
+}#
+#
+#
+newSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+newSubSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SUBSECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+newSubSubSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SUBSUBSECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+.writeSection <- function ( element, file, level="" )#
+{#
+	if ( is.null( element$domId ) )#
+	{	#
+		.write( .tag( "div", class=.concat( level, "section" ) ), file );#
+	}#
+	else#
+	{#
+		.write( .tag( "div", class=.concat( level, "section" ), id=element$domId ), file );#
+	}#
+#
+	.write( .tag( "div", class="sectionheader" ), file );#
+	.write( element$title, file );#
+	.write( .tag( "/div" ), file );#
+	#
+	.write( .tag( "div", class="sectionbody" ), file );#
+	.writeElements( element, file );#
+	.write( .tag( "/div" ), file );#
+#
+	.write( .tag( "/div" ), file );	#
+}#
+#
+#
+newList <- function( ..., isNumbered=FALSE, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.LIST, protection=protection );#
+	#
+	element$isNumbered <- isNumbered;#
+	#
+	if ( missing( ... ) )#
+	{#
+		return ( element );#
+	}	#
+	#
+	args <- list( ... );#
+	#
+	# TODO: run the same checks in "addTo"#
+	for ( i in 1:length( args ) )#
+	{#
+		if ( args[[i]]$type == .ELEMENT.PARAGRAPH ||#
+			args[[i]]$type == .ELEMENT.LIST ||#
+			args[[i]]$type == .ELEMENT.RESULT )#
+		{#
+			element$elements[[length( element$elements ) + 1]] <- args[[i]];#
+		}#
+		else#
+		{#
+			stop( "Report elements of type ", args[[i]]$element$type, " can not be added to a list." );#
+		}#
+	}#
+	#
+	return ( element );#
+}#
+#
+.writeList <- function( element, file )#
+{#
+	if ( element$isNumbered == TRUE )#
+	{#
+		.write( .tag( "ol" ), file );	#
+	}#
+	else#
+	{#
+		.write( .tag( "ul" ), file );			#
+	}#
+	#
+	for ( i in 1:length( element$elements ) )#
+	{#
+		if ( element$elements[[i]]$type != .ELEMENT.LIST )#
+		{#
+			.write( .tag( "li" ), file );		#
+			.writeElement( element$elements[[i]], file );		#
+			.write( .tag( "/li" ), file );#
+		}#
+		else#
+		{		#
+			.writeElement( element$elements[[i]], file );		#
+		}#
+	}#
+#
+	if ( element$isNumbered == TRUE )#
+	{#
+		.write( .tag( "/ol" ), file );	#
+	}	#
+	else#
+	{#
+		.write( .tag( "/ul" ), file );			#
+	}#
+}#
+#
+#
+newFigure <- function( file, ..., fileHighRes=NA, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.FIGURE, niceType="Figure", protection=protection );#
+	#
+	element$imageFilename <- file;#
+	element$imageFilenameHighRes <- fileHighRes;#
+	#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+#
+.writeFigure <- function ( element, file )#
+{#
+	.write( .tag( "div", class="figure", id=.concat( "figure_", element$number ) ), file );#
+#
+	.write(	.tag( "div", class="caption" ), file );#
+	.write( .tag( "p" ), file );#
+	#
+	# "Table 1: " ...#
+	.write( asStrong( element$niceType, "&nbsp;", element$number, ".&nbsp;" ), file );#
+	#
+	if ( !is.na( element$imageFilenameHighRes ) )#
+	{#
+		.write( .tag( "a", class="download", other=.concat( "href=\"", element$imageFilenameHighRes , "\"" ) ), "Get High-res Image", .tag( "/a" ), file );	#
+	}#
+	.write( element$text, file );#
+	.write( .tag( "/p" ), file );#
+	.write( .tag( "/div" ), file ); # caption#
+#
+	.write( .tag( "div", class="image" ), file );#
+	.write( .tag( "img", other=.concat( "src=\"", element$imageFilename, "\"/" ) ), file );#
+	.write( .tag( "/div" ), file ); # image#
+																#
+	.write( .tag( "/div" ), file ); # figure#
+}#
+#
+#
+newTable <- function( table, ..., file=NA, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.TABLE, niceType="Table", protection=protection );#
+#
+	element$table <- table;#
+	element$tableFilename <- file;#
+	#
+	element$resultList <- list();#
+	element$resultIndices <- array( dim=dim( table ) );#
+	#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+#
+.writeTable <- function ( element, file )#
+{	#
+	.write( .tag( "div", class="table", id=.concat( "table_", element$number ) ), file );#
+							#
+	.write(	.tag( "div", class="caption" ), file );#
+	.write( .tag( "p" ), file );#
+	#
+	.write( asStrong( element$niceType, "&nbsp;", element$number, ".&nbsp;" ), file );#
+#
+	# "Figure 1: " ...#
+	if ( !is.na( element$tableFilename ) )#
+	{#
+		.write( .tag( "a", class="download", other=.concat( "href=\"", element$tableFilename, "\"" ) ), "Get Full Table", .tag( "/a" ), file );	#
+	}#
+#
+	.write( element$text, file );#
+	.write( .tag( "/p" ), file );#
+	.write( .tag( "/div" ), file ); # caption#
+#
+	.write( .tag( "table", class="resulttable" ), file );#
+	#
+	# --- table header ---#
+#
+	.write( .tag( "thead" ), file );#
+	.write( .tag( "tr" ), file );#
+	#
+	# write column names#
+	for( c in 1:dim( element$table )[2] )#
+	{#
+		.write( .tag( "td" ), file );#
+		.write( colnames( element$table )[c], file );#
+		.write( .tag( "/td" ), file );#
+	}#
+		#
+	.write( .tag( "/tr" ), file );#
+	.write( .tag( "/thead" ), file );#
+	#
+	#
+	# --- table body ---#
+#
+	.write( .tag( "tbody" ), file );#
+	#
+	for( r in 1:dim( element$table )[1] )#
+	{#
+		.write( .tag( "tr" ), file );#
+		#
+		for( c in 1:dim( element$table )[2] )#
+		{#
+			.write( .tag( "td" ), file );#
+			#
+			resultIndex <- element$resultIndices[r,c];#
+			#
+			if ( !is.na( resultIndex ) )#
+			{#
+				result <- element$resultList[[resultIndex]];#
+				#
+				if ( result$isSignificant )#
+				{					#
+					.write( .tag( "span", class=c( "result", "significant" ), id=.concat( "resultid_", result$resultId ) ), file );#
+				}#
+				else#
+				{#
+					.write( .tag( "span", class=c( "result" ), id=.concat( "resultid_", result$resultId ) ), file );#
+				}#
+			}#
+			#
+			.write( element$table[r,c], file );#
+			#
+			if ( !is.na( resultIndex ) )#
+			{#
+				.write( .tag( "/span" ), file );#
+			}#
+#
+			.write( .tag( "/td" ), file );						#
+		}		#
+		#
+		.write( .tag( "/tr" ), file );#
+	}#
+		#
+	.write( .tag( "/tbody" ), file );#
+	#
+	.write( .tag( "/table" ), file ); # resultstable#
+	#
+	.write( .tag( "/div" ), file ); # table	#
+#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );																		#
+}#
+#
+#
+#
+newCitation <- function( authors="", title, publication="", issue="", number="", pages="", year="", url="" )#
+{#
+	element <- .newElement( .ELEMENT.CITATION, niceType="Citation" );#
+	#
+	element$authors <- authors;#
+	element$year <- year;#
+	element$title <- title;#
+	element$publication <- publication;#
+	element$publicationIssue <- issue;#
+	element$publicationNumber <- number;#
+	element$pages <- pages;#
+	element$url <- url;	#
+	#
+	return ( element );#
+}#
+#
+newJournalCitation <- function( authors, title, publication, issue, number, pages, year, url="" )#
+{#
+	return ( newCitation( authors=authors, title=title, publication=publication, issue=issue, number=number, pages=pages, year=year, url=url ) );#
+}#
+#
+newWebCitation <- function( authors, title, url )#
+{#
+	return ( newCitation( authors=authors, title=title, url=url ) );#
+}#
+#
+#
+.writeCitation <- function( element, file )#
+{#
+	.write( .tag( "div", class="reference", id=.concat( "reference_", element$number ) ), file );#
+	#
+	.write( "[", element$number, "] ", nobreak=TRUE, file );#
+#
+	if ( element$authors != "" )#
+	{#
+		.write( element$authors, ", ", nobreak=TRUE, file );#
+	}#
+#
+	if ( element$title != "" ) # only required field#
+	{#
+		.write( asLink( url=element$url, element$title ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" )#
+	{#
+		.write( ", ", asEmph( element$publication ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" && element$publicationIssue != "" )#
+	{#
+		.write( " ", asStrong( element$publicationIssue ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" && element$publicationIssue != "" && element$publicationNumber != "" )#
+	{#
+		.write( "(", element$publicationNumber, ")", nobreak=TRUE, file );#
+	}#
+#
+	if ( element$pages != "" )#
+	{#
+		.write( ":", element$pages, nobreak=TRUE, file );#
+	}#
+	#
+	if ( element$year != "" )#
+	{#
+		.write( " (",element$year, ")", nobreak=TRUE, file );#
+	}#
+	#
+	.write( .tag( "/div" ), file ); # reference	#
+}#
+#
+#
+newParagraph <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.PARAGRAPH, protection=protection );#
+#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+.writeParagraph <- function ( element, file )#
+{#
+	.write( .tag( "p" ), file );#
+	.write( element$text, file );#
+	#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );	#
+	#
+	.write( .tag( "/p" ), file );	#
+}#
+#
+#
+# does not need a write function, writing is provided by .writeList#
+newParameterList <- function( ..., separator=" = ", protection=PROTECTION.PUBLIC )#
+{#
+	element <- newList( isNumbered=FALSE, protection=protection );#
+	#
+	args <- list( ... );#
+	#
+	if ( length( args ) < 2 )#
+	{#
+		stop( "At least one parameter-value pair has to be provided to parameter list." );#
+	}#
+	#
+	if ( length( args ) %% 2 != 0 )#
+	{#
+		stop( "Number of elements in parameter list is not multiple of 2." );#
+	}#
+	#
+	j <- 1;#
+	#
+	for ( i in 1:(length( args )/2) )#
+	{#
+		element <- addTo( parent=element, newParagraph( args[[j]], separator, args[[j+1]] ) );#
+		#
+		j <- j + 2;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+.writeParagraph <- function ( element, file )#
+{#
+	.write( .tag( "p" ), file );#
+	.write( element$text, file );#
+	#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );	#
+	#
+	.write( .tag( "/p" ), file );	#
+}#
+#
+#
+newResult <- function( ..., isSignificant=FALSE, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.RESULT, .concat( ... ), protection=protection );#
+#
+	element$resultId <- .getNextResultId();#
+	element$isSignificant <- isSignificant;#
+	#
+	return ( element );#
+}#
+#
+#
+.writeResult <- function ( element, file )#
+{#
+	.write( .tag( "div", class="evidence", id=.concat( "evidenceid_", element$resultId ) ), file );#
+#
+	.writeElements( element, file );#
+#
+	.write( .tag( "/div" ), file );	#
+}#
+#
+#
+addTo <- function( parent, ..., row=NA, column=NA )#
+{#
+	args <- list( ... );#
+	#
+	if ( parent$type == .ELEMENT.TABLE )#
+	{#
+		if ( !missing( row ) && !missing( column ) )#
+		{			#
+			if ( length( args ) == 1 )#
+			{#
+				if ( args[[1]]$type == .ELEMENT.RESULT )#
+				{#
+					parent <- .addResult( table=parent, row=row, column=column, result=args[[1]] );#
+					#
+					return ( parent );#
+				}#
+			}#
+		}#
+	}#
+	#
+	#
+	if ( length( args ) > 0 )#
+	{#
+		for ( i in 1:length( args ) )#
+		{#
+			parent$elements[[length( parent$elements ) + 1]] <- args[[i]];	#
+		}	#
+	}#
+		#
+	return ( parent );#
+}#
+#
+#
+.addResult <- function( table, row, column, result )#
+{#
+	# !!! do not change the order of the following two lines!!!#
+	table$resultList[[length( table$resultList ) + 1]] <- result;	#
+	table$resultIndices[row,column] = length( table$resultList );#
+	#
+	# add result right after table#
+	table$elements[[length( table$elements ) + 1]] <- result;	#
+	#
+	return ( table );#
+}#
+#
+#
+#
+asReference <- function( element )#
+{#
+	# TODO: create link if requested#
+	# TODO: check for type!#
+	return ( paste( .REFERENCE.STRING, element$id, sep="" ) );#
+}#
+#
+asSummary <- function( result )#
+{#
+	return ( result );#
+}#
+#
+#
+asLink <- function( url, ... )#
+{#
+	# TODO: open link in new window if requested		#
+	#
+	args <- list( ... );#
+	#
+	if ( missing( url ) && length( args ) == 0 )#
+	{#
+		stop( "Unable to create link without URL or link text." );#
+	}	#
+	#
+	if ( url == "" || missing( url ) )#
+	{#
+		return ( .concat( args ) );	# just print text but do not create a link#
+	}#
+	#
+	if ( length( args ) == 0 )#
+	{#
+		args <- url; # print URL as link text#
+	}#
+	#
+	return ( .concat( .tag( "a", other=.concat( "href=\"", url, "\"" ) ), args, .tag( "/a" ) ) );#
+}#
+#
+#
+#asIdentifier <- function( label, class=NA, column=NA, row=NA )#
+#{#
+#	if ( missing( class ) && missing( label ) )#
+#	{#
+#		stop( "Unable to create identifier without class or label." );#
+#	}	#
+#	#
+#	if ( missing( class ) )#
+#	{#
+#		return ( label ); # just print text#
+#	}#
+#	#
+#	return ( .concat( "<span class=\"identifier ", class, "\">", label, "</span>" ) );#
+#}#
+#
+#
+asStrong <- function( ... )#
+{#
+	return ( .concat( .tag( "strong" ), ..., .tag( "/strong" ) ) );#
+}#
+#
+#
+asEmph <- function( ... )#
+{#
+	return ( .concat( .tag( "em" ), ..., .tag( "/em" ) ) );#
+}#
+#
+#
+asParameter <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="parameter" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asValue <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="value" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asFilename <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="filename" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asCode <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="code" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+.concat <- function( ... )#
+{#
+	if ( length( list( ... ) ) == 0 )#
+	{#
+		return ( "" );#
+	}#
+	#
+	return ( paste( ..., sep="" ) );#
+}#
+#
+#
+# helper function: writes a line of html code#
+.write <- function( ..., nobreak=FALSE, file )#
+{#
+  if ( missing( file ) )#
+  {#
+	args <- list( ... );#
+  	file <- args[[length( args )]];#
+  	args[[length( args )]] <- "";#
+  }  #
+  #
+  if ( nobreak )#
+  {  #
+  	cat( paste( args, sep="" ), file=file, sep="" );#
+  }#
+  else#
+  {#
+  	cat( paste( args, sep="" ), "\n", file=file, sep="" );#
+  }#
+}#
+#
+#
+.tag <- function( tag, id=NA, class=NA, other=NA )#
+{#
+	idString <- "";#
+	classString <- "";#
+	otherString <- "";#
+	#
+	if ( !missing( id ) )#
+	{#
+		# TODO: set a per report id prefix, update JS to prefix all queries with that prefix#
+		reportId <- "";		#
+		#
+		idString <- .concat( " id=\"", .concat( reportId, id ), "\"" );	#
+	}#
+#
+	if ( !missing( class ) )#
+	{#
+		classString <- .concat( " class=\"", paste( class, sep=" ", collapse=" " ), "\"" );	#
+	}#
+	#
+	if ( !missing( other ) )#
+	{#
+		otherString <- .concat( " ", other );#
+	}#
+	#
+	return ( .concat( "<", tag, idString, classString, otherString, ">" ) );#
+}#
+#
+#
+#
+.writeElement <- function( element, file )#
+{#
+	if ( element$type == .ELEMENT.PARAGRAPH )#
+	{#
+		.writeParagraph( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.SECTION )#
+	{#
+		.writeSection( element, file, "" );#
+	}#
+#
+	if ( element$type == .ELEMENT.SUBSECTION )#
+	{#
+		.writeSection( element, file, "sub" );#
+	}#
+#
+	if ( element$type == .ELEMENT.SUBSUBSECTION )#
+	{#
+		.writeSection( element, file, "subsub" );#
+	}#
+#
+	if ( element$type == .ELEMENT.LIST )#
+	{#
+		.writeList( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.FIGURE )#
+	{#
+		.writeFigure( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.TABLE )#
+	{#
+		.writeTable( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.CITATION )#
+	{#
+		.writeCitation( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.RESULT )#
+	{#
+		.writeResult( element, file );#
+	}#
+}#
+#
+#
+.writeElements <- function( element, file )#
+{#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			.writeElement( element$elements[[i]], file );#
+		}#
+	}#
+}#
+#
+#
+writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, output=c( HTML.REPORT, HTML.FRAGMENT, RDATA.REPORT ), level=PROTECTION.PUBLIC )#
+{	#
+	# check if input and references contain any reports, if not, remove those sections#
+	references <- .getElementById( report, report$predefined$referencesId );#
+	input <- .getElementById( report, report$predefined$inputId );#
+	#
+	if ( !is.null( references ) )#
+	{		#
+		# remove reference section#
+		report <- .removeElementById( report, references$id );#
+#
+		if ( length( references$elements ) > 0 )#
+		{#
+			# there are some references, insert them at the end of the methods section#
+			report <- addToMethods( report, references );#
+		}					#
+	}#
+#
+	if ( !is.null( input ) )#
+	{#
+		if ( length( input$elements ) == 0 )#
+		{#
+			# no input, remove the empty section#
+			report <- .removeElementById( report, input$id );#
+		}#
+	}#
+	#
+	# write as requested output types	#
+	if ( HTML.REPORT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".html" ), debug, output, level );		#
+	}#
+	#
+	if ( HTML.FRAGMENT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".fragment.html" ), debug, output, level );#
+	}#
+	#
+	if ( RDATA.REPORT %in% output )#
+	{#
+		save( report, file=.concat( filename, ".RData" ) );		#
+	}#
+}
+.writeGeneralReport <- function( report, filename, debug=FALSE, output=HTML.REPORT, level=PROTECTION.PUBLIC )#
+{#
+	# initialize counters for all numbered objects (figures, tables, references, etc.)#
+	.initNumbers();#
+							#
+	report <- .removeProtectedElements( report, level );#
+	#
+	report <- .updateResults( report, report=report );#
+	report <- .updateNumberedElements( report );#
+	report <- .updateReferences( report, report=report );#
+		#
+	file <- file( filename, "w" );#
+	#
+	# write file header if in debug mode or if writing standalone report#
+	if ( output == HTML.REPORT || debug )#
+	{#
+		.write( .tag( "html" ), file );#
+		#
+		.write( .tag( "head" ), file );#
+		.write( .tag( "title" ), file );#
+		.write( report$title, file );#
+		.write( .tag( "/title" ), file );#
+		.write( .tag( "/head" ), file );#
+		#
+		.write( .tag( "body" ), file );#
+	}	#
+	#
+	.write( .tag( "div", class="report", id=report$reportId ), file );#
+	.write( .tag( "div", class="main" ), file );#
+	#
+	# insert CSS#
+	.write( .tag( "style" ), file );#
+	.write( paste( get( "cssCode", env=.nozzleEnv ), collapse="\n" ), file );#
+	.write( .tag( "/style" ), file );#
+	#
+	# insert JavaScript#
+	# TODO: embedded JQuery code in standalones, do not include in fragments#
+	if ( output == HTML.REPORT )#
+	{#
+		.write( "<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js\"></script>", file );#
+	}#
+#
+	.write( "<script type=\"text/javascript\">", file );#
+	.write( paste( get( "javaScriptCode", env=.nozzleEnv ), collapse="\n" ), file );#
+	.write( "</script>", file );#
+	#
+	# TODO: replace this with correct FH call for final release#
+	.write( "<script type=\"text/javascript\">jQuery(document).ready( function() { initialize(); });</script>", file );#
+	#
+			#
+	# write content	#
+	.write( .tag( "div", class="title" ), report$title, .tag( "/div" ), file );#
+	#
+	for ( i in 1:length( report$elements ) )#
+	{#
+		.writeElement( report$elements[[i]], file );		#
+	}#
+#
+	.write( .tag( "/div" ), file ); # main#
+	.write( .tag( "/div" ), file ); # report#
+	#
+	# write file footer if in debug mode or standalone report#
+	if ( output == HTML.REPORT || debug )#
+	{	#
+		.write( .tag( "/body" ), file );#
+		#
+		.write( .tag( "/html" ), file );	#
+	}#
+	#
+	close( file );#
+}
+#
+writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, output=c( HTML.REPORT, HTML.FRAGMENT, RDATA.REPORT ), level=PROTECTION.PUBLIC )#
+{	#
+	# check if input and references contain any reports, if not, remove those sections#
+	references <- .getElementById( report, report$predefined$referencesId );#
+	input <- .getElementById( report, report$predefined$inputId );#
+	#
+	if ( !is.null( references ) )#
+	{		#
+		# remove reference section#
+		report <- .removeElementById( report, references$id );#
+#
+		if ( length( references$elements ) > 0 )#
+		{#
+			# there are some references, insert them at the end of the methods section#
+			report <- addToMethods( report, references );#
+		}					#
+	}#
+#
+	if ( !is.null( input ) )#
+	{#
+		if ( length( input$elements ) == 0 )#
+		{#
+			# no input, remove the empty section#
+			report <- .removeElementById( report, input$id );#
+		}#
+	}#
+	#
+	# write as requested output types	#
+	if ( HTML.REPORT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".html" ), debug, output, level );		#
+	}#
+	#
+	if ( HTML.FRAGMENT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".fragment.html" ), debug, output, level );#
+	}#
+	#
+	if ( RDATA.REPORT %in% output )#
+	{#
+		save( report, file=.concat( filename, ".RData" ) );		#
+	}#
+}
+eval( "#
+writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, output=c( HTML.REPORT, HTML.FRAGMENT, RDATA.REPORT ), level=PROTECTION.PUBLIC )#
+{	#
+	# check if input and references contain any reports, if not, remove those sections#
+	references <- .getElementById( report, report$predefined$referencesId );#
+	input <- .getElementById( report, report$predefined$inputId );#
+	#
+	if ( !is.null( references ) )#
+	{		#
+		# remove reference section#
+		report <- .removeElementById( report, references$id );#
+#
+		if ( length( references$elements ) > 0 )#
+		{#
+			# there are some references, insert them at the end of the methods section#
+			report <- addToMethods( report, references );#
+		}					#
+	}#
+#
+	if ( !is.null( input ) )#
+	{#
+		if ( length( input$elements ) == 0 )#
+		{#
+			# no input, remove the empty section#
+			report <- .removeElementById( report, input$id );#
+		}#
+	}#
+	#
+	# write as requested output types	#
+	if ( HTML.REPORT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".html" ), debug, output, level );		#
+	}#
+	#
+	if ( HTML.FRAGMENT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".fragment.html" ), debug, output, level );#
+	}#
+	#
+	if ( RDATA.REPORT %in% output )#
+	{#
+		save( report, file=.concat( filename, ".RData" ) );		#
+	}#
+}")
+source( "nozzle.R")
+.newReportId <- function()#
+{#
+	return ( .concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) ) );#
+}
+.newReportId()
+newReport <- function( ... )#
+{#
+	if ( !missing( ... ) )#
+	{#
+		element <- .newGeneralReport( ... );#
+	}#
+	else#
+	{#
+		element <- .newGeneralReport( "Report" );#
+	}#
+	#
+	overview <- newSection( "Overview" );#
+	overview$domId <- "overview";#
+#
+	introduction <- newSubSection( "Introduction" );#
+	introduction$domId <- "introduction";#
+#
+	summary <- newSubSection( "Summary" );#
+	summary$domId  <- "summary";#
+#
+	results <- newSection( "Results" );#
+	results$domId  <- "results";#
+#
+	methods <- newSection( "Methods & Data" );#
+	methods$domId <- "methods";	#
+#
+	input <- newSubSection( "Input" );#
+	input$domId <- "input";#
+#
+	references <- newSubSection( "References" )#
+	references$domId <- "references";#
+	#
+	element$predefined <- list();#
+	element$predefined$overviewId <- overview$id;#
+	element$predefined$introductionId <- introduction$id;#
+	element$predefined$summaryId <- summary$id;#
+	element$predefined$resultsId <- results$id;#
+	element$predefined$methodsId <- methods$id;#
+	element$predefined$inputId <- input$id;#
+	element$predefined$referencesId <- references$id;#
+	#
+	element$reportId <- .newReportId();#
+#
+	element <- addTo( parent=element, addTo( parent=overview, introduction, summary ) );#
+	element <- addTo( parent=element, results );#
+	element <- addTo( parent=element, addTo( parent=methods, input, references ) );#
+}
+newReport
+newReport()
+.increaseEnvCounter <- function( counter, environment=.nozzleEnv )#
+{#
+	assign( counter, get( counter, env=.nozzleEnv ) + 1, env=environment );#
+	#
+	return ( get( counter, env=environment )  );#
+}#
+#
+.initEnvCounter <- function( counter, environment=.nozzleEnv )#
+{#
+	assign( counter, 0, env=environment );#
+}#
+#
+.getNextElementId <- function()#
+{#
+	return ( .increaseEnvCounter( ".ELEMENT.ID" ) );#
+}#
+#
+#
+.initNumbers <- function()#
+{#
+	.initEnvCounter( ".FIGURE.COUNTER" );#
+	.initEnvCounter( ".TABLE.COUNTER" );#
+	.initEnvCounter( ".CITATION.COUNTER" );#
+}#
+#
+#
+.getNextFigureNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".FIGURE.COUNTER" ) );#
+}#
+#
+.getNextTableNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".TABLE.COUNTER" ) );#
+}#
+#
+.getNextCitationNumber <- function()#
+{#
+	return ( .increaseEnvCounter( ".CITATION.COUNTER" ) );#
+}#
+#
+.getNextResultId <- function()#
+{#
+	return ( .increaseEnvCounter( ".RESULT.ID" ) );#
+}#
+#
+#
+# TODO: update this to use a UUID#
+.newReportId <- function()#
+{#
+	return ( .concat( floor( runif( 1, min=1, max=10000 ) ), "-", floor( runif( 1, min=1, max=10000 ) ) ) );#
+}#
+#
+#
+.removeProtectedElements <- function( element, level )#
+{#
+	if ( element$protection > level )#
+	{#
+		return ( NULL );#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		retainedElements <- list();#
+		#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .removeProtectedElements( element$elements[[i]], level );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				retainedElements[[length( retainedElements ) + 1]] <- result;#
+			}						#
+		}#
+		#
+		element$elements <- retainedElements;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+#
+.updateNumberedElements <- function( element )#
+{#
+	if ( element$type == .ELEMENT.FIGURE )#
+	{#
+		element$number <- .getNextFigureNumber();#
+	}#
+#
+	if ( element$type == .ELEMENT.TABLE )#
+	{#
+		element$number <- .getNextTableNumber();#
+	}#
+#
+	if ( element$type == .ELEMENT.CITATION )#
+	{#
+		element$number <- .getNextCitationNumber();#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateNumberedElements( element$elements[[i]] );#
+		}#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+.getReference <- function( referenceId, element )#
+{#
+	if ( element$id == referenceId )#
+	{#
+		if ( element$type == .ELEMENT.CITATION )#
+		{#
+			return ( .concat( "[", element$number, "]" ) );		#
+		}#
+		#
+		return ( .concat( element$niceType, " ", element$number ) );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .getReference( referenceId, element$elements[[i]] );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				return ( result );#
+			}				#
+		}#
+	}#
+	#
+	return ( NULL );#
+}#
+#
+#
+.updateReferences <- function( element, report )#
+{#
+	if ( !is.null( element$text ) )#
+	{#
+		if ( is.list( element$text ) )#
+		{#
+			updatedText = "";#
+			#
+			for ( i in 1:length( element$text ) )#
+			{#
+				if ( is.list( element$text[[i]] ) )#
+				{#
+					next();#
+				}#
+				#
+				if ( substr( element$text[[i]], 0, nchar( .REFERENCE.STRING ) ) == .REFERENCE.STRING )#
+				{#
+					referenceId <- substr( element$text[[i]], nchar( .REFERENCE.STRING ) + 1, nchar( element$text[[i]] ) );#
+					referenceText <- .getReference( referenceId, report );#
+					#
+					if ( is.null( referenceText ) )#
+					{#
+						stop( paste( "Element", referenceId, "is referenced but not included in the report." ) );#
+					}#
+					#
+					updatedText <- paste( updatedText, referenceText, sep="" );#
+				}#
+				else#
+				{#
+					updatedText <-paste( updatedText, element$text[[i]], sep="" );#
+				}								#
+			}			#
+			#
+			element$text <- updatedText;#
+		}#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateReferences( element$elements[[i]], report );#
+		}#
+	}		#
+#
+	return ( element );#
+}#
+#
+#
+.updateResults <- function( element, report )#
+{#
+	if ( !is.null( element$text ) )#
+	{#
+		if ( is.list( element$text ) )#
+		{#
+			updatedList = list();#
+			j = 1;#
+			#
+			for ( i in 1:length( element$text ) )#
+			{#
+				if ( is.list( element$text[[i]] ) )#
+				{#
+					# TODO: check if this is really of type result!!!!#
+					result <- element$text[[i]];#
+					#
+					if ( result$isSignificant == TRUE )#
+					{					#
+						updatedList[[j]] <- .tag( "span", id=.concat( "resultid_", result$resultId ), class=c( "result", "significant" ) );#
+					}#
+					else#
+					{#
+						updatedList[[j]] <- .tag( "span", id=.concat( "resultid_", result$resultId ), class=c( "result" ) );#
+					}#
+					j <- j + 1;#
+					#
+					result <- .updateReferences( result, report );#
+					#
+					updatedList[[j]] <- result$title;#
+					j <- j + 1;#
+					#
+					updatedList[[j]] <- .tag( "/span" );#
+					j <- j + 1;#
+					#
+					# add the result linked from the result summary to this element:#
+					element$elements[[length( element$elements ) + 1]] <- result;#
+				}#
+				else#
+				{#
+					updatedList[[j]] <-element$text[[i]];#
+					j <- j + 1;#
+				}				#
+			}			#
+			#
+			element$text <- updatedList;#
+		}#
+	}#
+	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .updateResults( element$elements[[i]], report );#
+		}#
+	}		#
+#
+	return ( element );#
+}#
+#
+#
+.log <- function( issue, severity=.SEVERITY.LOG )#
+{			#
+	message <- issue;#
+	#
+	if ( isList( issue ) )#
+	{#
+		# ignore severity#
+		message <- issue$message;#
+		severity <- issue$severity;#
+	}#
+	#
+	if ( severity == .SEVERITY.LOG )#
+	{#
+		cat( "Log:", message, "\n" );#
+	}#
+	#
+	if ( severity == .SEVERITY.WARN )#
+	{#
+		warning( message );#
+	}#
+	#
+	if ( severity == .SEVERITY.STOP )#
+	{#
+		stop( message );#
+	}#
+	#
+	cat( "Log:", message, "\n" );	#
+}#
+#
+#
+# --- element construction -------------------------------------------------------------------------#
+#
+.newElement <- function( elementType, title=NULL, text=NULL, niceType=NULL, domId=NULL, protection=PROTECTION.PUBLIC )#
+{#
+	element <- list( type = elementType );#
+	element$elements <- list();#
+	element$protection <- protection;#
+	#
+	# TODO: create unique id		#
+	element$id <- .getNextElementId();#
+#
+	if ( !missing( title ) )#
+	{#
+		element$title <- title;#
+	}#
+	#
+	if ( !missing( text ) )#
+	{	#
+		element$text <- text;#
+	}#
+	#
+	if ( !missing( niceType ) )#
+	{	#
+		element$niceType <- niceType;#
+	}#
+	#
+	if ( !missing( domId ) )#
+	{#
+		element$domId <- domId;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+newReport <- function( ... )#
+{#
+	if ( !missing( ... ) )#
+	{#
+		element <- .newGeneralReport( ... );#
+	}#
+	else#
+	{#
+		element <- .newGeneralReport( "Report" );#
+	}#
+	#
+	overview <- newSection( "Overview" );#
+	overview$domId <- "overview";#
+#
+	introduction <- newSubSection( "Introduction" );#
+	introduction$domId <- "introduction";#
+#
+	summary <- newSubSection( "Summary" );#
+	summary$domId  <- "summary";#
+#
+	results <- newSection( "Results" );#
+	results$domId  <- "results";#
+#
+	methods <- newSection( "Methods & Data" );#
+	methods$domId <- "methods";	#
+#
+	input <- newSubSection( "Input" );#
+	input$domId <- "input";#
+#
+	references <- newSubSection( "References" )#
+	references$domId <- "references";#
+	#
+	element$predefined <- list();#
+	element$predefined$overviewId <- overview$id;#
+	element$predefined$introductionId <- introduction$id;#
+	element$predefined$summaryId <- summary$id;#
+	element$predefined$resultsId <- results$id;#
+	element$predefined$methodsId <- methods$id;#
+	element$predefined$inputId <- input$id;#
+	element$predefined$referencesId <- references$id;#
+	#
+	element$reportId <- .newReportId();#
+#
+	element <- addTo( parent=element, addTo( parent=overview, introduction, summary ) );#
+	element <- addTo( parent=element, results );#
+	element <- addTo( parent=element, addTo( parent=methods, input, references ) );#
+}#
+#
+#
+.newGeneralReport <- function( ... )#
+{#
+	element <- .newElement( .ELEMENT.REPORT, .concat( ... ) );#
+	#
+	return ( element );#
+}#
+#
+.#
+#
+.addToElementById <- function( element, id, ... )#
+{	#
+	if ( element$id == id )#
+	{#
+		element <- addTo( parent=element, ... );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			element$elements[[i]] <- .addToElementById( element$elements[[i]], id, ... );#
+		}#
+	}#
+	#
+	return ( element );	#
+}#
+#
+.getElementById <- function( element, id )#
+{	#
+	if ( element$id == id )#
+	{#
+		return ( element );#
+	}#
+		#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			result <- .getElementById( element$elements[[i]], id );#
+			#
+			if ( !is.null( result ) )#
+			{#
+				return ( result );#
+			}#
+		}#
+	}#
+	#
+	return ( NULL );	#
+}#
+#
+# removes element the given id from the tree using breadth-first search#
+.removeElementById <- function( element, id )#
+{	#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		newElements <- list();#
+		#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			if ( element$elements[[i]]$id != id )#
+			{#
+				newElements[[length( newElements ) + 1]] <- element$elements[[i]];								#
+			}#
+		}#
+		#
+		element$elements <- newElements;#
+		#
+		if ( length( element$elements ) > 0 )#
+		{			#
+			for ( i in 1:length( element$elements ) )#
+			{#
+				element$elements[[i]] <- .removeElementById( element$elements[[i]], id );#
+			}		#
+		}#
+	}#
+	#
+	return ( element );	#
+}#
+#
+#
+addToResults <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$resultsId, ... ) ); #
+}#
+#
+addToMethods <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$methodsId, ... ) ); #
+}#
+#
+addToIntroduction <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$introductionId, ... ) ); #
+}#
+#
+addToSummary <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$summaryId, ... ) ); #
+}#
+#
+addToInput <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$inputId, ... ) ); #
+}#
+#
+addToReferences <- function( report, ... )#
+{#
+	return ( .addToElementById( report, report$predefined$referencesId, ... ) ); #
+}#
+#
+#
+newSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+newSubSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SUBSECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+newSubSubSection <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	return ( .newElement( .ELEMENT.SUBSUBSECTION, .concat( ... ), protection=protection ) );#
+}#
+#
+#
+.writeSection <- function ( element, file, level="" )#
+{#
+	if ( is.null( element$domId ) )#
+	{	#
+		.write( .tag( "div", class=.concat( level, "section" ) ), file );#
+	}#
+	else#
+	{#
+		.write( .tag( "div", class=.concat( level, "section" ), id=element$domId ), file );#
+	}#
+#
+	.write( .tag( "div", class="sectionheader" ), file );#
+	.write( element$title, file );#
+	.write( .tag( "/div" ), file );#
+	#
+	.write( .tag( "div", class="sectionbody" ), file );#
+	.writeElements( element, file );#
+	.write( .tag( "/div" ), file );#
+#
+	.write( .tag( "/div" ), file );	#
+}#
+#
+#
+newList <- function( ..., isNumbered=FALSE, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.LIST, protection=protection );#
+	#
+	element$isNumbered <- isNumbered;#
+	#
+	if ( missing( ... ) )#
+	{#
+		return ( element );#
+	}	#
+	#
+	args <- list( ... );#
+	#
+	# TODO: run the same checks in "addTo"#
+	for ( i in 1:length( args ) )#
+	{#
+		if ( args[[i]]$type == .ELEMENT.PARAGRAPH ||#
+			args[[i]]$type == .ELEMENT.LIST ||#
+			args[[i]]$type == .ELEMENT.RESULT )#
+		{#
+			element$elements[[length( element$elements ) + 1]] <- args[[i]];#
+		}#
+		else#
+		{#
+			stop( "Report elements of type ", args[[i]]$element$type, " can not be added to a list." );#
+		}#
+	}#
+	#
+	return ( element );#
+}#
+#
+.writeList <- function( element, file )#
+{#
+	if ( element$isNumbered == TRUE )#
+	{#
+		.write( .tag( "ol" ), file );	#
+	}#
+	else#
+	{#
+		.write( .tag( "ul" ), file );			#
+	}#
+	#
+	for ( i in 1:length( element$elements ) )#
+	{#
+		if ( element$elements[[i]]$type != .ELEMENT.LIST )#
+		{#
+			.write( .tag( "li" ), file );		#
+			.writeElement( element$elements[[i]], file );		#
+			.write( .tag( "/li" ), file );#
+		}#
+		else#
+		{		#
+			.writeElement( element$elements[[i]], file );		#
+		}#
+	}#
+#
+	if ( element$isNumbered == TRUE )#
+	{#
+		.write( .tag( "/ol" ), file );	#
+	}	#
+	else#
+	{#
+		.write( .tag( "/ul" ), file );			#
+	}#
+}#
+#
+#
+newFigure <- function( file, ..., fileHighRes=NA, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.FIGURE, niceType="Figure", protection=protection );#
+	#
+	element$imageFilename <- file;#
+	element$imageFilenameHighRes <- fileHighRes;#
+	#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+#
+.writeFigure <- function ( element, file )#
+{#
+	.write( .tag( "div", class="figure", id=.concat( "figure_", element$number ) ), file );#
+#
+	.write(	.tag( "div", class="caption" ), file );#
+	.write( .tag( "p" ), file );#
+	#
+	# "Table 1: " ...#
+	.write( asStrong( element$niceType, "&nbsp;", element$number, ".&nbsp;" ), file );#
+	#
+	if ( !is.na( element$imageFilenameHighRes ) )#
+	{#
+		.write( .tag( "a", class="download", other=.concat( "href=\"", element$imageFilenameHighRes , "\"" ) ), "Get High-res Image", .tag( "/a" ), file );	#
+	}#
+	.write( element$text, file );#
+	.write( .tag( "/p" ), file );#
+	.write( .tag( "/div" ), file ); # caption#
+#
+	.write( .tag( "div", class="image" ), file );#
+	.write( .tag( "img", other=.concat( "src=\"", element$imageFilename, "\"/" ) ), file );#
+	.write( .tag( "/div" ), file ); # image#
+																#
+	.write( .tag( "/div" ), file ); # figure#
+}#
+#
+#
+newTable <- function( table, ..., file=NA, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.TABLE, niceType="Table", protection=protection );#
+#
+	element$table <- table;#
+	element$tableFilename <- file;#
+	#
+	element$resultList <- list();#
+	element$resultIndices <- array( dim=dim( table ) );#
+	#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+#
+.writeTable <- function ( element, file )#
+{	#
+	.write( .tag( "div", class="table", id=.concat( "table_", element$number ) ), file );#
+							#
+	.write(	.tag( "div", class="caption" ), file );#
+	.write( .tag( "p" ), file );#
+	#
+	.write( asStrong( element$niceType, "&nbsp;", element$number, ".&nbsp;" ), file );#
+#
+	# "Figure 1: " ...#
+	if ( !is.na( element$tableFilename ) )#
+	{#
+		.write( .tag( "a", class="download", other=.concat( "href=\"", element$tableFilename, "\"" ) ), "Get Full Table", .tag( "/a" ), file );	#
+	}#
+#
+	.write( element$text, file );#
+	.write( .tag( "/p" ), file );#
+	.write( .tag( "/div" ), file ); # caption#
+#
+	.write( .tag( "table", class="resulttable" ), file );#
+	#
+	# --- table header ---#
+#
+	.write( .tag( "thead" ), file );#
+	.write( .tag( "tr" ), file );#
+	#
+	# write column names#
+	for( c in 1:dim( element$table )[2] )#
+	{#
+		.write( .tag( "td" ), file );#
+		.write( colnames( element$table )[c], file );#
+		.write( .tag( "/td" ), file );#
+	}#
+		#
+	.write( .tag( "/tr" ), file );#
+	.write( .tag( "/thead" ), file );#
+	#
+	#
+	# --- table body ---#
+#
+	.write( .tag( "tbody" ), file );#
+	#
+	for( r in 1:dim( element$table )[1] )#
+	{#
+		.write( .tag( "tr" ), file );#
+		#
+		for( c in 1:dim( element$table )[2] )#
+		{#
+			.write( .tag( "td" ), file );#
+			#
+			resultIndex <- element$resultIndices[r,c];#
+			#
+			if ( !is.na( resultIndex ) )#
+			{#
+				result <- element$resultList[[resultIndex]];#
+				#
+				if ( result$isSignificant )#
+				{					#
+					.write( .tag( "span", class=c( "result", "significant" ), id=.concat( "resultid_", result$resultId ) ), file );#
+				}#
+				else#
+				{#
+					.write( .tag( "span", class=c( "result" ), id=.concat( "resultid_", result$resultId ) ), file );#
+				}#
+			}#
+			#
+			.write( element$table[r,c], file );#
+			#
+			if ( !is.na( resultIndex ) )#
+			{#
+				.write( .tag( "/span" ), file );#
+			}#
+#
+			.write( .tag( "/td" ), file );						#
+		}		#
+		#
+		.write( .tag( "/tr" ), file );#
+	}#
+		#
+	.write( .tag( "/tbody" ), file );#
+	#
+	.write( .tag( "/table" ), file ); # resultstable#
+	#
+	.write( .tag( "/div" ), file ); # table	#
+#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );																		#
+}#
+#
+#
+#
+newCitation <- function( authors="", title, publication="", issue="", number="", pages="", year="", url="" )#
+{#
+	element <- .newElement( .ELEMENT.CITATION, niceType="Citation" );#
+	#
+	element$authors <- authors;#
+	element$year <- year;#
+	element$title <- title;#
+	element$publication <- publication;#
+	element$publicationIssue <- issue;#
+	element$publicationNumber <- number;#
+	element$pages <- pages;#
+	element$url <- url;	#
+	#
+	return ( element );#
+}#
+#
+newJournalCitation <- function( authors, title, publication, issue, number, pages, year, url="" )#
+{#
+	return ( newCitation( authors=authors, title=title, publication=publication, issue=issue, number=number, pages=pages, year=year, url=url ) );#
+}#
+#
+newWebCitation <- function( authors, title, url )#
+{#
+	return ( newCitation( authors=authors, title=title, url=url ) );#
+}#
+#
+#
+.writeCitation <- function( element, file )#
+{#
+	.write( .tag( "div", class="reference", id=.concat( "reference_", element$number ) ), file );#
+	#
+	.write( "[", element$number, "] ", nobreak=TRUE, file );#
+#
+	if ( element$authors != "" )#
+	{#
+		.write( element$authors, ", ", nobreak=TRUE, file );#
+	}#
+#
+	if ( element$title != "" ) # only required field#
+	{#
+		.write( asLink( url=element$url, element$title ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" )#
+	{#
+		.write( ", ", asEmph( element$publication ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" && element$publicationIssue != "" )#
+	{#
+		.write( " ", asStrong( element$publicationIssue ), nobreak=TRUE, file );#
+	}#
+#
+	if ( element$publication != "" && element$publicationIssue != "" && element$publicationNumber != "" )#
+	{#
+		.write( "(", element$publicationNumber, ")", nobreak=TRUE, file );#
+	}#
+#
+	if ( element$pages != "" )#
+	{#
+		.write( ":", element$pages, nobreak=TRUE, file );#
+	}#
+	#
+	if ( element$year != "" )#
+	{#
+		.write( " (",element$year, ")", nobreak=TRUE, file );#
+	}#
+	#
+	.write( .tag( "/div" ), file ); # reference	#
+}#
+#
+#
+newParagraph <- function( ..., protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.PARAGRAPH, protection=protection );#
+#
+	element$text <- list( ... );#
+	#
+	return ( element );#
+}#
+#
+.writeParagraph <- function ( element, file )#
+{#
+	.write( .tag( "p" ), file );#
+	.write( element$text, file );#
+	#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );	#
+	#
+	.write( .tag( "/p" ), file );	#
+}#
+#
+#
+# does not need a write function, writing is provided by .writeList#
+newParameterList <- function( ..., separator=" = ", protection=PROTECTION.PUBLIC )#
+{#
+	element <- newList( isNumbered=FALSE, protection=protection );#
+	#
+	args <- list( ... );#
+	#
+	if ( length( args ) < 2 )#
+	{#
+		stop( "At least one parameter-value pair has to be provided to parameter list." );#
+	}#
+	#
+	if ( length( args ) %% 2 != 0 )#
+	{#
+		stop( "Number of elements in parameter list is not multiple of 2." );#
+	}#
+	#
+	j <- 1;#
+	#
+	for ( i in 1:(length( args )/2) )#
+	{#
+		element <- addTo( parent=element, newParagraph( args[[j]], separator, args[[j+1]] ) );#
+		#
+		j <- j + 2;#
+	}#
+	#
+	return ( element );#
+}#
+#
+#
+.writeParagraph <- function ( element, file )#
+{#
+	.write( .tag( "p" ), file );#
+	.write( element$text, file );#
+	#
+	# write all elements, i.e. results only in this case#
+	.writeElements( element, file );	#
+	#
+	.write( .tag( "/p" ), file );	#
+}#
+#
+#
+newResult <- function( ..., isSignificant=FALSE, protection=PROTECTION.PUBLIC )#
+{#
+	element <- .newElement( .ELEMENT.RESULT, .concat( ... ), protection=protection );#
+#
+	element$resultId <- .getNextResultId();#
+	element$isSignificant <- isSignificant;#
+	#
+	return ( element );#
+}#
+#
+#
+.writeResult <- function ( element, file )#
+{#
+	.write( .tag( "div", class="evidence", id=.concat( "evidenceid_", element$resultId ) ), file );#
+#
+	.writeElements( element, file );#
+#
+	.write( .tag( "/div" ), file );	#
+}#
+#
+#
+addTo <- function( parent, ..., row=NA, column=NA )#
+{#
+	args <- list( ... );#
+	#
+	if ( parent$type == .ELEMENT.TABLE )#
+	{#
+		if ( !missing( row ) && !missing( column ) )#
+		{			#
+			if ( length( args ) == 1 )#
+			{#
+				if ( args[[1]]$type == .ELEMENT.RESULT )#
+				{#
+					parent <- .addResult( table=parent, row=row, column=column, result=args[[1]] );#
+					#
+					return ( parent );#
+				}#
+			}#
+		}#
+	}#
+	#
+	#
+	if ( length( args ) > 0 )#
+	{#
+		for ( i in 1:length( args ) )#
+		{#
+			parent$elements[[length( parent$elements ) + 1]] <- args[[i]];	#
+		}	#
+	}#
+		#
+	return ( parent );#
+}#
+#
+#
+.addResult <- function( table, row, column, result )#
+{#
+	# !!! do not change the order of the following two lines!!!#
+	table$resultList[[length( table$resultList ) + 1]] <- result;	#
+	table$resultIndices[row,column] = length( table$resultList );#
+	#
+	# add result right after table#
+	table$elements[[length( table$elements ) + 1]] <- result;	#
+	#
+	return ( table );#
+}#
+#
+#
+#
+asReference <- function( element )#
+{#
+	# TODO: create link if requested#
+	# TODO: check for type!#
+	return ( paste( .REFERENCE.STRING, element$id, sep="" ) );#
+}#
+#
+asSummary <- function( result )#
+{#
+	return ( result );#
+}#
+#
+#
+asLink <- function( url, ... )#
+{#
+	# TODO: open link in new window if requested		#
+	#
+	args <- list( ... );#
+	#
+	if ( missing( url ) && length( args ) == 0 )#
+	{#
+		stop( "Unable to create link without URL or link text." );#
+	}	#
+	#
+	if ( url == "" || missing( url ) )#
+	{#
+		return ( .concat( args ) );	# just print text but do not create a link#
+	}#
+	#
+	if ( length( args ) == 0 )#
+	{#
+		args <- url; # print URL as link text#
+	}#
+	#
+	return ( .concat( .tag( "a", other=.concat( "href=\"", url, "\"" ) ), args, .tag( "/a" ) ) );#
+}#
+#
+#
+#asIdentifier <- function( label, class=NA, column=NA, row=NA )#
+#{#
+#	if ( missing( class ) && missing( label ) )#
+#	{#
+#		stop( "Unable to create identifier without class or label." );#
+#	}	#
+#	#
+#	if ( missing( class ) )#
+#	{#
+#		return ( label ); # just print text#
+#	}#
+#	#
+#	return ( .concat( "<span class=\"identifier ", class, "\">", label, "</span>" ) );#
+#}#
+#
+#
+asStrong <- function( ... )#
+{#
+	return ( .concat( .tag( "strong" ), ..., .tag( "/strong" ) ) );#
+}#
+#
+#
+asEmph <- function( ... )#
+{#
+	return ( .concat( .tag( "em" ), ..., .tag( "/em" ) ) );#
+}#
+#
+#
+asParameter <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="parameter" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asValue <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="value" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asFilename <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="filename" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+asCode <- function( ... )#
+{#
+	return ( .concat( .tag( "span", class="code" ), ..., .tag( "/span" ) ) );#
+}#
+#
+#
+.concat <- function( ... )#
+{#
+	if ( length( list( ... ) ) == 0 )#
+	{#
+		return ( "" );#
+	}#
+	#
+	return ( paste( ..., sep="" ) );#
+}#
+#
+#
+# helper function: writes a line of html code#
+.write <- function( ..., nobreak=FALSE, file )#
+{#
+  if ( missing( file ) )#
+  {#
+	args <- list( ... );#
+  	file <- args[[length( args )]];#
+  	args[[length( args )]] <- "";#
+  }  #
+  #
+  if ( nobreak )#
+  {  #
+  	cat( paste( args, sep="" ), file=file, sep="" );#
+  }#
+  else#
+  {#
+  	cat( paste( args, sep="" ), "\n", file=file, sep="" );#
+  }#
+}#
+#
+#
+.tag <- function( tag, id=NA, class=NA, other=NA )#
+{#
+	idString <- "";#
+	classString <- "";#
+	otherString <- "";#
+	#
+	if ( !missing( id ) )#
+	{#
+		# TODO: set a per report id prefix, update JS to prefix all queries with that prefix#
+		reportId <- "";		#
+		#
+		idString <- .concat( " id=\"", .concat( reportId, id ), "\"" );	#
+	}#
+#
+	if ( !missing( class ) )#
+	{#
+		classString <- .concat( " class=\"", paste( class, sep=" ", collapse=" " ), "\"" );	#
+	}#
+	#
+	if ( !missing( other ) )#
+	{#
+		otherString <- .concat( " ", other );#
+	}#
+	#
+	return ( .concat( "<", tag, idString, classString, otherString, ">" ) );#
+}#
+#
+#
+#
+.writeElement <- function( element, file )#
+{#
+	if ( element$type == .ELEMENT.PARAGRAPH )#
+	{#
+		.writeParagraph( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.SECTION )#
+	{#
+		.writeSection( element, file, "" );#
+	}#
+#
+	if ( element$type == .ELEMENT.SUBSECTION )#
+	{#
+		.writeSection( element, file, "sub" );#
+	}#
+#
+	if ( element$type == .ELEMENT.SUBSUBSECTION )#
+	{#
+		.writeSection( element, file, "subsub" );#
+	}#
+#
+	if ( element$type == .ELEMENT.LIST )#
+	{#
+		.writeList( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.FIGURE )#
+	{#
+		.writeFigure( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.TABLE )#
+	{#
+		.writeTable( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.CITATION )#
+	{#
+		.writeCitation( element, file );#
+	}#
+#
+	if ( element$type == .ELEMENT.RESULT )#
+	{#
+		.writeResult( element, file );#
+	}#
+}#
+#
+#
+.writeElements <- function( element, file )#
+{#
+	if ( length( element$elements ) > 0 )#
+	{	#
+		for ( i in 1:length( element$elements ) )#
+		{#
+			.writeElement( element$elements[[i]], file );#
+		}#
+	}#
+}#
+#
+#
+writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, output=c( HTML.REPORT, HTML.FRAGMENT, RDATA.REPORT ), level=PROTECTION.PUBLIC )#
+{	#
+	# check if input and references contain any reports, if not, remove those sections#
+	references <- .getElementById( report, report$predefined$referencesId );#
+	input <- .getElementById( report, report$predefined$inputId );#
+	#
+	if ( !is.null( references ) )#
+	{		#
+		# remove reference section#
+		report <- .removeElementById( report, references$id );#
+#
+		if ( length( references$elements ) > 0 )#
+		{#
+			# there are some references, insert them at the end of the methods section#
+			report <- addToMethods( report, references );#
+		}					#
+	}#
+#
+	if ( !is.null( input ) )#
+	{#
+		if ( length( input$elements ) == 0 )#
+		{#
+			# no input, remove the empty section#
+			report <- .removeElementById( report, input$id );#
+		}#
+	}#
+	#
+	# write as requested output types	#
+	if ( HTML.REPORT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".html" ), debug, output, level );		#
+	}#
+	#
+	if ( HTML.FRAGMENT %in% output )#
+	{#
+		.writeGeneralReport( report, .concat( filename, ".fragment.html" ), debug, output, level );#
+	}#
+	#
+	if ( RDATA.REPORT %in% output )#
+	{#
+		save( report, file=.concat( filename, ".RData" ) );		#
+	}#
+}#
+#
+#
+.writeGeneralReport <- function( report, filename, debug=FALSE, output=HTML.REPORT, level=PROTECTION.PUBLIC )#
+{#
+	# initialize counters for all numbered objects (figures, tables, references, etc.)#
+	.initNumbers();#
+							#
+	report <- .removeProtectedElements( report, level );#
+	#
+	report <- .updateResults( report, report=report );#
+	report <- .updateNumberedElements( report );#
+	report <- .updateReferences( report, report=report );#
+		#
+	file <- file( filename, "w" );#
+	#
+	# write file header if in debug mode or if writing standalone report#
+	if ( output == HTML.REPORT || debug )#
+	{#
+		.write( .tag( "html" ), file );#
+		#
+		.write( .tag( "head" ), file );#
+		.write( .tag( "title" ), file );#
+		.write( report$title, file );#
+		.write( .tag( "/title" ), file );#
+		.write( .tag( "/head" ), file );#
+		#
+		.write( .tag( "body" ), file );#
+	}	#
+	#
+	.write( .tag( "div", class="report", id=report$reportId ), file );#
+	.write( .tag( "div", class="main" ), file );#
+	#
+	# insert CSS#
+	.write( .tag( "style" ), file );#
+	.write( paste( get( "cssCode", env=.nozzleEnv ), collapse="\n" ), file );#
+	.write( .tag( "/style" ), file );#
+	#
+	# insert JavaScript#
+	# TODO: embedded JQuery code in standalones, do not include in fragments#
+	if ( output == HTML.REPORT )#
+	{#
+		.write( "<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js\"></script>", file );#
+	}#
+#
+	.write( "<script type=\"text/javascript\">", file );#
+	.write( paste( get( "javaScriptCode", env=.nozzleEnv ), collapse="\n" ), file );#
+	.write( "</script>", file );#
+	#
+	# TODO: replace this with correct FH call for final release#
+	.write( "<script type=\"text/javascript\">jQuery(document).ready( function() { initialize(); });</script>", file );#
+	#
+			#
+	# write content	#
+	.write( .tag( "div", class="title" ), report$title, .tag( "/div" ), file );#
+	#
+	for ( i in 1:length( report$elements ) )#
+	{#
+		.writeElement( report$elements[[i]], file );		#
+	}#
+#
+	.write( .tag( "/div" ), file ); # main#
+	.write( .tag( "/div" ), file ); # report#
+	#
+	# write file footer if in debug mode or standalone report#
+	if ( output == HTML.REPORT || debug )#
+	{	#
+		.write( .tag( "/body" ), file );#
+		#
+		.write( .tag( "/html" ), file );	#
+	}#
+	#
+	close( file );#
+}
+newReport()
+.newReportId()
+newReport()
+newReport()
+pwd
+pwd()
+getwd()
+source( "nozzle.R")
+.nozzleEnv <- new.env();
+.REFERENCE.STRING <- "##REF##";#
+#
+.onLoad <- function( libname, pkgname )#
+{#
+	.initEnvCounter( ".FIGURE.COUNTER" );#
+	.initEnvCounter( ".TABLE.COUNTER" );#
+	.initEnvCounter( ".CITATION.COUNTER" );#
+#
+	.initEnvCounter( ".ELEMENT.ID" );#
+	.initEnvCounter( ".RESULT.ID" );#
+	#
+	# TODO: check if files exist#
+	assign( "cssCode", readLines( file.path( system.file( .NOZZLE.CSS.PATH, package=pkgname ), .NOZZLE.CSS.FILE ) ), env=.nozzleEnv );#
+	assign( "javaScriptCode", readLines( file.path( system.file( .NOZZLE.JAVASCRIPT.PATH, package=pkgname ), .NOZZLE.JAVASCRIPT.FILE ) ), env=.nozzleEnv );	#
+}
+env()
+environmnet()
+environment()
+source( "nozzle.R")
+?source
+source( "nozzle.R", verbose=TRUE, echo=TRUE)
+source( "nozzle.R", verbose=TRUE, echo=TRUE)
+source( "nozzle.R", verbose=TRUE)
+source( "nozzle.R")
+source( "nozzle.R")
+library( "Nozzle.R1")
+library( "Nozzle.R1" )
+library( "Nozzle.R1" )
+help( "Nozzle.R1")
+?Nozzle.R1
+?newReport
