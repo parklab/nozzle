@@ -628,6 +628,13 @@ RDATA.REPORT <- "rdata";
 }
 
 
+#' Create a new report with pre-defined sections Overview/Introduction, Overview/Summary, Results, Methods & Data/Input, Methods & Data/References and Meta Data. 
+#' @param ... One or more strings that will be concatenated into the report title.
+#' @param version Version number. Not in use.
+#' @returnType list
+#' @return A new report element. 
+#' 
+#' @author Nils Gehlenborg (nils@@hms.harvard.edu)
 newReport <- function( ..., version=0 )
 {
 	if ( !missing( ... ) )
@@ -730,6 +737,13 @@ newReport <- function( ..., version=0 )
 }
 
 
+#' Create a new custom report without pre-defined sections.
+#' @param ... One or more strings that will be concatenated into the report title.
+#' @param version Version number. Not in use.
+#' @returnType list
+#' @return A new report element. 
+#' 
+#' @author Nils Gehlenborg (nils@@hms.harvard.edu)
 newCustomReport <- function( ..., version=0 )
 {
 	if ( !missing( ... ) )
@@ -782,6 +796,14 @@ newCustomReport <- function( ..., version=0 )
 }
 
 
+#' Set the URL and title of the "next" report after \code{report}. This will be accessible through the utility menu. 
+#' @param report Report object.
+#' @param url URL of the next report.
+#' @param ... One or more strings that will be concatenated into the title of the next report.
+#' @returnType list 
+#' @return Updated report element.
+#' 
+#' @author nils
 setNextReport <- function( report, url, ... )
 {
 	if ( is.null( report$navigation ) )
@@ -796,6 +818,14 @@ setNextReport <- function( report, url, ... )
 }
 
 
+#' Set the URL and title of the "previous" report before \code{report}. This will be accessible through the utility menu.
+#' @param report Report object.
+#' @param url URL of the next report.
+#' @param ... One or more strings that will be concatenated into the title of the next report.
+#' @returnType list 
+#' @return Updated report element.
+#' 
+#' @author nils
 setPreviousReport <- function( report, url, ... )
 {
 	if ( is.null( report$navigation ) )
@@ -809,6 +839,15 @@ setPreviousReport <- function( report, url, ... )
 	return ( report );
 }
 
+
+#' Set the URL and title of the "parent" report above \code{report}. This will be accessible through the utility menu. 
+#' @param report Report object.
+#' @param url URL of the next report.
+#' @param ... One or more strings that will be concatenated into the title of the next report.
+#' @returnType list 
+#' @return Updated report element.
+#' 
+#' @author nils
 setParentReport <- function( report, url, ... )
 {
 	if ( is.null( report$navigation ) )
