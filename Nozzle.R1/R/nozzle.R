@@ -1,9 +1,11 @@
-# nozzle.R - Report library for high-throughput data analysis pipelines.
+# Nozzle: a Report Generation Toolkit for Data Analysis Pipelines
 #
-# Author: Nils Gehlenborg / Harvard Medical School & Broad Institute
+# Nils Gehlenborg (nils@hms.harvard.edu) 
+# Harvard Medical School, Center for Biomedical Informatics
+# Broad Institute, Cancer Program
 #
-# Copyright (c) 2011-2012.
-
+# Copyright (c) 2011-2013. All rights reserved.
+#
 # TODO: add default state (open/closed) for sections (per default all will be closed in custom reports)
 
 
@@ -24,7 +26,7 @@
 #' @name Nozzle.R1-package
 #' @aliases nozzle
 #' @docType package
-#' @title Nozzle: A Report Generation Toolkit for Data Analysis Pipelines
+#' @title Nozzle: a Report Generation Toolkit for Data Analysis Pipelines
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 #' @references
 #' \url{http://gdac.broadinstitute.org}
