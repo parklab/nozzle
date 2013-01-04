@@ -872,11 +872,11 @@ getReportTitle <- function( report )
 	return ( report$title );
 }
 
-setReportTitle <- function( report, title )
+setReportTitle <- function( report, ... )
 {
 	if ( !is.null( report$title ) )
 	{
-		report$title <- title;
+		report$title <- .concat( ... );
 		
 		return ( report );
 	}
