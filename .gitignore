@@ -4,5 +4,8 @@
 # Example code in package build process
 *-Ex.R
 
+# HTML output from documentation
+*.html
+
 .history
 .DS_Store
