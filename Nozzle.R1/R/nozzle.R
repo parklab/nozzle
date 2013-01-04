@@ -6,6 +6,33 @@
 
 # TODO: add default state (open/closed) for sections (per default all will be closed in custom reports)
 
+
+#' Provides a high-level API to generate HTML reports with dynamic user interface elements. 
+#'
+#' \tabular{ll}{
+#' Package: \tab Nozzle.R1\cr
+#' Type: \tab Package\cr
+#' Version: \tab 0.3-1\cr
+#' Date: \tab 2013-01-03\cr
+#' License: \tab BSD (>= 2)\cr
+#' LazyLoad: \tab no\cr
+#' }
+#'
+#' Nozzle was designed to facilitate summarization and rapid browsing of complex results in data 
+#' analysis pipelines where multiple analyses are performed frequently on big data sets.
+#' 
+#' @name Nozzle.R1-package
+#' @aliases nozzle
+#' @docType package
+#' @title Nozzle: A Report Generation Toolkit for Data Analysis Pipelines
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+#' @references
+#' \url{http://gdac.broadinstitute.org}
+#' \url{http://www.github.com/parklab/Nozzle}
+#' @keywords package
+NULL
+
+
 # --- global variables ----------------------------------------------------------------------------
 
 .nozzleEnv <- new.env();
