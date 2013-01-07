@@ -1,7 +1,7 @@
 \docType{package}
 \name{Nozzle.R1-package}
-\alias{nozzle}
 \alias{Nozzle.R1-package}
+\alias{nozzle}
 \title{Nozzle: a Report Generation Toolkit for Data Analysis Pipelines}
 \description{
   Provides a high-level API to generate HTML reports with

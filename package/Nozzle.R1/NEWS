@@ -1,0 +1,146 @@
+Release R1-0.3-1 / 6 September 2012
+
+- Nozzle 0.3-1 supports the inclusion of logos at the top and bottom of a report. Logos can be set
+  using the setLogo( filename, location ) command. 
+
+- Fixed a problem where tables that contain NAs caused an error during truncation.
+
+-----------------
+
+Release R1-0.3-0 / 20 January 2012
+
+- Nozzle 0.3-0 no longer supports multiple reports per page and no longer generates HTML fragments.
+  If an HTML fragment is requested a warning message will be printed.
+
+- The default filename "report" has been replaced with "nozzle".
+
+- Report usage can now be tracked with Google Analytics. A Google Analytics id can be set using
+  setGoogleAnalyticsId() and retrieved using getGoogleAnalyticsId().
+
+- Standard Nozzle reports now have a meta information section. Elements can be added with the
+  addToMeta() command.
+  
+- Elements can now be added to the overview section with the addToOverview() command.
+
+- Custom reports can now be created with the newCustomReport() command. Custom reports do not
+  contain predefined sections.
+  
+- To add a meta information or a results section to a custom report newSection...() is called
+  with with class="meta" or class="results", respectively.
+
+- The print view has been updated and now includes all supplemental results as end notes.
+
+- It is now possible to retrieve information about the Nozzle version that was used to create and
+  render a report and the respective dates by calling  the getRenderer/CreatorName() and
+  getRenderer/CreatorDate() functions, respectively.
+  
+- Store and retrieve information about script/software that generated the report using
+  set/getSoftwareName() and set/getSoftwareVersion().
+
+- It is now possible to pass a prefix and a postfix that will be applied to all URLs in the DOM that
+  are relative. To add a prefix/postfix to all relative filename URLs in the report the following
+  kind of query string when opening the report: nozzle.html?prefix=<prefix>&postfix=<postfix>
+  Both <prefix> and <postfix> have to be URL encoded. The prefix needs to contain all required file
+  path separators (usually that means it has to end with a slash). The postfix needs to begin with
+  a "?". The final URLs are assembled as follows:
+  <newrelativeurl> = <prefix> + <oldrelativeurl> + <postfix>
+  
+- A custom CSS file that overwrites the default CSS settings can be provided and read using 
+  setCustomScreenCss() and getCustomScreenCss(). To change the CSS for the print layout the 
+  setCustomPrintCss() and  getCustomPrintCss() may be used.
+  
+- The email address, subject and body of the feedback/comment/bug report message can now be set
+  using setContactInformation().
+  
+- Export of selected elements from reports for inclusion in other reports is now possible by
+  declaring an export id when the element is created with new...(). The feature is supported for
+  sections, lists, paragraphs, figures and tables. Helper functions have been added to identify
+  exported figures and tables and to modify the file paths of referenced images or text files.
+  A list of exported elements for a report can be obtained with the getExportedElements( ... )
+  function and elements can be retrieved from a report using the getExportedElement( ... ) command.
+  Export of elements containing references, citations or result elements is not supported, but also
+  not prevented.
+
+- Reports now include credits for Nozzle by default, this can be turned off by setting
+  "credits=FALSE" when calling writeReport().
+
+-----------------
+
+Release R1-0.2-99 / 18 August 2011
+
+- A copyright owner, year, notice and URL can now be added using the setCopyright() function.
+
+- Maintainer name, affiliation, and email address can now be added using the setMaintainer...()
+  functions.
+
+- newTable() has a new argument "significantDigits" that determines the number of significant digits
+  that should be printed. Trimming will be applied only to columns of tables where
+  is.numeric( columnvalues ) returns true. The default value is 2.
+
+- Tables can now be sorted based on a user-selected column. This feature is using the 
+  TableSorter JQuery plugin by Christian Bach (http://tablesorter.com/docs).
+
+- Results that have no associated supplementary information are no longer clickable to avoid
+  showing an empty result section.
+  
+- New layout. Supplementary information is shown in a second window on the same page that can be
+  viewed at the same time as the main report.
+  
+- Supplementary tables and figures now use separate counters and are named Sxx, e.g. Figure S4 or
+  Table S2.
+  
+- If a section only contains a single subsection the subsection will automatically be expanded when
+  the section is expanded.
+  
+- The number of significant findings in a section or subsection is no longer hidden when the section
+  is expanded but deemphasized to avoid distraction.
+
+- The result section is now expanded by default to reduce the number of clicks required to get to
+  the results.
+
+-----------------
+
+Release R1-0.2-3 / 31 March 2011
+
+- writeReport() no longer writes a "debug fragment", even if debug=TRUE. This is necessary to
+  prevent problems when a developer accidentally releases "debug code" into production.
+
+-----------------
+
+Release R1-0.2-2 / 23 March 2011
+
+- Added code to convert factors into strings in data.frame objects passed into the newTable()
+  function. The conversion is only performed when the report is being written.
+
+-----------------
+
+Release R1-0.2-1 / 16 March 2011
+
+- Minor change to fragment code to address Firehose display issue where no JavaScript was run.
+
+-----------------
+
+Release R1-0.2-0 / 05 March 2011
+
+- Added "output" argument to writeReport() to control whether a standalone HTML report, an
+  HTML fragment or an RData file should be written. Per default all three are created.
+  
+- All HTML standalone reports and fragments now contain minimized Nozzle CSS and obfuscated
+  Nozzle JavaScript code, unless debug=TRUE for writeReport().
+  
+- The jQuery library is now embedded in standalone reports.
+
+- Multiple report fragments can now be included in a single HTML page.
+
+- Reports now include meta information: id, version and creation date. In HTML reports this
+  information is included as a comment, i.e. it is not directly visible.
+  
+- Added "version" (default=0) argument to newReport to indicate changes in the report structure. 
+  This can be used in the future to determine whether a report has changed relative to a previous
+  report. 
+  
+-----------------  
+
+Release R1-0.1-0 / 16 February 2011
+
+- First public release.

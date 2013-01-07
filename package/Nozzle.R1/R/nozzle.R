@@ -1497,13 +1497,7 @@ getGoogleAnalyticsId <- function( report )
 }
 
 
-#' Set the path or URL of the CSS file to be used to overwrite the default screen (not: print) style sheet. Can be relative or absolute.
-#' @param report Report element.
-#' @param cssFile URL or a relative or absolute path to a CSS file. 
-#' @returnType list
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+# overwrite built-in CSS with custom screen CSS file - path can be relative or absolute
 setCustomScreenCss <- function( report, cssFile )
 {
 	report$customScreenCss <- cssFile	
@@ -1523,13 +1517,7 @@ getCustomScreenCss <- function( report )
 }
 
 
-#' Set the path or URL of the CSS file to be used to overwrite the default print (not: screen) style sheet. Can be relative or absolute.
-#' @param report Report element.
-#' @param cssFile URL or a relative or absolute path to a CSS file. 
-#' @returnType list
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+# overwrite built-in CSS with custom print CSS file - path can be relative or absolute
 setCustomPrintCss <- function( report, cssFile )
 {
 	report$customPrintCss <- cssFile	
@@ -1669,13 +1657,6 @@ getExportedElementIds <- function( report )
 }
 
 
-#' Add elements to the "Results" section of a standard report.
-#' @param report Report element. 
-#' @param ... Elements that will be added to the results section. Often these are subsection elements.
-#' @returnType list 
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 addToResults <- function( report, ... )
 {
 	if ( .hasPredefinedResultsSection( report ) )
@@ -1687,13 +1668,6 @@ addToResults <- function( report, ... )
 }
 
 
-#' Add elements to the "Methds & Data" section of a standard report.
-#' @param report Report element. 
-#' @param ... Elements that will be added to the methods section. Often these are subsection elements.
-#' @returnType list 
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 addToMethods <- function( report, ... )
 {
 	if ( .hasPredefinedMethodsSection( report ) )
@@ -1705,14 +1679,6 @@ addToMethods <- function( report, ... )
 }
 
 
-
-#' Add elements to the "Overview" section of a standard report.
-#' @param report Report element. 
-#' @param ... Elements that will be added to the overview section. Often these are subsection elements.
-#' @returnType list 
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 addToOverview <- function( report, ... )
 {
 	if ( .hasPredefinedOverviewSection( report ) )
@@ -1724,13 +1690,6 @@ addToOverview <- function( report, ... )
 }
 
 
-#' Add elements to the "Introduction" subsection in the "Overview" section of a standard report.
-#' @param report Report element. 
-#' @param ... Elements that will be added to the introduction section. Often these are paragraph elements.
-#' @returnType list 
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 addToIntroduction <- function( report, ... )
 {
 	if ( .hasPredefinedIntroductionSection( report ) )
@@ -1741,14 +1700,6 @@ addToIntroduction <- function( report, ... )
 	stop( "This report does not contain a predefined introduction section. Is this a custom report?" );
 }
 
-
-#' Add elements to the "Summary" subsection in the "Overview" section of a standard report.
-#' @param report Report element. 
-#' @param ... Elements that will be added to the overview section. Often these are paragraph elements.
-#' @returnType list 
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 addToSummary <- function( report, ... )
 {
 	if ( .hasPredefinedSummarySection( report ) )
@@ -1759,14 +1710,6 @@ addToSummary <- function( report, ... )
 	stop( "This report does not contain a predefined summary section. Is this a custom report?" );
 }
 
-
-#' Add elements to the "Input" subsection in the "Methods & Data" section of a standard report.
-#' @param report Report element. 
-#' @param ... Elements that will be added to the input section. Often these are paragraph elements.
-#' @returnType list 
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 addToInput <- function( report, ... )
 {
 	if ( .hasPredefinedInputSection( report ) )
@@ -1777,14 +1720,6 @@ addToInput <- function( report, ... )
 	stop( "This report does not contain a predefined input section. Is this a custom report?" );
 }
 
-
-#' Add elements to the "References" subsection in the "Methods & Data" section of a standard report.
-#' @param report Report element. 
-#' @param ... Elements that will be added to the references section. These should be citation elements.
-#' @returnType list 
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 addToReferences <- function( report, ... )
 {
 	if ( .hasPredefinedReferencesSection( report ) )
@@ -1795,14 +1730,6 @@ addToReferences <- function( report, ... )
 	stop( "This report does not contain a predefined references section. Is this a custom report?" );
 }
 
-
-#' Add elements to the "Meta" section of a standard report.
-#' @param report Report element. 
-#' @param ... Elements that will be added to the references section. These may be any elements.
-#' @returnType list 
-#' @return Updated report element.
-#' 
-#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 addToMeta <- function( report, ... )
 {
 	if ( .hasPredefinedMetaSection( report ) )
@@ -1934,7 +1861,6 @@ newFigure <- function( file, ..., fileHighRes=NA, type=IMAGE.TYPE.RASTER, export
 	
 	return ( element );
 }
-
 
 isFigure <- function( element )
 {
