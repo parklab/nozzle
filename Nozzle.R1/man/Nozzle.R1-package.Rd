@@ -9,21 +9,30 @@
 }
 \details{
   \tabular{ll}{ Package: \tab Nozzle.R1\cr Type: \tab
-  Package\cr Version: \tab 0.3-1\cr Date: \tab
-  2013-01-03\cr License: \tab BSD (>= 2)\cr LazyLoad: \tab
-  no\cr }
+  Package\cr Version: \tab 1.0-0\cr Date: \tab
+  2013-01-07\cr License: \tab LGPL (>= 2)\cr LazyLoad: \tab
+  yes\cr }
 
   Nozzle was designed to facilitate summarization and rapid
   browsing of complex results in data analysis pipelines
   where multiple analyses are performed frequently on big
   data sets.
 }
+\note{
+  The "R1" in the "Nozzle.R1" package name stands for
+  "revision 1" of the Nozzle R API. All versions of the
+  Nozzle.R1 package will be backwards-compatible and able
+  to render reports generated with earlier versions of the
+  package. When backwards-compatibility of the API can no
+  longer maintained the package name will change to
+  "Nozzle.R2".
+}
 \author{
   Nils Gehlenborg \email{nils@hms.harvard.edu}
 }
 \references{
-  \url{http://gdac.broadinstitute.org}
-  \url{http://www.github.com/parklab/Nozzle}
+  \url{http://www.github.com/parklab/Nozzle},
+  \url{http://gdac.broadinstitute.org/nozzle}
 }
 \keyword{package}
 

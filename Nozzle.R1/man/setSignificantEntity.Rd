@@ -5,7 +5,7 @@
   setSignificantEntity(report, ...)
 }
 \arguments{
-  \item{report}{}
+  \item{report}{Report element.}
 
   \item{...}{List of strings that will be concatenated to
   form the name of the entities.}
