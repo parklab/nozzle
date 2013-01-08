@@ -38,6 +38,11 @@ The following code creates a report with one section and two subsections. The fi
 
 Two files called `my_report.html` and `my_report.RData` will be written to the current working directory.
 
+# Further Examples
+
+An comprehensive demo that uses almost the complete Nozzle API is in the [`examples`](https://github.com/parklab/Nozzle/tree/develop/examples) folder.
+Both the `demo.R` file and the `demo.css` file are required for the example to work. The rendered HTML reports can be viewed on the [Nozzle site at the Broad Institute](http://gdac.broadinstitute.org/docs/nozzle/reports/nozzle1.html).  
+
 # Building the R package
 
 Nozzle works with R 2.10 or later. Use standard R commands to build the package in the cloned repo directory:
