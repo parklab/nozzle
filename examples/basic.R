@@ -3,6 +3,8 @@
 # Author: Nils Gehlenborg (nils@hms.harvard.edu)
 ###############################################################################
 
+dir.create( "reports", showWarnings=FALSE );
+
 require( Nozzle.R1 )
 
 # Phase 1: create report elements
