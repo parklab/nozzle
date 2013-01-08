@@ -8,7 +8,7 @@ The "R1" in the "Nozzle.R1" package name stands for "revision 1" of the Nozzle R
 
 # Obtaining and Installing the R package
 
-The package can be downloaded from the main Nozzle site at the [Broad Institute](http://gdac.broadinstitute.org/nozzle). The package has no external dependencies and can be installed by calling the following from the command line:
+The package can be downloaded from the [Nozzle site at the Broad Institute](http://gdac.broadinstitute.org/nozzle). The package has no external dependencies and can be installed by calling the following from the command line:
 
 	R CMD install Nozzle.R1
 
@@ -48,7 +48,7 @@ Nozzle works with R 2.10 or later. Use standard R commands to build the package 
 
 ## Updating Documentation
 
-The Nozzle API is documented using the [`roxygen2` R package](http://cran.r-project.org/web/packages/roxygen2/index.html). To rebuild the Rd files in the `man` directory run the following from the R shell (using the cloned repo directory as the working directory):
+The Nozzle API is documented using the `roxygen2` [R package](http://cran.r-project.org/web/packages/roxygen2/index.html). To rebuild the Rd files in the `man` directory run the following from the R shell (using the cloned repo directory as the working directory):
 
 	library(methods);
 	library(utils);
@@ -68,3 +68,7 @@ The JavaScript and CSS code should be compressed before they can be embedded in 
 # Author
 
 [Nils Gehlenborg](http://www.gehlenborg.com) ([nils@hms.harvard.edu] (mailto:nils@hms.harvard.edu))
+
+# Funding
+
+Nozzle was developed with funding from The Cancer Genome Atlas program of the National Cancer Institute, U24 CA143867.
