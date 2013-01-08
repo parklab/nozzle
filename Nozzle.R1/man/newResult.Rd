@@ -1,67 +1,28 @@
 \name{newResult}
 \alias{newResult}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-~~function to do ... ~~
-}
-\description{
-~~ A concise (1-5 lines) description of what the function does. ~~
-}
+\title{Create a new result element.}
 \usage{
-newResult(..., isSignificant = FALSE, protection = PROTECTION.PUBLIC)
+  newResult(..., isSignificant = FALSE,
+    protection = PROTECTION.PUBLIC)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
-}
-  \item{isSignificant}{
-%%     ~~Describe \code{isSignificant} here~~
-}
-  \item{protection}{
-%%     ~~Describe \code{protection} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
+  \item{...}{One or more strings that will be concatenated
+  to form the text associated with the result (often just a
+  scalar or single string).}
+
+  \item{isSignificant}{If TRUE, the result will be declared
+  signficant.}
+
+  \item{protection}{Procection level. One of
+  PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+  New element.
 }
-\references{
-%% ~put references to the literature/web site here ~
+\description{
+  Create a new result element.
 }
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+  Nils Gehlenborg \email{nils@hms.harvard.edu}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (..., isSignificant = FALSE, protection = PROTECTION.PUBLIC) 
-{
-    element <- .newElement(.ELEMENT.RESULT, .concat(...), protection = protection)
-    element$resultId <- .getNextResultId()
-    element$isSignificant <- isSignificant
-    return(element)
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

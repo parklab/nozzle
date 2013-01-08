@@ -1,16 +1,20 @@
 \name{asCode}
 \alias{asCode}
-
-\title{Format source code using a fixed-width font.}
-
-\description{Formats a string using a fixed-width font.}
-
-\usage{asCode(...)}
-
-\arguments{
-\item{\dots}{Strings and scalar values to be contatenated and formatted.}
+\title{Format text as code.}
+\usage{
+  asCode(...)
 }
-\details{}
+\arguments{
+  \item{...}{One or more strings that will be
+  concatenated.}
+}
+\value{
+  Text formatted as a code.
+}
+\description{
+  Format text as code.
+}
+\author{
+  Nils Gehlenborg \email{nils@hms.harvard.edu}
+}
 
-\value{Returns an HTML-formatted string of the concatenated arguments.}
-\author{Nils Gehlenborg (nils@hms.harvard.edu)}

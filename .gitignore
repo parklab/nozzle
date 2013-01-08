@@ -1,11 +1,21 @@
+# output files
+*.Rcheck
+*.Rout
+
+# Eclipse
+.project
+.settings
+
 # History files
-.Rhistory
+*.Rhistory
+*.history
 
 # Example code in package build process
 *-Ex.R
 
-# HTML output from documentation
-*.html
+*/reports/*
 
-.history
+*.tar.gz
+*.zip
+
 .DS_Store

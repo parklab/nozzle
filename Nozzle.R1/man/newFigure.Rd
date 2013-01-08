@@ -1,72 +1,38 @@
 \name{newFigure}
 \alias{newFigure}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-  ~~function to do ... ~~
-}
-\description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+\title{Create a new list element.}
 \usage{
-newFigure(file, ..., fileHighRes = NA, protection = PROTECTION.PUBLIC)
+  newFigure(file, ..., fileHighRes = NA,
+    type = IMAGE.TYPE.RASTER, exportId = NULL,
+    protection = PROTECTION.PUBLIC)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{file}{
-%%     ~~Describe \code{file} here~~
-}
-  \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
-}
-  \item{fileHighRes}{
-%%     ~~Describe \code{fileHighRes} here~~
-}
-  \item{protection}{
-%%     ~~Describe \code{protection} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
+  \item{file}{Path or URL to the image file. Paths can be
+  absolute or relative.}
+
+  \item{...}{Strings that will be contactenated to form the
+  figure caption.}
+
+  \item{fileHighRes}{Path or URL to a high-resolution or
+  vector-based version of the image file. Paths can be
+  absolute or relative.}
+
+  \item{type}{Currenlty only IMAGE.TYPE.RASTER is allowed.}
+
+  \item{exportId}{Unique string to identify this element.
+  Used to retrieve the element using
+  \code{getExportedElement}.}
+
+  \item{protection}{Procection level. One of
+  PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+  New element.
 }
-\references{
-%% ~put references to the literature/web site here ~
+\description{
+  Create a new list element.
 }
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+  Nils Gehlenborg \email{nils@hms.harvard.edu}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (file, ..., fileHighRes = NA, protection = PROTECTION.PUBLIC) 
-{
-    element <- .newElement(.ELEMENT.FIGURE, niceType = "Figure", 
-        protection = protection)
-    element$imageFilename <- file
-    element$imageFilenameHighRes <- fileHighRes
-    element$text <- list(...)
-    return(element)
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

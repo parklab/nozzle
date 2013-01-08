@@ -1,82 +1,48 @@
 \name{writeReport}
 \alias{writeReport}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-writeReport
+\title{Write \code{report} to file.}
+\usage{
+  writeReport(report, filename = DEFAULT.REPORT.FILENAME,
+    debug = FALSE, output = c(HTML.REPORT, RDATA.REPORT),
+    credits = TRUE, level = PROTECTION.PUBLIC,
+    debugCss = NA, debugJavaScript = NA)
+}
+\arguments{
+  \item{report}{The report to be written.}
+
+  \item{filename}{Name of the output file without file
+  extension.}
+
+  \item{debug}{If TRUE, external CSS (\code{debugCss}) and
+  JavaScript (\code{debugJavaScript}) can be supplied.}
+
+  \item{output}{A list of output formats. Any combination
+  of HTML.REPORT and RDATA.REPORT is allowed.}
+
+  \item{credits}{If TRUE, a note and a link will be
+  included at the bottom of the report to indicate that it
+  was created with Nozzle.}
+
+  \item{level}{The protection level of the report. If set
+  to PROTECTION.PUBLIC only elements with protection level
+  PROTECTION.PUBLIC (default) will be included in the
+  report. If set to PROTECTION.GROUP, then all elements
+  with protection level PROTECTION.PUBLIC and
+  PROTECTION.GROUP will be included. If set to
+  PROTECTION.PRIVATE all elements will be included.}
+
+  \item{debugCss}{A path or URL to a CSS file that should
+  be used instead of the built-in CSS. Only used if
+  \code{debug} is TRUE.}
+
+  \item{debugJavaScript}{A path or URL to a JavaScript file
+  that should be used instead of the built-in JavaScript.
+  Only used if \code{debug} is TRUE.}
 }
 \description{
-A concise (1-5 lines) description of what the function does. ~~
-}
-\usage{
-writeReport(report, filename = DEFAULT.REPORT.FILENAME, debug = FALSE, level = PROTECTION.PUBLIC)
-}
-%- maybe also 'usage' for other objects documented here.
-\arguments{
-  \item{report}{
-%%     ~~Describe \code{report} here~~
-}
-  \item{filename}{
-%%     ~~Describe \code{filename} here~~
-}
-  \item{debug}{
-%%     ~~Describe \code{debug} here~~
-}
-  \item{level}{
-%%     ~~Describe \code{level} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
+  Write \code{report} to file.
 }
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+  Nils Gehlenborg \email{nils@hms.harvard.edu}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (report, filename = DEFAULT.REPORT.FILENAME, debug = FALSE, 
-    level = PROTECTION.PUBLIC) 
-{
-    references <- .getElementById(report, report$predefined$referencesId)
-    input <- .getElementById(report, report$predefined$inputId)
-    if (!is.null(references)) {
-        report <- .removeElementById(report, references$id)
-        if (length(references$elements) > 0) {
-            report <- addToMethods(report, references)
-        }
-    }
-    if (!is.null(input)) {
-        if (length(input$elements) == 0) {
-            str(input)
-            report <- .removeElementById(report, input$id)
-        }
-    }
-    .writeGeneralReport(report, filename, debug, level)
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

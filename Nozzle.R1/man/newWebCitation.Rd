@@ -1,64 +1,25 @@
 \name{newWebCitation}
 \alias{newWebCitation}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-~~function to do ... ~~
-}
-\description{
- ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+\title{Create a citation element that represents a document published online. This is a convenience wrapper for \code{newCitation}.}
 \usage{
-newWebCitation(authors, title, url)
+  newWebCitation(authors, title, url)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{authors}{
-%%     ~~Describe \code{authors} here~~
-}
-  \item{title}{
-%%     ~~Describe \code{title} here~~
-}
-  \item{url}{
-%%     ~~Describe \code{url} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
+  \item{authors}{Names of authors.}
+
+  \item{title}{Title of the document.}
+
+  \item{url}{URL of the document.}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+  New element.
 }
-\references{
-%% ~put references to the literature/web site here ~
+\description{
+  Create a citation element that represents a document
+  published online. This is a convenience wrapper for
+  \code{newCitation}.
 }
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+  Nils Gehlenborg \email{nils@hms.harvard.edu}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (authors, title, url) 
-{
-    return(newCitation(authors = authors, title = title, url = url))
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

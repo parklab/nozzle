@@ -1,0 +1,169 @@
+/*
+ * Nozzle R Package - Custom CSS Styles
+ *
+ * Copyright 2011-2012, Broad Institute / Havard Medical School
+ * Authored and maintained by Nils Gehlenborg (nils@hms.harvard.edu)
+ */
+
+
+.report {
+	background-color: white;
+}
+
+.report .frame {
+	margin: 0px;
+	padding: 0px;
+	position: relative;	
+}
+
+.report .main {
+	font-family: sans-serif;
+	margin-right: auto;
+	margin-left: auto;
+	padding-top: 10px;
+	padding-bottom: 20px;		
+	padding-left: 3px;
+	padding-right: 13px;		
+	
+	overflow: auto;
+	position: absolute;
+	bottom: 0px;
+	top: 20px;
+	right: 0px;
+	left: 0px;
+	
+	box-shadow: none;
+	
+	background-color: white;		
+	border: none;
+}
+
+
+p {
+	font: small "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+.sectionbody {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+
+.report .title {
+	color: #000;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	border-bottom: 1px dashed lightgray;
+}
+
+
+.section .sectionheader {
+	color: #000;	
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	border-bottom: 1px dashed lightgray;
+}
+
+.subsection .sectionheader {
+	color: #000;	
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	border-bottom: 1px dashed lightgray;
+}
+
+.subsubsection .sectionheader {
+	color: #000;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	border-bottom: 1px dashed lightgray;
+}
+
+span.significant {
+	background-color: #fd2759;
+}
+
+span.significant.deactivated {
+	background-color: #fdcfda;
+}
+
+.meta .sectionheader {
+	color: #999;
+	font-size: 90%;
+}
+
+.meta .sectionbody {
+	color: #999;
+	font-size: 90%;
+}
+
+.meta .button {
+	border: 0px;
+	color: #999;	
+}
+
+.evidence {
+	border-top: 20px solid #f3ed1f;
+	
+	display: block;
+	position: absolute;
+	left: 0px;
+	right:  0px;
+	bottom: 0px;	
+	background-color: #fefa8d;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+
+	margin: 0px;	
+	
+	-webkit-box-shadow: 0px 0px 2px #000000;
+	-moz-box-shadow: 0px 0px 2px #000000;
+	-opera-box-shadow: 0px 0px 2px #000000;
+	box-shadow: 0px 0px 2px #000000;
+	overflow: auto;
+	z-index: 10;
+}
+
+.evidence .table {
+	border-color:  #60c8a8;
+}
+
+.evidence .figure {
+	border-color:  #60c8a8;
+}
+
+.evidence .sectionheader {
+	color: #f3ed1f;
+	margin-left: 0px;
+}
+
+.evidence .caption a.download {
+	
+}
+
+span.result.active {
+	border-color: #f3ed1f;
+	color: #000;
+	background-color: #f3ed1f;
+}
+
+.evidence .caption a.download {
+	color: #4da087;
+	background-color: #e0f6ef;
+	border: 1px solid #4da087;
+}
+
+.report .credits .notice a {
+	background-color: #fd2759;
+	border: none;
+	color: #fff;
+}
+
+.button.contenttoggle {
+	background-color: #777;
+	border: none;
+	color: #fff;
+}
+
+.menuitem {
+	background-color: #777;
+	border: none;
+	color: #fff;
+}
+

@@ -1,28 +1,13 @@
+\docType{data}
 \name{PROTECTION.PUBLIC}
 \alias{PROTECTION.PUBLIC}
-\docType{data}
-\title{
-   ~~ data name/kind ... ~~
+\title{Public visibility.}
+\format{num 0}
+\usage{
+  PROTECTION.PUBLIC
 }
 \description{
-  ~~ A concise (1-5 lines) description of the dataset. ~~
-}
-\usage{data(PROTECTION.PUBLIC)}
-\format{
-  The format is:
- num 0
-}
-\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-}
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
-\examples{
-data(PROTECTION.PUBLIC)
-## maybe str(PROTECTION.PUBLIC) ; plot(PROTECTION.PUBLIC) ...
+  Public visibility.
 }
 \keyword{datasets}
+

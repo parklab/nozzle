@@ -1,28 +1,13 @@
+\docType{data}
 \name{DEFAULT.REPORT.FILENAME}
 \alias{DEFAULT.REPORT.FILENAME}
-\docType{data}
-\title{
-   ~~ data name/kind ... ~~
+\title{Default filename for reports.}
+\format{chr "nozzle"}
+\usage{
+  DEFAULT.REPORT.FILENAME
 }
 \description{
-  ~~ A concise (1-5 lines) description of the dataset. ~~
-}
-\usage{data(DEFAULT.REPORT.FILENAME)}
-\format{
-  The format is:
- chr "report.html"
-}
-\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-}
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
-\examples{
-data(DEFAULT.REPORT.FILENAME)
-## maybe str(DEFAULT.REPORT.FILENAME) ; plot(DEFAULT.REPORT.FILENAME) ...
+  Default filename for reports.
 }
 \keyword{datasets}
+

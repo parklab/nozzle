@@ -1,89 +1,36 @@
 \name{newCitation}
 \alias{newCitation}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-  ~~function to do ... ~~
-}
-\description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+\title{Create a citation element.}
 \usage{
-newCitation(authors = "", title, publication = "", issue = "", number = "", pages = "", year = "", url = "")
+  newCitation(authors = "", title, publication = "",
+    issue = "", number = "", pages = "", year = "",
+    url = "")
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{authors}{
-%%     ~~Describe \code{authors} here~~
-}
-  \item{title}{
-%%     ~~Describe \code{title} here~~
-}
-  \item{publication}{
-%%     ~~Describe \code{publication} here~~
-}
-  \item{issue}{
-%%     ~~Describe \code{issue} here~~
-}
-  \item{number}{
-%%     ~~Describe \code{number} here~~
-}
-  \item{pages}{
-%%     ~~Describe \code{pages} here~~
-}
-  \item{year}{
-%%     ~~Describe \code{year} here~~
-}
-  \item{url}{
-%%     ~~Describe \code{url} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
+  \item{authors}{Names of authors.}
+
+  \item{title}{Title of the document.}
+
+  \item{publication}{Name of the publication where the
+  document appeared.}
+
+  \item{issue}{Issue of the publication.}
+
+  \item{number}{Number of the publication.}
+
+  \item{pages}{Pages of the document in the publication.}
+
+  \item{year}{Year when the document was published.}
+
+  \item{url}{URL of the document.}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+  New element.
 }
-\references{
-%% ~put references to the literature/web site here ~
+\description{
+  Create a citation element.
 }
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+  Nils Gehlenborg \email{nils@hms.harvard.edu}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (authors = "", title, publication = "", issue = "", 
-    number = "", pages = "", year = "", url = "") 
-{
-    element <- .newElement(.ELEMENT.CITATION, niceType = "Citation")
-    element$authors <- authors
-    element$year <- year
-    element$title <- title
-    element$publication <- publication
-    element$publicationIssue <- issue
-    element$publicationNumber <- number
-    element$pages <- pages
-    element$url <- url
-    return(element)
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -1,16 +1,20 @@
 \name{asFilename}
 \alias{asFilename}
-
-\title{Format a filename using a fixed-width font.}
-
-\description{Formats a string using a fixed-width font.}
-
-\usage{asFilename(...)}
-
-\arguments{
-\item{\dots}{Strings and scalar values to be contatenated and formatted.}
+\title{Format text as filename.}
+\usage{
+  asFilename(...)
 }
-\details{}
+\arguments{
+  \item{...}{One or more strings that will be
+  concatenated.}
+}
+\value{
+  Text formatted as a filename.
+}
+\description{
+  Format text as filename.
+}
+\author{
+  Nils Gehlenborg \email{nils@hms.harvard.edu}
+}
 
-\value{Returns an HTML-formatted string of the concatenated arguments.}
-\author{Nils Gehlenborg (nils@hms.harvard.edu)}

@@ -1,28 +1,13 @@
+\docType{data}
 \name{PROTECTION.TCGA}
 \alias{PROTECTION.TCGA}
-\docType{data}
-\title{
-~~ data name/kind ... ~~
+\title{Group visibility.}
+\format{num 5}
+\usage{
+  PROTECTION.TCGA
 }
 \description{
-~~ A concise (1-5 lines) description of the dataset. ~~
-}
-\usage{data(PROTECTION.TCGA)}
-\format{
-  The format is:
- num 5
-}
-\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-}
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
-\examples{
-data(PROTECTION.TCGA)
-## maybe str(PROTECTION.TCGA) ; plot(PROTECTION.TCGA) ...
+  Group visibility.
 }
 \keyword{datasets}
+

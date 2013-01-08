@@ -1,3 +1,13 @@
+Release R1-1.0-0 / 8 January 2013
+
+- Fully documented API.
+
+- Changed Nozzle URL to http://www.github.com/parklab/Nozzle.
+
+- Various minor fixes.
+
+-----------------
+
 Release R1-0.3-1 / 6 September 2012
 
 - Nozzle 0.3-1 supports the inclusion of logos at the top and bottom of a report. Logos can be set
