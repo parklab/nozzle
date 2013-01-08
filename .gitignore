@@ -7,11 +7,13 @@
 .settings
 
 # History files
-.Rhistory
-.history
+*.Rhistory
+*.history
 
 # Example code in package build process
 *-Ex.R
+
+*/reports/*
 
 *.tar.gz
 *.zip
