@@ -1,0 +1,371 @@
+which( cl$cluster == 4 )
+source('http://sage.fhcrc.org/CRAN.R')#
+pkgInstall(c("synapseClient"))
+library(mclust )
+library( fossil )
+install.package( "mclust ")
+install.packages( "mclust" )
+install.package( "fossil")
+install.packages( "fossil")
+library( fossil )
+?adj.rand.index
+library( mclust )
+?adjustedRandIndex
+install.packages( "clues")
+library( clues )
+cl1 <- c(1, 1, 2, 2)#
+    cl2 <- cl1#
+    adjustedRand(cl1, cl2)
+c1 <- c(1,2,1)
+c2 <- c(2,2,1)
+adjustedRand( c1, c2 )
+length( intersect( c1, c2 ) )
+length( intersect( c1, c2 ) )/length( union( c1, c2 ))
+length( union( c1, c2 ) )
+b1 = c( 1,3 )
+b2 = c( 3 )
+length( intersect( b1, b2 ) )/length( union( b1, b2 ))
+a1 = c( 2 )
+a2 = c(1,2)
+length( intersect( a1, a2 ) )/length( union( a1, a2 ))
+adjustedRand
+?jaccard(ard(
+;
+?jaccard
+install.packages( "http://compbio.med.harvard.edu/Supplements/ChIP-seq/spp_1.11.tar.gz")
+trunc( NaN )
+trunc( NaN ) != NaN
+sqrt( 0 )
+-(0.020^1/2)
+r <- -(0.020^1/2)
+r
+r**2
+r*r
+load("/Users/nils/Downloads/corrMatrix/corrMatrix.RData")
+ls()
+coeffs
+coeffs1
+ls()
+dim(m)
+dim(r)
+any( trunc( t ) != t, na.rm=TRUE )
+t <- c( 1,2,3,4)
+any( trunc( t ) != t, na.rm=TRUE )
+t <- c( 1,2,3,NaN)
+any( trunc( t ) != t, na.rm=TRUE )
+is.numeric( t)
+signif( t, 3 )
+t <- c( NaN, NaN, NaN)
+is.numeric( t)
+signif( t, 3 )
+any( trunc( t ) != t, na.rm=TRUE )
+10000 * 1000 * 100
+10000 * 1000 * 10
+8.65 + 8.65 + 24.90 + 10.85
+700 + 559.60 + 66 + 19.58 + 19.58 + 15.23
+53.05 19.58 + 19.58 + 15.23
+53.05 _ 19.58 + 19.58 + 15.23
+53.05 + 19.58 + 19.58 + 15.23
+53.05 + 19.58 + 19.58 + 15.23 + 700 + 66 + 559.60
+21.95 * 17
+21.95 * 17 * 1.18
+21.95 * 17 * 1.18 + 45
+21.95 * 17 * 1.28 + 45
+21.95 * 17 * 1.27 + 45
+21.95 * 16 * 1.27 + 45
+21.95 * 17
+21.95 * 17 * 1.18
+21.95 * 17 * 1.18 + 35
+21.95 * 17 * 1.18 + 35 + 45
+82**2
+82^2
+15.49 + 2.95 + 15.95
+23.26+14.95
+7 + 7 + 12 + 1.95
+31.95 + 7.95 + 7.95
+500 + 461.10 + 1311.45 + 34.39 + 5.00 + 38.21 + 16.57 + 27.95 + 47.85
+34.39 + 5.00 + 38.21 + 16.57 + 27.95 + 47.85
+( 34.39 + 5.00 + 38.21 + 16.57 + 27.95 + 47.85 ) / 6
+( 34.39 + 5.00 + 38.21 + 16.57 + 27.95 + 47.85 ) / 6 /3
+( 34.39 + 5.00 + 38.21 + 16.57 + 27.95 + 47.85 ) / 6
+500 + 461.10 + 1311.45/2 + 34.39 + 5.00 + 38.21 + 16.57 + 27.95 + 47.85
+27.95 + 47.85
+34.39 + 5.00 + 38.21 + 16.57
+461.20 + 1311.45 + 94.17 + 961.20
+461.20 + 1311.45 + 94.17 + 500
+34.39 + 5.00 + 38.21 + 16.57 + 75.80
+461.20 + 1311.45 + 169.97 + 500
+15/30
+0.4/30
+0.4/15
+0.5/15
+50000000/500
+15000000/500
+30000/1600000
+15000/4
+30000/4
+500/7
+75 * 30000
+15000000/15000
+15000000/50000
+3500/750
+3.5/750
+3.5/750*0.4
+3500/750*400
+3500/700*400
+700/3500*400
+700/3500*50
+700/15000*50
+700/15000*400
+700/15000*3500
+install.packages("rJava")
+plot( rnorm( 100 ), rnorm( 100 ))
+plot( rnorm( 1000 ), rnorm( 1000 ))
+plot( rnorm( 100000 ), rnorm( 100000 ))
+?color
+?rgb
+plot( rnorm( 100000 ), rnorm( 100000 ), rgba( 0, 0, 0, 0.5 ))
+plot( rnorm( 100000 ), rnorm( 100000 ), rgb( 0, 0, 0, 0.5 ))
+?rgb
+plot( rnorm( 1000 ), rnorm( 1000 ), rgb( 0, 0, 0, 0.5 ))
+plot( rnorm( 1000 ), rnorm( 1000 ), col=rgb( 0, 0, 0, 0.5 ))
+plot( rnorm( 1000 ), rnorm( 1000 ), col=rgb( 0, 0, 0, 0.5 ), pch=21)
+plot( rnorm( 1000 ), rnorm( 1000 ), col=rgb( 0, 0, 0, 0.5 ), pch=23)
+plot( rnorm( 1000 ), rnorm( 1000 ), col=rgb( 0, 0, 0, 0.5 ), pch=19)
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0.5 ), pch=19)
+?plot
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0.5 ), pch=21, bg=rgb( 0, 0, 0, 0.5 ))
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0 ), pch=21, bg=rgb( 0, 0, 0, 0.5 ) )
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0 ), pch=21, bg=rgb( 0, 0, 0, 0.1 ) )
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0 ), pch=21, bg=rgb( 0, 0, 0, 0.2 ) )
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0 ), pch=19, lwd=0 )
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0 ), pch=19, lwd=1 )
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0.5 ), pch=19, lwd=1 )
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0.5 ), pch=19, lwd=0 )
+plot( rnorm( 10000 ), rnorm( 10000 ), col=rgb( 0, 0, 0, 0.2 ), pch=19, lwd=0 )
+?chsq
+?chisq
+chisq.test
+chisq.test()
+pchisq( 8.11, 1 )
+1- pchisq( 8.11, 1 )
+1 - pchisq( -8.11, 1 )
+1 - pchisq( 8.11, 1 )
+1 - pchisq( 800.11, 1 )
+pchisq( 800.11, 1 )
+pchisq( 4.11, 1 )
+1- pchisq( 4.11, 1 )
+1- pchisq( 2.11, 1 )
+citation("hwriter")
+% Nozzle Applications Note Example#
+#
+library( "Nozzle.R1" );#
+#
+r <- newCustomReport( "My report" );#
+#
+s <- newSection( "My Section" )#
+ss1 <- newSection( "My Subsection 1" )#
+ss2 <- newSection( "My Subsection 2" )#
+#
+f <- newFigure( "i.png", "A test image." );#
+p <- newParagraph( "Some sample text." )#
+#
+ss1 <- addTo( ss1, f );#
+ss2 <- addTo( ss2, p );#
+#
+s <- addTo( s, ss1, ss2 );#
+#
+r <- addTo( r, s );#
+#
+writeReport( r, filename="my_report" );
+getwd()
+Nozzle Applications Note Example#
+#
+library( "Nozzle.R1" );#
+#
+# Phase 1: create report elements#
+#
+r <- newCustomReport( "My Report" );#
+s <- newSection( "My Section" )#
+ss1 <- newSection( "My Subsection 1" )#
+ss2 <- newSection( "My Subsection 2" )#
+f <- newFigure( "i.png", "A test image." );#
+p <- newParagraph( "Some sample text." )#
+# Phase 2: assemble report structure#
+#
+ss1 <- addTo( ss1, f );#
+ss2 <- addTo( ss2, p );#
+s <- addTo( s, ss1, ss2 );#
+r <- addTo( r, s );#
+# Phase 3: render report to file#
+#
+writeReport( r, filename="my_report" );
+install.packages(c("rj", "rj.gd"), repos="http://download.walware.de/rj-1.1")
+y
+install.packages(c("rj", "rj.gd"), repos="http://download.walware.de/rj-1.1")
+install.packages("roxygen")
+library( devtools )
+??devtools
+install_github("Nozzle.R1")
+install_github("parklab/Nozzle.R1")
+install_github("parklab/Nozzle.R1", "nils")
+install_github("Nozzle.R1", "parklab")
+install_github("roxygen")
+install_github("roxygen2")
+install_github("Nozzle.R1", "parklab")
+install_github("Nozzle.R1", username="parklab", ref="dev")
+install_github("Nozzle.R1", username="parklab", ref="develop")
+install_github("Nozzle", username="parklab", ref="develop", subdir="Nozzle.R1")
+library( Nozzle.R1 )
+??Nozzle.R1
+?documnet
+?document
+document( "Nozzle.R1" )
+document( Nozzle.R1 )
+uniq
+unique
+unique( c( 1,2,3,3,3,4) )
+str( unique( c( 1,2,3,3,3,4) ) )
+summary( unique( c( 1,2,3,3,3,4) ) )
+unique( NULL )
+?assing
+?assign
+require( Nozzle.R1 )
+?newReport
+require( Nozzle.R1 )
+?newReport
+cars()
+library( cars )
+?cats
+?cars
+plots( cars )
+plot( cars )
+cars
+iris
+iris[1:5,]
+require( Nozzle.R1 )
+Phase 1: create report elements	r <- newCustomReport( "My Report" );	s <- newSection( "My Section" );	ss1 <- newSection( "My Subsection 1" );	ss2 <- newSection( "My Subsection 2" );	f <- newTable( iris[1:5,], "A iris data" ); # w/ caption	p <- newParagraph( "Some sample text." );#
+#
+	# Phase 2: assemble report structure bottom-up	ss1 <- addTo( ss1, f ); # parent, child_1, ..., child_n 	ss2 <- addTo( ss2, p );	s <- addTo( s, ss1, ss2 );	r <- addTo( r, s );#
+#
+	# Phase 3: render report to file	writeReport( r, filename="my_report" ); # w/o extension
+require( Nozzle.R1 )
+Phase 1: create report elements	r <- newCustomReport( "My Report" );	s <- newSection( "My Section" );	ss1 <- newSection( "My Subsection 1" );	ss2 <- newSection( "My Subsection 2" );	f <- newTable( iris[1:5,], "A iris data" ); # w/ caption	p <- newParagraph( "Some sample text." );#
+#
+	# Phase 2: assemble report structure bottom-up	ss1 <- addTo( ss1, f ); # parent, child_1, ..., child_n 	ss2 <- addTo( ss2, p );	s <- addTo( s, ss1, ss2 );	r <- addTo( r, s );#
+#
+	# Phase 3: render report to file	writeReport( r, filename="my_report" ); # w/o extension
+library( Nozzle.R1 )
+Phase 1: create report elements	r <- newCustomReport( "My Report" );	s <- newSection( "My Section" );	ss1 <- newSection( "My Subsection 1" );	ss2 <- newSection( "My Subsection 2" );	f <- newTable( iris[1:5,], "A iris data" ); # w/ caption	p <- newParagraph( "Some sample text." );#
+#
+	# Phase 2: assemble report structure bottom-up	ss1 <- addTo( ss1, f ); # parent, child_1, ..., child_n 	ss2 <- addTo( ss2, p );	s <- addTo( s, ss1, ss2 );	r <- addTo( r, s );#
+#
+	# Phase 3: render report to file	writeReport( r, filename="my_report" ); # w/o extension
+library( Nozzle.R1 )
+Phase 1: create report elements	r <- newCustomReport( "My Report" );	s <- newSection( "My Section" );	ss1 <- newSection( "My Subsection 1" );	ss2 <- newSection( "My Subsection 2" );	f <- newTable( iris[1:5,], "A iris data" ); # w/ caption	p <- newParagraph( "Some sample text." );#
+#
+	# Phase 2: assemble report structure bottom-up	ss1 <- addTo( ss1, f ); # parent, child_1, ..., child_n 	ss2 <- addTo( ss2, p );	s <- addTo( s, ss1, ss2 );	r <- addTo( r, s );#
+#
+	# Phase 3: render report to file	writeReport( r, filename="my_report" ); # w/o extension
+?newReport
+require( Nozzle.R1 )
+Phase 1: create report elements	r <- newCustomReport( "My Report" );	s <- newSection( "My Section" );	ss1 <- newSection( "My Subsection 1" );	ss2 <- newSection( "My Subsection 2" );	f <- newTable( iris[1:5,], "A iris data" ); # w/ caption	p <- newParagraph( "Some sample text." );#
+#
+	# Phase 2: assemble report structure bottom-up	ss1 <- addTo( ss1, f ); # parent, child_1, ..., child_n 	ss2 <- addTo( ss2, p );	s <- addTo( s, ss1, ss2 );	r <- addTo( r, s );#
+#
+	# Phase 3: render report to file	writeReport( r, filename="my_report" ); # w/o extension
+?newReport
+?newSection
+?newCustomReport
+require( Nozzle.R1 )#
+#
+# Phase 1: create report elements#
+r <- newCustomReport( "My Report" );#
+s <- newSection( "My Section" );#
+ss1 <- newSection( "My Subsection 1" );#
+ss2 <- newSection( "My Subsection 2" );#
+f <- newTable( iris[1:5,], "A iris data" ); # w/ caption#
+p <- newParagraph( "Some sample text." );#
+#
+# Phase 2: assemble report structure bottom-up#
+ss1 <- addTo( ss1, f ); # parent, child_1, ..., child_n #
+ss2 <- addTo( ss2, p );#
+s <- addTo( s, ss1, ss2 );#
+r <- addTo( r, s );#
+#
+# Phase 3: render report to file#
+writeReport( r, filename="my_report" ); # w/o extension
+ls()
+r <- newCustomReport( "Test" )
+library( Nozzle.R1)
+r <- newCustomReport( "Test" )
+?newCustomReport
+require( Nozzle.R1 )#
+#
+# Phase 1: create report elements#
+r <- newCustomReport( "My Report" );#
+s <- newSection( "My Section" );#
+ss1 <- newSection( "My Subsection 1" );#
+ss2 <- newSection( "My Subsection 2" );#
+f <- newTable( iris[1:5,], "A iris data" ); # w/ caption#
+p <- newParagraph( "Some sample text." );#
+#
+# Phase 2: assemble report structure bottom-up#
+ss1 <- addTo( ss1, f ); # parent, child_1, ..., child_n #
+ss2 <- addTo( ss2, p );#
+s <- addTo( s, ss1, ss2 );#
+r <- addTo( r, s );#
+#
+# Phase 3: render report to file#
+writeReport( r, filename="my_report" ); # w/o extension
+?newSection
+require( Nozzle.R1 )#
+#
+# Phase 1: create report elements#
+r <- newCustomReport( "My Report" );#
+s <- newSection( "My Section" );#
+ss1 <- newSection( "My Subsection 1" );#
+ss2 <- newSection( "My Subsection 2" );#
+f <- newTable( iris[1:5,], "A iris data" ); # w/ caption#
+p <- newParagraph( "Some sample text." );#
+#
+# Phase 2: assemble report structure bottom-up#
+ss1 <- addTo( ss1, f ); # parent, child_1, ..., child_n #
+ss2 <- addTo( ss2, p );#
+s <- addTo( s, ss1, ss2 );#
+r <- addTo( r, s );#
+#
+# Phase 3: render report to file#
+writeReport( r, filename="my_report" ); # w/o extension
+q()
+source( "demo.R")
+source( "demo.R")
+randomData
+colnames( randomData )
+seq( 1, 10 )
+paste( "Column", seq( 1, 10 ), sep=" ", collapse=T)_
+paste( "Column", seq( 1, 10 ), sep=" ", collapse=T)
+paste( "Column", seq( 1, 10 ), sep=" ", collapse="-")
+paste( "Column", seq( 1, 10 ), collapse="-")
+paste( "Column", seq( 1, 10 ), sep="-")
+source( "demo.R")
+traceback()
+dim( table )
+dim( tableData )
+dim( randomData)
+dim( tableData )
+source( "demo.R")
+dim( randomData)
+ls()
+tableData <- iris[c(1:7,50:56,100:107),];#
+tableDataFile <- "files/table_file.txt";#
+write.table( iris, file=tableDataFile, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE )#
+#
+randomData <- matrix( rnorm( 1000), ncol=10, nrow=100 );#
+colnames( randomData ) <- paste( "Column", seq( 1, 10 ), sep=" ")#
+randomDataFile <- "files/random_file.csv";#
+write.table( randomData, file=randomDataFile, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE )
+dim(randomData)
+dim(tableData)
+dim( NULL )
+dim( colnames(tableData))

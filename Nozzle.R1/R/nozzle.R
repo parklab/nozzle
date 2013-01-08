@@ -64,7 +64,12 @@ NULL
 .POPOUT.FIGURE.WINDOW <- "nozzle_popout";
 .POPOUT.TABLE.WINDOW <- "nozzle_popout";
 
+#' Default filename for reports.
+#' @export
 DEFAULT.REPORT.FILENAME <- "nozzle";
+
+#' Name of entities that are labeled as signficiant.
+#' @export
 DEFAULT.SIGNIFICANT.ENTITY <- "statistically significant findings";
 
 
@@ -89,33 +94,85 @@ DEFAULT.SIGNIFICANT.ENTITY <- "statistically significant findings";
 .NOZZLE.URL <- "http://www.github.com/parklab/Nozzle";
 
 
-# formatting related defaults
+#' Default number of significant digits to be used to trim numeric columns in tables.
+#' @export
 TABLE.SIGNIFICANT.DIGITS <- 2;
 
 
-# the ordering is important. It must be public < tcga < private.
+#' Public visibility. 
+#' @export
 PROTECTION.PUBLIC <- 0;
+
+#' Group visibility.
+#' @export
 PROTECTION.TCGA <- 5; # TCGA is an alias for GROUP
+
+#' Group visibility.
+#' @export
 PROTECTION.GROUP <- 5;
+
+#' Private visibility.
+#' @export
 PROTECTION.PRIVATE <- 10;
 
+
+#' Logo position.
+#' @export
 LOGO.TOP.LEFT <- 1;
+
+#' Logo position.
+#' @export
 LOGO.TOP.CENTER <- 2;
+
+#' Logo position.
+#' @export
 LOGO.TOP.RIGHT <- 4;
+
+#' Logo position.
+#' @export
 LOGO.BOTTOM.LEFT <- 8;
+
+#' Logo position.
+#' @export
 LOGO.BOTTOM.CENTER <- 16;
+
+#' Logo position.
+#' @export
 LOGO.BOTTOM.RIGHT <- 32;
 
+
+#' Image type.
+#' @export
 IMAGE.TYPE.RASTER <- 0;
+
+#' Image type.
+#' @export
 IMAGE.TYPE.SVG <- 1;
+
+#' Image type.
+#' @export
 IMAGE.TYPE.PDF <- 2;
 
+
+#' Section class.
+#' @export
 SECTION.CLASS.RESULTS <- "results";
+
+#' Section class.
+#' @export
 SECTION.CLASS.META <- "meta";
 
-# output types
+
+#' Output type.
+#' @export
 HTML.REPORT <- "html_standalone";
+
+#' Output type.
+#' @export
 HTML.FRAGMENT <- "html_fragment";
+
+#' Output type.
+#' @export
 RDATA.REPORT <- "rdata";
 
 
@@ -2248,7 +2305,11 @@ newTable <- function( table, ..., file=NA, significantDigits=TABLE.SIGNIFICANT.D
 	element$tableFilename <- file;
 	
 	element$resultList <- list();
-	element$resultIndices <- array( dim=dim( table ) );
+	
+	if ( !is.null( dim( table ) ) )
+	{
+		element$resultIndices <- array( dim=dim( table ) );	
+	}
 	
 	element$text <- list( ... );
 	
@@ -2268,6 +2329,12 @@ isTable <- function( element )
 }
 
 
+#' Get path or URL of file associatd with table element.
+#' @param element Table element.
+#' @export
+#' @return Path or URL.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 getTableFile <- function( element )
 {
 	if ( isTable( element ) )
@@ -2278,6 +2345,14 @@ getTableFile <- function( element )
 	return ( NA );
 }
 
+
+#' Set path or URL of file associatd with table element.
+#' @param element Table element.
+#' @param file Path or URL to file.
+#' @export
+#' @return Updated element.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 
 setTableFile <- function( element, file )
 {
@@ -2290,7 +2365,6 @@ setTableFile <- function( element, file )
 	
 	return ( NA );
 }
-
 
 
 .trimTable <- function( table, significantDigits=3 )
@@ -2679,6 +2753,14 @@ newParameterList <- function( ..., separator=" = ", exportId=NULL, protection=PR
 }
 
 
+#' Create a new result element.
+#' @param ... One or more strings that will be concatenated to form the text associated with the result (often just a scalar or single string).
+#' @param isSignificant If TRUE, the result will be declared signficant. 
+#' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
+#' @export
+#' @return New element.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 newResult <- function( ..., isSignificant=FALSE, protection=PROTECTION.PUBLIC )
 {
 	element <- .newElement( .ELEMENT.RESULT, .concat( ... ), protection=protection );

@@ -13,8 +13,7 @@
 # Example code in package build process
 *-Ex.R
 
-# generated files
 *.tar.gz
-*.html
+*.zip
 
 .DS_Store

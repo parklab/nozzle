@@ -5,31 +5,57 @@
 
 require( "Nozzle.R1" );
 
+# --- Test Data ---
+
+# figure file paths
+figureFile1 <- "image1.png";
+figureFileHighRes1 <- "image1_highres.pdf";
+
+# file paths
+figureFile2 <- "image2.png";
+figureFileHighRes2 <- "image2_highres.pdf";
+
+# create some plots and write them to files
+xdata1 <- rnorm( 1000 );
+ydata1 <- rnorm( 1000 );
+
+png( paste( "reports/", figureFile1, sep="" ), width=500, height=500 );
+plot( xdata1, ydata1, col="red", pch=21 );
+dev.off();
+
+pdf( paste( "reports/", figureFileHighRes1, sep="" ) );
+plot( xdata1, ydata1, col="red", pch=21 );
+dev.off();
+
+xdata2 <- runif( 1000 );
+ydata2 <- runif( 1000 );
+
+png( paste( "reports/", figureFile2, sep="" ), width=500, height=500 );
+plot( xdata2, ydata2, col="blue", pch=21 );
+dev.off();
+
+pdf( paste( "reports/", figureFileHighRes2, sep="" ) );
+plot( xdata2, ydata2, col="blue", pch=21 );
+dev.off();
+
+# create a table and write it to file
+
+tableData <- iris[c(1:7,50:56,100:107),];
+tableDataFile <- "table_file.txt";
+write.table( iris, file=paste( "reports/", tableDataFile, sep="" ), quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE )
+
+randomData <- matrix( rnorm( 1000), ncol=10, nrow=100 );
+colnames( randomData ) <- paste( "Column", seq( 1, 10 ), sep=" ")
+randomDataFile <- "random_file.csv";
+write.table( randomData, file=paste( "reports/", randomDataFile, sep="" ), quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE )
+
+
 #===================================================================================================
 # Report 1
 # A report that showcases all elements that can be included in a Nozzle report.
 #===================================================================================================
 
 report1 <- newReport( "Nozzle Demo Report 1" );
-
-
-# --- Data ---
-
-# create some plots and write them to files
-# ...
-
-#
-
-figureFile <- "figures/image1.jpg";
-figureFileHighRes <- "figures/image1_highres.jpg";
-
-tableDataFile <- "files/table_file.txt";
-tableData <- read.table( tableDataFile, sep="\t", skip=1, nrows=10, header=TRUE );
-tableData[,2] <- as.numeric( tableData[,2] );
-
-gisticDataFile <- "files/scores_.conf_level.99.gistic.txt";
-gisticData <- read.table( gisticDataFile, sep="\t", nrows=100, header=TRUE );
-
 
 # --- References ---
 
@@ -56,11 +82,11 @@ report1 <- addToSummary( report1,
 # --- Results ---
 
 # create a figure and make it available for exporting
-figure1 <- newFigure( figureFile, fileHighRes=figureFileHighRes, exportId="FIGURE_1",
+figure1 <- newFigure( figureFile1, fileHighRes=figureFileHighRes1, exportId="FIGURE_1",
 				"An example for a figure. Everything that is shown in the figure should be explained\
 				in the caption. The figure needs to have axis labels and a legend." );
 
-figure2 <- newFigure( figureFile,
+figure2 <- newFigure( figureFile1,
 				"An example for a figure without a link to a high-res file." );
 				
 # create a table and make it available for exporting				
@@ -76,8 +102,8 @@ table3 <- newTable( tableData, significantDigits=mySignificantDigits,
 table4 <- newTable( colnames( tableData ), file=tableDataFile,
 				"A small table without content but a link to the full table." );
 						
-table5 <- newTable( gisticData, significantDigits=mySignificantDigits, file=gisticDataFile,
-				"A long table (GISTIC 2 output). The values in this table have been trimmed to ", mySignificantDigits, " significant digits." );
+table5 <- newTable( randomData, significantDigits=mySignificantDigits, file=randomDataFile,
+				"A long table (random data). The values in this table have been trimmed to ", mySignificantDigits, " significant digits." );
 
 
 paragraph1 <- newParagraph( "Nozzle supports a range of different formatting styles: ",
@@ -128,8 +154,8 @@ result1 <- addTo( result1,
 							But no further results/supplementary information." )
 					)
 				),
-				newFigure( "figures/image2.jpg", fileHighRes="figures/image2_highres.jpg",
-					"Symmetry. By Kokorono: ", asLink( url="http://www.flickr.com/photos/kokorono/5422006034" ) )
+				newFigure( figureFile2, fileHighRes=figureFileHighRes2,
+					"A figure with a ", asLink( url="http://www.github.com/parklab/Nozzle", "link" ), " in the caption." )
 			 )
 		 );
 
@@ -139,8 +165,8 @@ result2 <- addTo( result2,
 				newParagraph( "This is a paragraph related to the rocking result of A = 53030.\
 					Results may contain all sorts of section, figures, tables, list and so on.\
 					But no more results, please!" ),
-				newFigure( "figures/image1.jpg", fileHighRes="figures/image1_highres.jpg",
-					"Anothr pictur from Flickr." ),
+				newFigure( figureFile1, fileHighRes=figureFileHighRes1,
+					"Another figure. Or again the same figure?" ),
 				table5					
 			 )
 		 );
@@ -292,21 +318,22 @@ report3 <- setPreviousReport( report3, "nozzle2.html", "Demo 2" );
 report3 <- addToResults( report3, addTo( newSubSection( "My SubSection" ), newParagraph( "My paragraph." ) ) );
 report3 <- setCopyright( report3, owner="Nils Gehlenborg", year=2013 ); 
 
-writeReport( report3, filename="nozzle3", level=PROTECTION.PRIVATE );
+writeReport( report3, filename="reports/nozzle3", level=PROTECTION.PRIVATE );
 
 
 # --- HTML and RData file generation for reports 1 through 3 ---
 
-writeReport( report1, filename="nozzle1_public", level=PROTECTION.PUBLIC );
-writeReport( report1, filename="nozzle1_group", level=PROTECTION.GROUP );
-writeReport( report1, filename="nozzle1_private", level=PROTECTION.PRIVATE );
+writeReport( report1, filename="reports/nozzle1" );
+writeReport( report1, filename="reports/nozzle1_public", level=PROTECTION.PUBLIC ); # default
+writeReport( report1, filename="reports/nozzle1_group", level=PROTECTION.GROUP );
+writeReport( report1, filename="reports/nozzle1_private", level=PROTECTION.PRIVATE );
 
+# Examples for Developers
 # write a "debug" development version that uses external JS for rapid development
-writeReport( report1, filename="nozzle1", debug=TRUE, level=PROTECTION.PRIVATE,
-	debugJavaScript="/Users/nils/Projects/Firehose/Reports/Nozzle\ Library/Nozzle.R1/inst/js/nozzle.js" );
-
-writeReport( report2, filename="nozzle2", debug=TRUE, level=PROTECTION.PRIVATE,
-	debugJavaScript="/Users/nils/Projects/Firehose/Reports/Nozzle\ Library/Nozzle.R1/inst/js/nozzle.js" );
+# writeReport( report1, filename="reports/nozzle1", debug=TRUE, level=PROTECTION.PRIVATE,
+#	debugJavaScript="/Users/nils/Projects/Firehose/Reports/Nozzle\ Library/Nozzle.R1/inst/js/nozzle.js" );
+# writeReport( report2, filename="reports/nozzle2", debug=TRUE, level=PROTECTION.PRIVATE,
+#	debugJavaScript="/Users/nils/Projects/Firehose/Reports/Nozzle\ Library/Nozzle.R1/inst/js/nozzle.js" );
 
 # clean up the R workspace - we are going to experiment with exported elements	
 rm( list=ls() );
@@ -320,7 +347,7 @@ rm( list=ls() );
 report4 <- newReport( "Nozzle Demo Report 4" );
 
 # load Report 1, this will create a variable "report" in the workspace
-load( "nozzle1.RData" );
+load( "reports/nozzle1.RData" );
 
 # print list of elements exported by Report 1 for demonstration purposes
 getExportedElementIds( report )
@@ -331,7 +358,7 @@ updatedElement = getExportedElement( report, "FIGURE_1" );
 # check if the element is figure
 if ( isFigure( updatedElement ) )
 {
-	# if necessary modify the file path for the figure image (this would actually break image in the report)
+	# if necessary, modify the file path for the figure image (this would actually break image in the report)
 	# updatedElement <- setFigureFile( updatedElement, paste( "some/file/path/", getFigureFile( updatedElement ), collapse="", sep="" ) )
 }
 
@@ -349,5 +376,5 @@ report4 <- addToMethods( report4, addTo( getExportedElement( report, "METHOD_COO
 report4 <- setNextReport( report4, "nozzle1.html", "Demo 1" );
 report4 <- setPreviousReport( report4, "nozzle3.html", "Demo3" );
 
-# write HTML and RData fie for Report 4
-writeReport( report4, filename="nozzle4", level=PROTECTION.PRIVATE );
+# write HTML and RData file for Report 4
+writeReport( report4, filename="reports/nozzle4", level=PROTECTION.PRIVATE );
