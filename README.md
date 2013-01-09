@@ -8,7 +8,7 @@ The "R1" in the "Nozzle.R1" package name stands for "revision 1" of the Nozzle R
 
 # Obtaining and Installing the R package
 
-As of version 1.0-0 the R package is available from [CRAN](http://cran.r-project.org) and can be installed directly from R:
+As of version 1.0-0, the R package is available from [CRAN](http://cran.r-project.org) and can be installed directly from R:
 
 	install.packages( "Nozzle.R1", type="source");
 
