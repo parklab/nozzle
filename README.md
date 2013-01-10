@@ -4,7 +4,7 @@ Nozzle is an [R package](http://www.r-project.org) that provides an API to gener
 
 ### About the Name
 
-The "R1" in the "Nozzle.R1" package name stands for "revision 1" of the Nozzle R API. All versions of the Nozzle.R1 package will be backwards-compatible and able to render reports generated with earlier versions of the package. When backwards-compatibility of the API can no longer maintained the package name will change to "Nozzle.R2".
+The package was orignally developed for a data analysis pipeline called "Firehose" and the name "Nozzle" was chosen because the package is used to focus the output of Firehose. The "R1" in the "Nozzle.R1" package name stands for "revision 1" of the Nozzle R API. All versions of the Nozzle.R1 package will be backwards-compatible and able to render reports generated with earlier versions of the package. When backwards-compatibility of the API can no longer maintained the package name will change to "Nozzle.R2".
 
 # Obtaining and Installing the R package
 
