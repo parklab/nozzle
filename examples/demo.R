@@ -240,7 +240,16 @@ method2 <- addTo( newSubSection( "Pretty Fast Method" ),
 					asParameter( "Q" ), asValue( "1034" ),
 					asParameter( "T" ), asValue( "4.4" )) );
 
-report1 <- addToMethods( report1, method1, method2 );
+equation <- "<math> <mrow> <mi>x</mi> <mo>=</mo> <mfrac> <mrow> <mo form=\"prefix\">-</mo> <mi>b</mi> <mo>&PlusMinus;</mo> <msqrt> <msup> <mi>b</mi> <mn>2</mn> </msup> <mo>-</mo> <mn>4</mn> <mo>&InvisibleTimes;</mo> <mi>a</mi> <mo>&InvisibleTimes;</mo> <mi>c</mi> </msqrt> </mrow> <mrow> <mn>2</mn> <mo>&InvisibleTimes;</mo> <mi>a</mi> </mrow> </mfrac> </mrow> </math>";
+		
+method3 <- addTo( newSubSection( "A Method with an Equation"),
+				newParagraph( "Nozzle reports can also include ", asLink( "http://www.w3.org/Math/", "MathML" ), " equations, such as this example of the quadratic formula: ",
+						asEmph( equation ), ". " ),
+				newParagraph( "However, report authors should note that MathML is not supported by all browsers. ",
+						"For example, on Mac OS X 10.7.5 this specific example displays correctly only in Firefox 18 and Opera 12. ",
+						"Chrome 24 displays invisible characters and Safari 6 does not display operators." ));	
+	
+report1 <- addToMethods( report1, method1, method2, method3 );
 
 report1 <- addToInput( report1, 
 				newParagraph( "This section should list the files that were used as input." ),
@@ -305,8 +314,10 @@ report2 <- setCopyright( report2, owner="Nils Gehlenborg", year=2013, statement=
 report2 <- setContactInformation( report2, email="nils@hms.harvard.edu", subject="Problem with Nozzle Report", message="Hello World!\n\nThis is Nils!\n--End of Story--" );
 
 # set a custom CSS file (for display in the browser - a separate CSS file can be supplied to printing)
+# *** make sure that the CSS file is in the same directory as the report HTML file *** 
 report2 <- setCustomScreenCss( report2, "demo.css" );
 
+writeReport( report2, filename="reports/nozzle2", level=PROTECTION.PRIVATE );
 
 #===================================================================================================
 # Report 3
@@ -332,9 +343,9 @@ writeReport( report1, filename="reports/nozzle1_private", level=PROTECTION.PRIVA
 
 # Examples for Developers
 # write a "debug" development version that uses external JS for rapid development
-# writeReport( report1, filename="reports/nozzle1", debug=TRUE, level=PROTECTION.PRIVATE,
+# writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
 #	debugJavaScript="/Users/nils/Projects/Firehose/Reports/Nozzle\ Library/Nozzle.R1/inst/js/nozzle.js" );
-# writeReport( report2, filename="reports/nozzle2", debug=TRUE, level=PROTECTION.PRIVATE,
+# writeReport( report2, filename="reports/nozzle2_debug", debug=TRUE, level=PROTECTION.PRIVATE,
 #	debugJavaScript="/Users/nils/Projects/Firehose/Reports/Nozzle\ Library/Nozzle.R1/inst/js/nozzle.js" );
 
 # clean up the R workspace - we are going to experiment with exported elements	
