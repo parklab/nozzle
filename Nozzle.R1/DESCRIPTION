@@ -12,6 +12,7 @@ Description: The Nozzle package provides an API to generate HTML reports with
     analyses are performed frequently on big data sets. The package can be
     applied to any project where user-friendly reports need to be created.
 License: LGPL-2
+URL: http://github.com/parklab/Nozzle, http://gdac.broadinstitute.org
 BugReports: http://www.github.com/parklab/Nozzle/issues
 Copyright: Nozzle is copyright 2013 The Fellows and President of Harvard
     College and The Broad Institute, Inc. All rights reserved. jQuery is
