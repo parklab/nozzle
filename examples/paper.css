@@ -1,0 +1,264 @@
+/*
+ * Nozzle R Package - Custom CSS Styles for Preprint Report
+ *
+ * Copyright 2011-2013, Broad Institute / Havard Medical School
+ * Authored and maintained by Nils Gehlenborg (nils@hms.harvard.edu)
+ */
+
+
+.report {
+	background-color: white;
+}
+
+.report .frame {
+	margin: 0px;
+	padding: 0px;
+	position: relative;		
+}
+
+.report .main {
+	font-family: "Times New Roman", "Serif";
+	margin-right: auto;
+	margin-left: auto;
+	padding-top: 10px;
+	padding-bottom: -10px;		
+	padding-left: 5px;
+	padding-right: 10px;		
+	
+	overflow: auto;
+	position: absolute;
+	bottom: 0px;
+	top: 20px;
+	right: 0px;
+	left: 0px;
+	
+	box-shadow: none;
+	
+	background-color: white;		
+	border: none;
+}
+
+
+p {
+	font-family: "Times New Roman", Georgia, Times, serif;
+	line-height: 1.3;
+}
+
+a {
+	color: #898989;
+}
+
+.sectionbody {
+	font-family: "Times New Roman", Georgia, Times, serif;
+}
+
+
+.report .title {
+	color: #000;
+	font-family: "Helvetica", Lucida, Verdana, sans-serif;
+	font-size: 24pt;
+	border-bottom: none;
+}
+
+
+.report .maintainer {
+	font-family: "Times New Roman", Georgia, Times, serif;
+}
+
+.section .sectionheader {
+	color: #000;	
+	font-family: "Helvetica", Lucida, Verdana, sans-serif;
+	font-size: 14pt;
+	border-bottom: none;
+	text-transform: uppercase;
+}
+
+.subsection .sectionheader {
+	color: #000;	
+	font-size: 12pt;	
+	font-family: "Helvetica", Lucida, Verdana, sans-serif;
+}
+
+.subsubsection .sectionheader {
+	color: #000;
+	font-size: 11pt;
+	font-family: "Helvetica", Lucida, Verdana, sans-serif;
+}
+
+span.significant {
+	background-color: #fd2759;
+}
+
+span.significant.deactivated {
+	background-color: #fdcfda;
+}
+
+
+.figure {
+	border: none;
+
+	border-top: 2px solid #777;
+	border-bottom: 2px solid #777;
+}
+
+.table {
+	border: none;
+
+	border-top: 2px solid #eee;
+	border-bottom: 2px solid #eee;
+}
+
+
+.meta .sectionheader {
+	color: #999;
+	font-size: 90%;
+}
+
+.meta .sectionbody {
+	color: #999;
+	font-size: 90%;
+}
+
+.meta .button {
+	border: 0px;
+	color: #999;	
+}
+
+.evidence {
+	border-top: 2px solid #777;
+	
+	display: block;
+	position: absolute;
+	left: 0px;
+	right:  0px;
+	bottom: 0px;	
+	background-color: #fff;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 0px;
+	padding-bottom: 10px;
+	
+
+	margin: 0px;	
+	margin-top: -18px;
+	
+	-webkit-box-shadow: 0px 0px 5px #000;
+	-moz-box-shadow: 0px 0px 5px #000;
+	-opera-box-shadow: 0px 0px 5px #000;
+	box-shadow: 0px 0px 5px #000;
+	overflow: auto;
+	z-index: 10;
+}
+
+.evidence .table {
+	border-color:  #777;
+}
+
+.evidence .figure {
+	border-color:  #777;
+}
+
+.evidence .sectionheader {
+	color: #008e58;
+	margin-left: 0px;
+	font-size: 12pt;
+}
+
+.evidence .caption a.download {
+	
+}
+
+span.result.active {
+	border-color: #008e58;
+	background-color: #777;
+	color: #fff;
+}
+
+span.result {
+	background-color: #eee;
+	padding: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+	border-radius: 2px;
+	color: #777;
+}
+
+.evidence .caption a.download {
+	color: #4da087;
+	background-color: #e0f6ef;
+	border: 1px solid #4da087;
+}
+
+.report .credits .notice a {
+	background-color: white;
+	border: none;
+	color: #008e58;
+	border-radius: 2px;
+}
+
+.report .credits .notice a:hover {
+	background-color: #008e58;
+	border: 0px solid #008e58;
+	color: #fff;
+	-webkit-box-shadow: 0px 0px 5px #000000;
+	-moz-box-shadow: 0px 0px 5px #000000;
+	-opera-box-shadow: 0px 0px 5px #000000;
+	box-shadow: 0px 0px 5px #000000;
+	
+}
+
+
+.menu {	
+	margin-top:  0px;
+	margin-bottom:  1px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 0px;
+
+	-webkit-box-shadow: 0px 0px 5px #000000;
+	-moz-box-shadow: 0px 0px 5px #000000;
+	-opera-box-shadow: 0px 0px 5px #000000;
+	box-shadow: 0px 0px 5px #000000;
+	z-index: 25;
+
+	background-color: #fff;
+	border-bottom: 2px solid #777;
+}
+
+.button.contenttoggle {
+	background-color: #eeeeee;
+	border: none;
+	color: #008e58;
+}
+
+.button.evidencetoggle {
+	margin-top: -18px;
+	background-color: #eeeeee;
+	border: none;
+	color: #008e58;
+}
+
+.button.evidencetoggle a {
+	color: #008e58;
+}
+
+
+.menuitem {
+	background-color: #008e58;
+	border: 0px solid #008e58;
+	color: #fff;
+}
+
+.menuitem.highlighted {
+	background-color: #008e58;
+	border: 0px solid #008e58;
+	color: #fff;
+}
+
+
+.menuitem:hover {
+	background-color: rgba(0,142,88,0.8);
+	box-shadow: none;
+	border: 0px solid white;
+}
+
