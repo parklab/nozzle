@@ -2,6 +2,8 @@
 
 Nozzle is an [R package](http://www.r-project.org) that provides an API to generate HTML reports with dynamic user interface elements based on JavaScript and CSS (Cascading Style Sheets). Nozzle was designed to facilitate summarization and rapid browsing of complex results in data analysis pipelines where multiple analyses are performed frequently on big data sets. The package can be applied to any project where user-friendly reports need to be created.
 
+A paper describing the package was published in [Bioinformatics](http://bioinformatics.oxfordjournals.org/content/29/8/1089). Please cite this paper if you are using Nozzle in your work.
+
 ### About the Name
 
 The package was orignally developed for a data analysis pipeline called "Firehose" and the name "Nozzle" was chosen because the package is used to focus the output of Firehose. The "R1" in the "Nozzle.R1" package name stands for "revision 1" of the Nozzle R API. All versions of the Nozzle.R1 package will be backwards-compatible and able to render reports generated with earlier versions of the package. When backwards-compatibility of the API can no longer maintained the package name will change to "Nozzle.R2".
