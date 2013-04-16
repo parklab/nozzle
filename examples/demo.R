@@ -59,6 +59,20 @@ write.table( randomData, file=paste( "reports/", randomDataFile, sep="" ), quote
 
 report1 <- newReport( "Nozzle Demo Report 1" );
 
+
+# --- add a permanent DOI for this report ---
+
+report1 <- setDoi( report1, "10.5072/FK25T3TSC" ); # 10.5072 is a test prefix, the DOI has to be created before this is called
+report1 <- setDoiResolver( report1, "http://dx.doi.org" ); # this is also the default
+report1 <- setDoiCreator( report1, "Nils Gehlenborg" );
+report1 <- setDoiTitle( report1, getReportTitle( report1 ) );
+report1 <- setDoiPublisher( report1, "Harvard Medical School" );
+report1 <- setDoiYear( report1, "2013" );
+
+# overwrite DOI, will generate warning because this really should not be happening
+report1 <- setDoi( report1, "10.5072/FK25T3TSCversion2" ); # 10.5072 is a test prefix
+
+
 # --- References ---
 
 # create some references (even though they are included at the end of the report the need to be created

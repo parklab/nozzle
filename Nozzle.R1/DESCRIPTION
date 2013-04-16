@@ -1,8 +1,8 @@
 Package: Nozzle.R1
 Type: Package
 Title: Nozzle Reports
-Version: 1.0-0
-Date: 2012-01-08
+Version: 1.1-0
+Date: 2012-04-16
 Author: Nils Gehlenborg <nils@hms.harvard.edu>
 Maintainer: Nils Gehlenborg <nils@hms.harvard.edu>
 Description: The Nozzle package provides an API to generate HTML reports with

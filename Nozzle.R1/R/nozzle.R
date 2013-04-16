@@ -14,8 +14,8 @@
 #' \tabular{ll}{
 #' Package: \tab Nozzle.R1\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.0-0\cr
-#' Date: \tab 2013-01-08\cr
+#' Version: \tab 1.1-0\cr
+#' Date: \tab 2013-04-16\cr
 #' License: \tab LGPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -174,6 +174,11 @@ HTML.FRAGMENT <- "html_fragment";
 #' Output type.
 #' @export
 RDATA.REPORT <- "rdata";
+
+
+#' Default DOI resolver URL.
+#' @export
+DEFAULT.DOI.RESOLVER <- "http://dx.doi.org"
 
 
 .REFERENCE.STRING <- "#'REF#'";
@@ -724,7 +729,7 @@ newReport <- function( ..., version=0 )
 	references$domId <- "references";
 	
 	meta <- newSection( "Meta Information", class="meta" )
-	meta$domId <- "meta";	
+	meta$domId <- "meta";		
 	
 	# If a new predefined section is added here a ".hasPredefinedXXXSection" function needs to be added below as well as an an "addToXXX" function.
 	
@@ -833,7 +838,10 @@ newCustomReport <- function( ..., version=0 )
 	# maintainer details
 	element$meta$maintainer$name <- NA;
 	element$meta$maintainer$email <- NA;
-	element$meta$maintainer$affiliation <- NA;	
+	element$meta$maintainer$affiliation <- NA;
+	
+	# DOI resolver URL
+	element$meta$doiResolverUrl <- DEFAULT.DOI.RESOLVER;
 	
 	# report navigation: parent, prev, next
 	element$navigation <- list();
@@ -846,8 +854,7 @@ newCustomReport <- function( ..., version=0 )
 	
 	element$navigation$previousUrl <- NA;
 	element$navigation$previousName <- NA;
-	
-	
+		
 	return ( element );
 }
 
@@ -1604,6 +1611,210 @@ getSignificantEntity <- function( report )
 	}
 	
 	return ( report$meta$significantEntity );
+}
+
+
+#' Set the DOI (document object identifier, http://www.doi.org) for \code{report}. A warning will be emitted if the report has been assigned a DOI before.
+#' @param report Report element.
+#' @param doi The document object identifier. 
+#' @export
+#' @return Updated report element.
+#' @note A document object identifer must be created before this is called.
+#' @references \url{http://www.doi.org}
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setDoi <- function( report, doi )
+{
+	if ( !is.null( report$meta$doi ) )
+	{
+		warning( "This report has already been assigned a DOI (", report$meta$doi ,"), which will be overwritten. Each report should only be assigned a single DOI." );
+	}
+	
+	report$meta$doi <- doi;		
+	
+	return ( report );
+}
+
+
+#' Get the DOI (document object identifier, http://www.doi.org) for \code{report}.
+#' @param report Report element.
+#' @export
+#' @return Document object identifier (DOI) for \code{report}.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getDoi <- function( report )
+{
+	if ( is.null( report$meta$doi ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$doi );
+}
+
+
+#' Set the DOI meta data creator for \code{report}.
+#' @param report Report element.
+#' @param creator Name of the report creator/author. 
+#' @export
+#' @return Updated report element.
+#' @note This should match the meta data stored for the DOI.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setDoiCreator <- function( report, creator )
+{
+	report$meta$doiCreator <- creator;		
+	
+	return ( report );
+}
+
+
+#' Get the DOI creator for \code{report}.
+#' @param report Report element.
+#' @export
+#' @return Creator associated with the DOI of the report \code{report}.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getDoiCreator <- function( report )
+{
+	if ( is.null( report$meta$doiCreator ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$doiCreator );
+}
+
+
+#' Set the DOI meta data title for \code{report}.
+#' @param report Report element.
+#' @param title Title of the report. 
+#' @export
+#' @return Updated report element.
+#' @note This should match the meta data stored for the DOI.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setDoiTitle <- function( report, title )
+{
+	report$meta$doiTitle <- title;		
+	
+	return ( report );
+}
+
+
+#' Get the DOI title for \code{report}.
+#' @param report Report element.
+#' @export
+#' @return Title associated with the DOI of the report \code{report}.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getDoiTitle <- function( report )
+{
+	if ( is.null( report$meta$doiTitle ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$doiTitle );
+}
+
+
+#' Set the DOI meta data publisher for \code{report}.
+#' @param report Report element.
+#' @param publisher Publisher of the report. 
+#' @export
+#' @return Updated report element.
+#' @note This should match the meta data stored for the DOI.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setDoiPublisher <- function( report, publisher )
+{
+	report$meta$doiPublisher <- publisher;		
+	
+	return ( report );
+}
+
+
+#' Get the DOI publisher for \code{report}.
+#' @param report Report element.
+#' @export
+#' @return Publisher associated with the DOI of the report \code{report}.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getDoiPublisher <- function( report )
+{
+	if ( is.null( report$meta$doiPublisher ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$doiPublisher );
+}
+
+
+#' Set the DOI meta data year for \code{report}.
+#' @param report Report element.
+#' @param year Publication year of the report. 
+#' @export
+#' @return Updated report element.
+#' @note This should match the meta data stored for the DOI.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setDoiYear <- function( report, year )
+{
+	report$meta$doiYear <- year;		
+	
+	return ( report );
+}
+
+
+#' Get the DOI year for \code{report}.
+#' @param report Report element.
+#' @export
+#' @return Publication year associated with the DOI of the report \code{report}.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getDoiYear <- function( report )
+{
+	if ( is.null( report$meta$doiYear ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$doiYear );
+}
+
+
+
+#' Set the DOI resolver URL (e.g. http://dx.doi.org) for \code{report}. The URL must not end with a slash!
+#' @param report Report element.
+#' @param url The resolver URL (without a trailing slash). The default is "http://dx.doi.org". 
+#' @export
+#' @return Updated report element.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setDoiResolver <- function( report, url )
+{
+	report$meta$doiResolverUrl <- url;		
+	
+	return ( report );
+}
+
+
+#' Get the DOI resolver URL (e.g. http://dx.doi.org) for \code{report}.
+#' @param report Report element.
+#' @export
+#' @return Document object identifier (DOI) resolver URL for \code{report}.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getDoiResolver <- function( report )
+{
+	if ( is.null( report$meta$doiResolverUrl ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$doiResolverUrl );
 }
 
 
@@ -3205,6 +3416,8 @@ asCode <- function( ... )
 
 
 
+
+
 #' Get the first element of the "Summary" subsection in the "Overview" section in a standard report.
 #' @param report The report.
 #' @export
@@ -3576,6 +3789,7 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 		.write( .tag( "/div" ), file );		
 	}
 	
+	.writeDoiCitationInformation( report, file );
 	
 	# write bottom logos
 	.writeBottomLogos( report, file );	
@@ -3624,6 +3838,50 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 	{
 		.write( .tag( "meta", other=.concat( "attr=\"", attribute, "\" value=\"", value, "\"" ) ), file );
 		.write( .tag( "/meta" ), file );
+	}
+}
+
+
+.writeDoiCitationInformation <- function( report, file )
+{
+	# write DOI and citation info
+	if ( !is.na( getDoi( report ) ) )
+	{
+		.write( .tag( "div", class="citation" ), file );
+		.write( .tag( "span", class="notice" ), file );		
+		
+		doiResolver <- getDoiResolver( report );
+		if ( is.na( doiResolver ) )
+		{
+			doiResolver <- DEFAULT.DOI.RESOLVER;
+		}
+		
+		.write( "Please cite this report as ", file );
+		
+		if ( !is.na( getDoiCreator( report ) ) )
+		{
+			.write( .concat( getDoiCreator( report ), ", " ), file );			
+		}
+
+		if ( !is.na( getDoiTitle( report ) ) )
+		{
+			.write( .concat( "\"", getDoiTitle( report ), "\", " ), file );			
+		}
+
+		if ( !is.na( getDoiPublisher( report ) ) )
+		{
+			.write( .concat( asEmph( getDoiPublisher( report ) ), " " ), file );			
+		}
+
+		if ( !is.na( getDoiYear( report ) ) )
+		{
+			.write( .concat( "(", getDoiYear( report ), "), " ), file );			
+		}
+		
+		.write( asLink( url=.concat( doiResolver, "/", getDoi( report ) ), .concat( "doi:", getDoi( report ) ) ), file )
+				
+		.write( .tag( "/span" ), file );		
+		.write( .tag( "/div" ), file );		
 	}
 }
 

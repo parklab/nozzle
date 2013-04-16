@@ -17,6 +17,7 @@
 
 *.tar.gz
 *.zip
+build.sh
 
 .DS_Store
 de.walware.r.core.prefs
