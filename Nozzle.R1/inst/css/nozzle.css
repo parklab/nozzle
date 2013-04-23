@@ -301,6 +301,14 @@ body {
 	font-style: italic;
 }
 
+.report .citation {
+	margin-top: 10px;
+	margin-bottom: 15px;
+	font: small Georgia, "Times New Roman", Times, serif;
+	color: #666;
+	display: inline;
+}
+
 .report .maintainer a {
 	color: #333;
 }

@@ -841,7 +841,7 @@ newCustomReport <- function( ..., version=0 )
 	element$meta$maintainer$affiliation <- NA;
 	
 	# DOI resolver URL
-	element$meta$doiResolverUrl <- DEFAULT.DOI.RESOLVER;
+	setDoiResolver( element, DEFAULT.DOI.RESOLVER );
 	
 	# report navigation: parent, prev, next
 	element$navigation <- list();
@@ -1619,18 +1619,23 @@ getSignificantEntity <- function( report )
 #' @param doi The document object identifier. 
 #' @export
 #' @return Updated report element.
-#' @note A document object identifer must be created before this is called.
+#' @note A document object identifer must have been created before this is called.
 #' @references \url{http://www.doi.org}
 #' 
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 setDoi <- function( report, doi )
 {
-	if ( !is.null( report$meta$doi ) )
+	if ( is.null( report$meta$doi ) )
 	{
-		warning( "This report has already been assigned a DOI (", report$meta$doi ,"), which will be overwritten. Each report should only be assigned a single DOI." );
+		report$meta$doi <- list();
 	}
 	
-	report$meta$doi <- doi;		
+	if ( !is.null( report$meta$doi$identifier ) )
+	{
+		warning( "This report has already been assigned a DOI (", report$meta$doi$identifier ,"), which will be overwritten. Each report should only be assigned a single DOI." );
+	}
+	
+	report$meta$doi$identifier <- doi;		
 	
 	return ( report );
 }
@@ -1647,9 +1652,14 @@ getDoi <- function( report )
 	if ( is.null( report$meta$doi ) )
 	{
 		return ( NA );
+	}	
+	
+	if ( is.null( report$meta$doi$identifier ) )
+	{
+		return ( NA );
 	}
 	
-	return ( report$meta$doi );
+	return ( report$meta$doi$identifier );
 }
 
 
@@ -1663,7 +1673,12 @@ getDoi <- function( report )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 setDoiCreator <- function( report, creator )
 {
-	report$meta$doiCreator <- creator;		
+	if ( is.null( report$meta$doi ) )
+	{
+		report$meta$doi <- list();
+	}
+		
+	report$meta$doi$creator <- creator;		
 	
 	return ( report );
 }
@@ -1677,12 +1692,17 @@ setDoiCreator <- function( report, creator )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 getDoiCreator <- function( report )
 {
-	if ( is.null( report$meta$doiCreator ) )
+	if ( is.null( report$meta$doi ) )
+	{
+		return ( NA );
+	}	
+	
+	if ( is.null( report$meta$doi$creator ) )
 	{
 		return ( NA );
 	}
 	
-	return ( report$meta$doiCreator );
+	return ( report$meta$doi$creator );
 }
 
 
@@ -1696,7 +1716,12 @@ getDoiCreator <- function( report )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 setDoiTitle <- function( report, title )
 {
-	report$meta$doiTitle <- title;		
+	if ( is.null( report$meta$doi ) )
+	{
+		report$meta$doi <- list();
+	}	
+	
+	report$meta$doi$title <- title;		
 	
 	return ( report );
 }
@@ -1710,12 +1735,17 @@ setDoiTitle <- function( report, title )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 getDoiTitle <- function( report )
 {
-	if ( is.null( report$meta$doiTitle ) )
+	if ( is.null( report$meta$doi ) )
+	{
+		return ( NA );
+	}	
+	
+	if ( is.null( report$meta$doi$title ) )
 	{
 		return ( NA );
 	}
 	
-	return ( report$meta$doiTitle );
+	return ( report$meta$doi$title );
 }
 
 
@@ -1729,7 +1759,12 @@ getDoiTitle <- function( report )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 setDoiPublisher <- function( report, publisher )
 {
-	report$meta$doiPublisher <- publisher;		
+	if ( is.null( report$meta$doi ) )
+	{
+		report$meta$doi <- list();
+	}	
+	
+	report$meta$doi$publisher <- publisher;		
 	
 	return ( report );
 }
@@ -1743,12 +1778,17 @@ setDoiPublisher <- function( report, publisher )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 getDoiPublisher <- function( report )
 {
-	if ( is.null( report$meta$doiPublisher ) )
+	if ( is.null( report$meta$doi ) )
+	{
+		return ( NA );
+	}	
+	
+	if ( is.null( report$meta$doi$publisher ) )
 	{
 		return ( NA );
 	}
 	
-	return ( report$meta$doiPublisher );
+	return ( report$meta$doi$publisher );
 }
 
 
@@ -1762,7 +1802,12 @@ getDoiPublisher <- function( report )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 setDoiYear <- function( report, year )
 {
-	report$meta$doiYear <- year;		
+	if ( is.null( report$meta$doi ) )
+	{
+		report$meta$doi <- list();
+	}	
+	
+	report$meta$doi$year <- year;		
 	
 	return ( report );
 }
@@ -1776,12 +1821,17 @@ setDoiYear <- function( report, year )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 getDoiYear <- function( report )
 {
-	if ( is.null( report$meta$doiYear ) )
+	if ( is.null( report$meta$doi ) )
+	{
+		return ( NA );
+	}	
+	
+	if ( is.null( report$meta$doi$year ) )
 	{
 		return ( NA );
 	}
 	
-	return ( report$meta$doiYear );
+	return ( report$meta$doi$year );
 }
 
 
@@ -1795,7 +1845,12 @@ getDoiYear <- function( report )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 setDoiResolver <- function( report, url )
 {
-	report$meta$doiResolverUrl <- url;		
+	if ( is.null( report$meta$doi ) )
+	{
+		report$meta$doi <- list();
+	}	
+	
+	report$meta$doi$resolver <- url;		
 	
 	return ( report );
 }
@@ -1809,12 +1864,17 @@ setDoiResolver <- function( report, url )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 getDoiResolver <- function( report )
 {
-	if ( is.null( report$meta$doiResolverUrl ) )
+	if ( is.null( report$meta$doi ) )
+	{
+		return ( NA );
+	}	
+	
+	if ( is.null( report$meta$doi$resolver ) )
 	{
 		return ( NA );
 	}
 	
-	return ( report$meta$doiResolverUrl );
+	return ( report$meta$doi$resolver );
 }
 
 
@@ -2195,7 +2255,7 @@ addToMeta <- function( report, ... )
 
 
 #' Create a new section element.
-#' @param ... Strings that will be contactenated to form the section title. 
+#' @param ... Strings that will be concatenated to form the section title. 
 #' @param class If set to SECTION.CLASS.RESULTS, results can be reported in this section. If set to SECTION.CLASS.META the section will be a meta data section. 
 #' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
 #' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
@@ -2210,7 +2270,7 @@ newSection <- function( ..., class="", exportId=NULL, protection=PROTECTION.PUBL
 
 
 #' Create a new subsection element.
-#' @param ... Strings that will be contactenated to form the subsection title. 
+#' @param ... Strings that will be concatenated to form the subsection title. 
 #' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
 #' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
 #' @export
@@ -2224,7 +2284,7 @@ newSubSection <- function( ..., exportId=NULL, protection=PROTECTION.PUBLIC )
 
 
 #' Create a new subsubsection element.
-#' @param ... Strings that will be contactenated to form the subsubsection title. 
+#' @param ... Strings that will be concatenated to form the subsubsection title. 
 #' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
 #' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
 #' @export
@@ -2338,7 +2398,7 @@ newList <- function( ..., isNumbered=FALSE, exportId=NULL, protection=PROTECTION
 
 #' Create a new list element.
 #' @param file Path or URL to the image file. Paths can be absolute or relative.
-#' @param ... Strings that will be contactenated to form the figure caption. 
+#' @param ... Strings that will be concatenated to form the figure caption. 
 #' @param fileHighRes Path or URL to a high-resolution or vector-based version of the image file. Paths can be absolute or relative.
 #' @param type Currenlty only IMAGE.TYPE.RASTER is allowed.
 #' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
@@ -2891,7 +2951,7 @@ newWebCitation <- function( authors, title, url )
 
 
 #' Create a new paragraph element.
-#' @param ... Strings that will be contactenated to form the text of the paragraph. 
+#' @param ... Strings that will be concatenated to form the text of the paragraph. 
 #' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
 #' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
 #' @export
@@ -2909,7 +2969,7 @@ newParagraph <- function( ..., exportId=NULL, protection=PROTECTION.PUBLIC )
 
 
 #' Create a new parameter list element. A parameter list is an unnumbered list of the form param_1 = value_1, ..., param_n = value_n where param_i is formated as a parameter and value_i is formatted as a value.
-#' @param ... 2n strings that will be contactenated to form the parameter-value pairs. Strings at positions 1, ..., 2n - 1 will be treated as parameters 1 through n and strings at positions 2, ..., 2n will be treated as values 1 through n.
+#' @param ... 2n strings that will be concatenated to form the parameter-value pairs. Strings at positions 1, ..., 2n - 1 will be treated as parameters 1 through n and strings at positions 2, ..., 2n will be treated as values 1 through n.
 #' @param separator String to be used to separate parameters and values. Whitespace characters need to be supplied if required.    
 #' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
 #' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
@@ -3722,7 +3782,7 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 	# set global report id if this is being written as a fragment
 	# if set to anything else but "", .write will attach this to all ids in HTML tags
 	.setGlobalReportId( report$reportId );
-	
+
 	# write top logos
 	.writeTopLogos( report, file );
 	
@@ -3730,29 +3790,13 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 	.write( .tag( "div", class="title" ), report$title, .tag( "/div" ), file );
 	
 	# write maintainer info
-	if ( !is.na( getMaintainerName( report ) ) )
-	{
-		.write( .tag( "div", class="maintainer" ), file );
-		
-		if ( !is.na( getMaintainerEmail( report ) ) )
-		{
-			.write( "Maintained by ", .tag( "span", class="name" ), asLink( url=.concat( "mailto:", getMaintainerEmail( report ) ), getMaintainerName( report ) ), .tag( "/span" ), file );
-		}
-		else
-		{
-			.write( "Maintained by ", .tag( "span", class="name" ), getMaintainerName( report ), .tag( "/span" ), file );
-		}
-		
-		if ( !is.na( getMaintainerAffiliation( report ) ) )
-		{
-			.write( " (", .tag( "span", class="affiliation" ), getMaintainerAffiliation( report ), .tag( "/span" ), ")", file );
-		}
-		
-		.write( .tag( "/div" ), file );
-	}
+	.writeMaintainerInformation( report, file );
 	
-	# write content
+	# write DOI info
+	.writeDoiCitationInformation( report, file );			
 	
+	
+	# write content	
 	if ( length( report$elements ) > 0 )
 	{	
 		for ( i in 1:length( report$elements ) )
@@ -3788,9 +3832,7 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 		.write( .tag( "/span" ), file );		
 		.write( .tag( "/div" ), file );		
 	}
-	
-	.writeDoiCitationInformation( report, file );
-	
+		
 	# write bottom logos
 	.writeBottomLogos( report, file );	
 	
@@ -3842,13 +3884,38 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 }
 
 
-.writeDoiCitationInformation <- function( report, file )
+.writeMaintainerInformation <- function( report, file, cssClass="maintainer" )
+{
+	# write maintainer information	
+	if ( !is.na( getMaintainerName( report ) ) )
+	{
+		.write( .tag( "div", class=cssClass ), file );
+		
+		if ( !is.na( getMaintainerEmail( report ) ) )
+		{
+			.write( "Maintained by ", .tag( "span", class="name" ), asLink( url=.concat( "mailto:", getMaintainerEmail( report ) ), getMaintainerName( report ) ), .tag( "/span" ), file );
+		}
+		else
+		{
+			.write( "Maintained by ", .tag( "span", class="name" ), getMaintainerName( report ), .tag( "/span" ), file );
+		}
+		
+		if ( !is.na( getMaintainerAffiliation( report ) ) )
+		{
+			.write( " (", .tag( "span", class="affiliation" ), getMaintainerAffiliation( report ), .tag( "/span" ), ")", file );
+		}
+		
+		.write( .tag( "/div" ), file );
+	}
+}
+
+
+.writeDoiCitationInformation <- function( report, file, cssClass="citation" )
 {
 	# write DOI and citation info
 	if ( !is.na( getDoi( report ) ) )
 	{
-		.write( .tag( "div", class="citation" ), file );
-		.write( .tag( "span", class="notice" ), file );		
+		.write( .tag( "div", class=cssClass ), file );
 		
 		doiResolver <- getDoiResolver( report );
 		if ( is.na( doiResolver ) )
@@ -3856,7 +3923,7 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 			doiResolver <- DEFAULT.DOI.RESOLVER;
 		}
 		
-		.write( "Please cite this report as ", file );
+		.write( "<i>Cite this report as</i> ", file );
 		
 		if ( !is.na( getDoiCreator( report ) ) )
 		{
@@ -3880,7 +3947,6 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 		
 		.write( asLink( url=.concat( doiResolver, "/", getDoi( report ) ), .concat( "doi:", getDoi( report ) ) ), file )
 				
-		.write( .tag( "/span" ), file );		
 		.write( .tag( "/div" ), file );		
 	}
 }
