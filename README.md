@@ -6,6 +6,8 @@ A paper describing the package was published in [Bioinformatics](http://bioinfor
 
 > N Gehlenborg, MS Noble, G Getz, L Chin and PJ Park, "Nozzle: a report generation toolkit for data analysis pipelines", _Bioinformatics_ __29__:1089-1091 (2013)
 
+A [_nozzlized_ version of the preprint](http://gdac.broadinstitute.org/docs/nozzle/reports/paper.html) is available on the Nozzle site at the Broad Institute and the [source code](https://github.com/parklab/Nozzle/blob/develop/examples/paper.R) is included in this repository.
+
 ### About the Name
 
 The package was orignally developed for a data analysis pipeline called "Firehose" and the name "Nozzle" was chosen because the package is used to focus the output of Firehose. The "R1" in the "Nozzle.R1" package name stands for "revision 1" of the Nozzle R API. All versions of the Nozzle.R1 package will be backwards-compatible and able to render reports generated with earlier versions of the package. When backwards-compatibility of the API can no longer maintained the package name will change to "Nozzle.R2".
