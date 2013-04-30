@@ -80,7 +80,7 @@ report1 <- setDoi( report1, "10.5072/EVENMOREFICTICIOUS" ); # 10.5072 is a test 
 # first so they can be referenced in other elements)
 simpleCitation <- newCitation( authors="Nils Gehlenborg", title="Nozzle.R1 Package", year="2013", url="https://github.com/parklab/Nozzle" );
 webCitation <- newCitation( title="The Cancer Genome Atlas Website", url="http://tcga.cancer.gov/" );
-fullCitation <- newCitation( authors="Nils Gehlenborg", title="Nozzle: a report generation toolkit for data analysis pipelines", publication="Yet Another Bioinformatics Journal", issue="1", number="2", pages="3-4", year="2013", url="http://www.google.com" );
+fullCitation <- newCitation( authors="Nils Gehlenborg", title="Nozzle: a report generation toolkit for data analysis pipelines", publication="Bioinformatics", issue="29", pages="1089-1091", year="2013", url="http://bioinformatics.oxfordjournals.org/content/29/8/1089" );
 
 report1 <- addToReferences( report1, simpleCitation, webCitation, fullCitation );
 
@@ -357,11 +357,11 @@ writeReport( report1, filename="reports/nozzle1_group", level=PROTECTION.GROUP )
 writeReport( report1, filename="reports/nozzle1_private", level=PROTECTION.PRIVATE );
 
 # Examples for Developers
-# write a "debug" development version that uses external JS for rapid development
+# write a "debug" development version that uses external JS or external CSS for rapid development
 # writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
-#	debugJavaScript="/Users/nils/Projects/Firehose/Reports/Nozzle\ Library/Nozzle.R1/inst/js/nozzle.js" );
-# writeReport( report2, filename="reports/nozzle2_debug", debug=TRUE, level=PROTECTION.PRIVATE,
-#	debugJavaScript="/Users/nils/Projects/Firehose/Reports/Nozzle\ Library/Nozzle.R1/inst/js/nozzle.js" );
+#	debugJavaScript="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/js/nozzle.js" );
+# writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
+#	debugCss="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/css/nozzle.css" );
 
 # clean up the R workspace - we are going to experiment with exported elements	
 rm( list=ls() );
