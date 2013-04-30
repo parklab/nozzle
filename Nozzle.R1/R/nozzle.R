@@ -822,6 +822,8 @@ newCustomReport <- function( ..., version=0 )
 {
 	element <- .newElement( .ELEMENT.REPORT, .concat( ... ) );
 	
+	element$subTitle <- NA;
+	
 	element$meta <- list();
 	
 	# report version
@@ -960,6 +962,44 @@ setReportTitle <- function( report, ... )
 	
 	return ( NA );
 }
+
+
+#' Get the subtitle of \code{report}.
+#' @param report Report element.
+#' @export
+#' @return SubTitle of \code{report}
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getReportSubTitle <- function( report )
+{
+	if ( is.null( report$subTitle ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$subTitle );
+}
+
+
+#' Set the subtitle of \code{report}.
+#' @param report Report element. 
+#' @param ... One or more strings that will be concatenated to form the subtitle of the report.
+#' @export
+#' @return Updated report element or NA if \code{report} has no subtitle element.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setReportSubTitle <- function( report, ... )
+{
+	if ( !is.null( report$subTitle ) )
+	{
+		report$subTitle <- .concat( ... );
+		
+		return ( report );
+	}
+	
+	return ( NA );
+}
+
 
 
 #' Get the ID (a UUID) of \code{report}.
@@ -1213,7 +1253,7 @@ getLogo <- function( report, position )
 {
 	if ( is.null( report$meta$logo ) )
 	{
-		return ( NA )
+		return ( NA );
 	}
 	
 	# top logos
@@ -1277,9 +1317,8 @@ getLogo <- function( report, position )
 		
 		return ( report$meta$logo$bottomright )
 	}
-	
-	
-	return ( report );
+		
+	return ( NA );
 }
 
 
@@ -1832,6 +1871,50 @@ getDoiYear <- function( report )
 	}
 	
 	return ( report$meta$doi$year );
+}
+
+
+
+#' Set the DOI meta data version for \code{report}.
+#' @param report Report element.
+#' @param version Version of the report. 
+#' @export
+#' @return Updated report element.
+#' @note This should match the meta data stored for the DOI.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setDoiVersion <- function( report, version )
+{
+	if ( is.null( report$meta$doi ) )
+	{
+		report$meta$doi <- list();
+	}	
+	
+	report$meta$doi$version <- version;		
+	
+	return ( report );
+}
+
+
+#' Get the DOI version for \code{report}.
+#' @param report Report element.
+#' @export
+#' @return Version associated with the DOI of the report \code{report}.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getDoiVersion <- function( report )
+{
+	if ( is.null( report$meta$doi ) )
+	{
+		return ( NA );
+	}	
+	
+	if ( is.null( report$meta$doi$version ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$doi$version );
 }
 
 
@@ -3064,7 +3147,7 @@ newResult <- function( ..., isSignificant=FALSE, protection=PROTECTION.PUBLIC )
 			is.na( getLogo( report, LOGO.TOP.CENTER ) ) &&
 			is.na( getLogo( report, LOGO.TOP.RIGHT ) ) )
 	{
-		return;
+		return ();
 	}
 	
 	# write top logos
@@ -3104,7 +3187,7 @@ newResult <- function( ..., isSignificant=FALSE, protection=PROTECTION.PUBLIC )
 			is.na( getLogo( report, LOGO.BOTTOM.CENTER ) ) &&
 			is.na( getLogo( report, LOGO.BOTTOM.RIGHT ) ) )
 	{
-		return;
+		return ();
 	}
 	
 	
@@ -3629,6 +3712,10 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 		# write report title
 		.write( .tag( "title" ), file );
 		.write( report$title, file );
+		if ( !is.na( report$subTitle ) ) 
+		{
+			.write( " - ", report$subTitle, file );		
+		}
 		.write( .tag( "/title" ), file );					
 		
 		# embedded Google Analytics JavaScript if a Google Analytics id has been provided (should be last before </head>)(
@@ -3789,6 +3876,11 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 	# write title
 	.write( .tag( "div", class="title" ), report$title, .tag( "/div" ), file );
 	
+	if ( !is.na( report$subTitle ) ) 
+	{
+		.write( .tag( "div", class="subtitle" ), report$subTitle, .tag( "/div" ), file );
+	}	
+	
 	# write maintainer info
 	.writeMaintainerInformation( report, file );
 	
@@ -3893,11 +3985,11 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 		
 		if ( !is.na( getMaintainerEmail( report ) ) )
 		{
-			.write( "Maintained by ", .tag( "span", class="name" ), asLink( url=.concat( "mailto:", getMaintainerEmail( report ) ), getMaintainerName( report ) ), .tag( "/span" ), file );
+			.write( "<i>Maintained by</i> ", .tag( "span", class="name" ), asLink( url=.concat( "mailto:", getMaintainerEmail( report ) ), getMaintainerName( report ) ), .tag( "/span" ), file );
 		}
 		else
 		{
-			.write( "Maintained by ", .tag( "span", class="name" ), getMaintainerName( report ), .tag( "/span" ), file );
+			.write( "<i>Maintained by</i> ", .tag( "span", class="name" ), getMaintainerName( report ), .tag( "/span" ), file );
 		}
 		
 		if ( !is.na( getMaintainerAffiliation( report ) ) )
@@ -3923,26 +4015,31 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 			doiResolver <- DEFAULT.DOI.RESOLVER;
 		}
 		
-		.write( "<i>Cite this report as</i> ", file );
+		.write( "<i>Cite as</i> ", file );
 		
 		if ( !is.na( getDoiCreator( report ) ) )
 		{
-			.write( .concat( getDoiCreator( report ), ", " ), file );			
+			.write( .concat( getDoiCreator( report ), "" ), file );			
 		}
-
-		if ( !is.na( getDoiTitle( report ) ) )
-		{
-			.write( .concat( "\"", getDoiTitle( report ), "\", " ), file );			
-		}
-
-		if ( !is.na( getDoiPublisher( report ) ) )
-		{
-			.write( .concat( asEmph( getDoiPublisher( report ) ), " " ), file );			
-		}
-
+		
 		if ( !is.na( getDoiYear( report ) ) )
 		{
-			.write( .concat( "(", getDoiYear( report ), "), " ), file );			
+			.write( .concat( " (", getDoiYear( report ), "): " ), file );			
+		}
+		
+		if ( !is.na( getDoiTitle( report ) ) )
+		{
+			.write( .concat( "", getDoiTitle( report ), ". " ), file );			
+		}
+		
+		if ( !is.na( getDoiVersion( report ) ) )
+		{
+			.write( .concat( getDoiVersion( report ), ". " ), file );			
+		}		
+		
+		if ( !is.na( getDoiPublisher( report ) ) )
+		{
+			.write( .concat( getDoiPublisher( report ), ". " ), file );			
 		}
 		
 		.write( asLink( url=.concat( doiResolver, "/", getDoi( report ) ), .concat( "doi:", getDoi( report ) ) ), file )

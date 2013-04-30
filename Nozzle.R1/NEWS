@@ -1,3 +1,17 @@
+Release R1-1.1-0 / 8 January 2013
+
+- Added support for citation and inclusion of DOI information.
+
+- New report attribute "subtitle". A subtitle can be written/read using "set/getReportSubTitle().
+
+- Logo section is no longer shown when no logos have been added to the report, effectively removing
+  empty space above the title and below the meta data section.
+
+- Various fixes.
+
+-----------------
+
+
 Release R1-1.0-0 / 8 January 2013
 
 - Fully documented API.

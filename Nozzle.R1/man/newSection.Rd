@@ -6,7 +6,7 @@
     protection = PROTECTION.PUBLIC)
 }
 \arguments{
-  \item{...}{Strings that will be contactenated to form the
+  \item{...}{Strings that will be concatenated to form the
   section title.}
 
   \item{class}{If set to SECTION.CLASS.RESULTS, results can

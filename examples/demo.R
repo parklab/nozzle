@@ -58,19 +58,20 @@ write.table( randomData, file=paste( "reports/", randomDataFile, sep="" ), quote
 #===================================================================================================
 
 report1 <- newReport( "Nozzle Demo Report 1" );
-
+report1 <- setReportSubTitle( report1, "A very extensive example" );
 
 # --- add a permanent DOI for this report ---
 
-report1 <- setDoi( report1, "10.5072/FK25T3TSC" ); # 10.5072 is a test prefix, the DOI has to be created before this is called
+report1 <- setDoi( report1, "10.5072/TOTALLYFICTICIOUS" ); # 10.5072 is a test prefix, the DOI has to be created before this is called
 report1 <- setDoiResolver( report1, "http://dx.doi.org" ); # this is also the default
 report1 <- setDoiCreator( report1, "Nils Gehlenborg" );
 report1 <- setDoiTitle( report1, getReportTitle( report1 ) );
 report1 <- setDoiPublisher( report1, "Harvard Medical School" );
+report1 <- setDoiVersion( report1, "Version 1" );
 report1 <- setDoiYear( report1, "2013" );
 
 # overwrite DOI, will generate warning because this really should not be happening
-report1 <- setDoi( report1, "10.5072/FK25T3TSCversion2" ); # 10.5072 is a test prefix
+report1 <- setDoi( report1, "10.5072/EVENMOREFICTICIOUS" ); # 10.5072 is a test prefix
 
 
 # --- References ---

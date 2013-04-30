@@ -6,7 +6,7 @@
     protection = PROTECTION.PUBLIC)
 }
 \arguments{
-  \item{...}{Strings that will be contactenated to form the
+  \item{...}{Strings that will be concatenated to form the
   subsection title.}
 
   \item{exportId}{Unique string to identify this element.

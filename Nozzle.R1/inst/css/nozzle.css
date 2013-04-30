@@ -278,7 +278,6 @@ body {
 }
 
 .report .main .logo .right {
-	//background-color: green;
 	width: 33%;
 	display: inline-block;	
 	text-align: right;
@@ -288,18 +287,18 @@ body {
 
 .report .title {
 	margin-top: 5px;
-	margin-bottom: 5px;
+	margin-bottom: 0px;
 	font: bold xx-large "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 	color: #000;
 }
 
-.report .maintainer {
+.report .subtitle {
 	margin-top: 0px;
 	margin-bottom: 5px;
-	font: small Georgia, "Times New Roman", Times, serif;
+	font: bold large "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 	color: #666;
-	font-style: italic;
 }
+
 
 .report .citation {
 	margin-top: 10px;
@@ -307,6 +306,18 @@ body {
 	font: small Georgia, "Times New Roman", Times, serif;
 	color: #666;
 	display: inline;
+}
+
+.report .citation a {
+	color: #333;
+}
+
+.report .maintainer {
+	margin-top: 15px;
+	margin-bottom: 5px;
+	font: small Georgia, "Times New Roman", Times, serif;
+	color: #666;
+	font-style: normal;
 }
 
 .report .maintainer a {

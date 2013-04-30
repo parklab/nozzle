@@ -10,7 +10,7 @@
   \item{file}{Path or URL to the image file. Paths can be
   absolute or relative.}
 
-  \item{...}{Strings that will be contactenated to form the
+  \item{...}{Strings that will be concatenated to form the
   figure caption.}
 
   \item{fileHighRes}{Path or URL to a high-resolution or

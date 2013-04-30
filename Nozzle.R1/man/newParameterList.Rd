@@ -6,7 +6,7 @@
     protection = PROTECTION.PUBLIC)
 }
 \arguments{
-  \item{...}{2n strings that will be contactenated to form
+  \item{...}{2n strings that will be concatenated to form
   the parameter-value pairs. Strings at positions 1, ...,
   2n - 1 will be treated as parameters 1 through n and
   strings at positions 2, ..., 2n will be treated as values

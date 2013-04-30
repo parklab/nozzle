@@ -18,8 +18,8 @@
   emitted if the report has been assigned a DOI before.
 }
 \note{
-  A document object identifer must be created before this
-  is called.
+  A document object identifer must have been created before
+  this is called.
 }
 \author{
   Nils Gehlenborg \email{nils@hms.harvard.edu}
