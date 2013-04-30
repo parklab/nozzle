@@ -2,7 +2,11 @@
 
 Nozzle is an [R package](http://www.r-project.org) that provides an API to generate HTML reports with dynamic user interface elements based on JavaScript and CSS (Cascading Style Sheets). Nozzle was designed to facilitate summarization and rapid browsing of complex results in data analysis pipelines where multiple analyses are performed frequently on big data sets. The package can be applied to any project where user-friendly reports need to be created.
 
-A paper describing the package was published in [Bioinformatics](http://bioinformatics.oxfordjournals.org/content/29/8/1089). Please cite this paper if you are using Nozzle in your work.
+A paper describing the package was published in [Bioinformatics](http://bioinformatics.oxfordjournals.org/content/29/8/1089). Please cite this paper if you are using Nozzle in your work:
+
+> N Gehlenborg, MS Noble, G Getz, L Chin and PJ Park, "Nozzle: a report generation toolkit for data analysis pipelines", _Bioinformatics_ __29__:1089-1091 (2013)
+
+A [_nozzlized_ version of the preprint](http://gdac.broadinstitute.org/docs/nozzle/reports/paper.html) is available on the Nozzle site at the Broad Institute and the [source code](https://github.com/parklab/Nozzle/blob/develop/examples/paper.R) is included in this repository.
 
 ### About the Name
 
