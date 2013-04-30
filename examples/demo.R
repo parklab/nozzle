@@ -122,6 +122,7 @@ table4 <- newTable( colnames( tableData ), file=tableDataFile,
 table5 <- newTable( randomData, significantDigits=mySignificantDigits, file=randomDataFile,
 				"A long table (random data). The values in this table have been trimmed to ", mySignificantDigits, " significant digits." );
 
+html1 <- newHtml( "<h1>This is a freeform HTML element.</h1>", style="background-color: yellow;" )
 
 paragraph1 <- newParagraph( "Nozzle supports a range of different formatting styles: ",
 				asStrong( "strong" ), "; ", 
@@ -220,7 +221,7 @@ for ( i in 1:dim( tableData )[1] )
 report1 <- addToResults( report1,
 				addTo( newSubSection( "Nozzle Figure" ), figure1, figure2 ),
 				addTo( newSubSection( "Nozzle Table" ), table1, table4, table3, table5 ), 
-				addTo( newSubSection( "Nozzle Text" ), paragraph1, list, paragraph2, paragraphPublic,
+				addTo( newSubSection( "Nozzle Text" ), paragraph1, html1, list, paragraph2, paragraphPublic,
 							paragraphGroup, paragraphPrivate ),
 				addTo( newSubSection( "Nozzle Results" ), addTo( newSubSubSection( "Subsubsection!" ),
 				newParagraph( "Text in a subsubsection! But the next paragraph belongs to the \"Nozzle Results\" subsection." ) ), paragraph3, list2, table2 ) ); 

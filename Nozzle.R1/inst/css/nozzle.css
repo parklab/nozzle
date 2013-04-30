@@ -312,6 +312,11 @@ body {
 	color: #333;
 }
 
+
+.report .freeform {
+	/* for freeform HTML elements */
+}
+
 .report .maintainer {
 	margin-top: 15px;
 	margin-bottom: 5px;

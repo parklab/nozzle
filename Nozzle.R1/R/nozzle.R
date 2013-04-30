@@ -48,6 +48,7 @@ NULL
 .ELEMENT.SECTION <- "_section_";
 .ELEMENT.SUBSECTION <- "_subsection_";
 .ELEMENT.SUBSUBSECTION <- "_subsubsection_";
+.ELEMENT.HTML <- "_html_";
 .ELEMENT.PARAGRAPH <- "_paragraph_";
 .ELEMENT.LIST <- "_list_";
 .ELEMENT.PARAMETERLIST <- "_list_";
@@ -3051,6 +3052,27 @@ newParagraph <- function( ..., exportId=NULL, protection=PROTECTION.PUBLIC )
 }
 
 
+#' Create a new freeform HTML element. THIS MUST BE USED WITH EXTRAORDINARTY CARE!
+#' @param ... Strings that will be concatenated to form the HTML content that will be wrapped into a \code{div} element.
+#' @param style CSS to be applied to the \code{div} element.  
+#' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
+#' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
+#' @export
+#' @return New element.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+newHtml <- function( ..., style=NULL, exportId=NULL, protection=PROTECTION.PUBLIC )
+{
+	element <- .newElement( .ELEMENT.HTML, exportId=exportId, protection=protection );
+	
+	element$text <- list( ... );	
+	element$style <- style;
+	
+	return ( element );
+}
+
+
+
 #' Create a new parameter list element. A parameter list is an unnumbered list of the form param_1 = value_1, ..., param_n = value_n where param_i is formated as a parameter and value_i is formatted as a value.
 #' @param ... 2n strings that will be concatenated to form the parameter-value pairs. Strings at positions 1, ..., 2n - 1 will be treated as parameters 1 through n and strings at positions 2, ..., 2n will be treated as values 1 through n.
 #' @param separator String to be used to separate parameters and values. Whitespace characters need to be supplied if required.    
@@ -3100,11 +3122,22 @@ newParameterList <- function( ..., separator=" = ", exportId=NULL, protection=PR
 	.write( .tag( "p" ), file );
 	.write( element$text, file );
 	
-	# write all elements, i.e. results only in this case
 	.writeElements( element, file );	
 	
 	.write( .tag( "/p" ), file );	
 }
+
+
+.writeHtml <- function ( element, file )
+{
+	.write( .tag( .concat( "div class=\"freeform\" style=\"", element$style,"\"" ) ), file );
+	.write( element$text, file );
+	
+	.writeElements( element, file );	
+	
+	.write( .tag( "/div" ), file );	
+}
+
 
 
 #' Create a new result element.
@@ -3502,6 +3535,11 @@ asCode <- function( ... )
 	if ( element$type == .ELEMENT.PARAGRAPH )
 	{
 		.writeParagraph( element, file );
+	}
+	
+	if ( element$type == .ELEMENT.HTML )
+	{
+		.writeHtml( element, file );
 	}
 	
 	if ( element$type == .ELEMENT.SECTION )
