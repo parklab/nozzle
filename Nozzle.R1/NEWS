@@ -1,6 +1,8 @@
 Release R1-1.1-0 / 14 May 2013
 
-- Added support for citation and inclusion of DOI information.
+- Added newHtml(...) to create freeform HTML elements in a report.
+
+- Added support for report citation information and Document Object Identifiers (DOIs).
 
 - New report attribute "subtitle". A subtitle can be written/read using "set/getReportSubTitle(..).
 
