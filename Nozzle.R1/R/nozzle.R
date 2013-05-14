@@ -15,7 +15,7 @@
 #' Package: \tab Nozzle.R1\cr
 #' Type: \tab Package\cr
 #' Version: \tab 1.1-0\cr
-#' Date: \tab 2013-04-16\cr
+#' Date: \tab 2013-05-14\cr
 #' License: \tab LGPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -42,7 +42,7 @@ NULL
 
 .nozzleEnv <- new.env();
 
-.PACKAGE.VERSION <- "1.0-0";
+.PACKAGE.VERSION <- "1.1-0";
 
 .ELEMENT.REPORT <- "_report_";
 .ELEMENT.SECTION <- "_section_";
