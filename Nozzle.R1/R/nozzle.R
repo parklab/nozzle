@@ -14,8 +14,8 @@
 #' \tabular{ll}{
 #' Package: \tab Nozzle.R1\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.1-0\cr
-#' Date: \tab 2013-05-14\cr
+#' Version: \tab 1.1-1\cr
+#' Date: \tab 2013-05-15\cr
 #' License: \tab LGPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -3750,10 +3750,10 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 		# write report title
 		.write( .tag( "title" ), file );
 		.write( report$title, file );
-		if ( !is.na( report$subTitle ) ) 
+		if ( "subTitle" %in% names( report ) && !is.null( report$subTitle ) && !is.na( report$subTitle ) ) 
 		{
 			.write( " - ", report$subTitle, file );		
-		}
+		}							
 		.write( .tag( "/title" ), file );					
 		
 		# embedded Google Analytics JavaScript if a Google Analytics id has been provided (should be last before </head>)(
@@ -3914,7 +3914,7 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 	# write title
 	.write( .tag( "div", class="title" ), report$title, .tag( "/div" ), file );
 	
-	if ( !is.na( report$subTitle ) ) 
+	if ( !is.null( report$subTitle ) && !is.na( report$subTitle ) ) 
 	{
 		.write( .tag( "div", class="subtitle" ), report$subTitle, .tag( "/div" ), file );
 	}	

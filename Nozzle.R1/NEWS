@@ -1,3 +1,9 @@
+Release R1-1.1-1 / 15 May 2013
+
+- Fixed problem with subtitle if reports generated with Nozzle versions older than
+  R1-1.1-0 were rendered with R1-1.1-0.
+
+
 Release R1-1.1-0 / 14 May 2013
 
 - Added newHtml(...) to create freeform HTML elements in a report.
