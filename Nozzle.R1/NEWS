@@ -1,3 +1,12 @@
+Release R1-1.2-0 / 21 May 2013
+
+- Added folding sections for maintainer and citation information.
+
+- Reports can now be tagged with a report collection date and report collection
+  version. This is useful for reports that are part of a larger set of reports
+  that are being generated together.
+
+
 Release R1-1.1-1 / 15 May 2013
 
 - Fixed problem with subtitle if reports generated with Nozzle versions older than

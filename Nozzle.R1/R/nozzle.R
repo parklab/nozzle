@@ -14,7 +14,7 @@
 #' \tabular{ll}{
 #' Package: \tab Nozzle.R1\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.1-1\cr
+#' Version: \tab 1.2-0\cr
 #' Date: \tab 2013-05-15\cr
 #' License: \tab LGPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
@@ -829,6 +829,11 @@ newCustomReport <- function( ..., version=0 )
 	
 	# report version
 	element$meta$version <- version;
+
+	# report collection date and version
+	#element$meta$collection <- list();	
+	#element$meta$collection$date <- NA;
+	#element$meta$collection$version <- NA;
 	
 	# report creator software
 	element$meta$creator$name <- .getPackageVersion();
@@ -973,12 +978,12 @@ setReportTitle <- function( report, ... )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 getReportSubTitle <- function( report )
 {
-	if ( is.null( report$subTitle ) )
+	if ( "subTitle" %in% names( report ) && !is.null( report$subTitle ) && !is.na( report$subTitle ) ) 	
 	{
-		return ( NA );
+		return ( report$subTitle );
 	}
 	
-	return ( report$subTitle );
+	return ( NA );
 }
 
 
@@ -991,9 +996,127 @@ getReportSubTitle <- function( report )
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
 setReportSubTitle <- function( report, ... )
 {
+	if ( !( "subTitle" %in% names( report ) ) || is.atomic( report ) )
+	{
+		report$subTitle <- NA;
+	}
+	
 	if ( !is.null( report$subTitle ) )
 	{
 		report$subTitle <- .concat( ... );
+		
+		return ( report );
+	}
+	
+	return ( NA );
+}
+
+
+#' Get the collection date of \code{report}. The collection date is the date when the collection that this report is part of was created.
+#' @param report Report element.
+#' @export
+#' @return Collection date of \code{report} (a string)
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getCollectionDate <- function( report )
+{
+	if ( !( "collection" %in% names( report$meta ) ) )
+	{
+		return ( NA )
+	}
+	
+	if ( !( "date" %in% names( report$meta$collection ) ) )
+	{
+		return ( NA )
+	}
+		
+	if ( is.null( report$meta$collection$date ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$collection$date );
+}
+
+
+#' Set the collection date of \code{report}. The collection date is the date when the collection that this report is part of was created.
+#' @param report Report element. 
+#' @param ... One or more strings that will be concatenated to form the collection date of the report.
+#' @export
+#' @return Updated report element or NA if \code{report} has no collection date element.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setCollectionDate <- function( report, ... )
+{
+	if ( !( "collection" %in% names( report$meta ) ) || is.atomic( report$meta ) )
+	{
+		report$meta$collection <- list();
+		report$meta$collection$date <- NA;
+		report$meta$collection$version <- NA;
+	}
+	
+	if ( !is.null( report$meta$collection$date ) )
+	{
+		report$meta$collection$date <- .concat( ... );
+		
+		return ( report );
+	}
+	
+	return ( NA );
+}
+
+
+
+
+#' Get the collection version of \code{report}. The collection version is the version string of the collection that this report is part of.
+#' @param report Report element.
+#' @export
+#' @return Collection version of \code{report} (a string)
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+getCollectionVersion <- function( report )
+{
+	if ( !( "collection" %in% names( report$meta ) ) )
+	{
+		return ( NA )
+	}
+
+	if ( !( "version" %in% names( report$meta$collection ) ) )
+	{
+		return ( NA )
+	}
+	
+	if ( is.null( report$meta$collection$version ) )
+	{
+		return ( NA );
+	}
+	
+	return ( report$meta$collection$version );
+}
+
+
+#' Set the collection version of \code{report}. The collection version is the version string of the collection that this report is part of.
+#' @param report Report element. 
+#' @param ... One or more strings that will be concatenated to form the collection version of the report.
+#' @export
+#' @return Updated report element or NA if \code{report} has no collection version element.
+#' 
+#' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
+setCollectionVersion <- function( report, ... )
+{
+	cat( "NAmes", "\n")
+	cat( names( report$meta ), sep="\n" );
+	
+	if ( !( "collection" %in% names( report$meta ) ) || is.atomic( report$meta ) )
+	{
+		report$meta$collection <- list();
+		report$meta$collection$version <- NA;
+		report$meta$collection$date <- NA;	
+	}
+
+	if ( !is.null( report$meta$collection$version ) )
+	{
+		report$meta$collection$version <- .concat( ... );
 		
 		return ( report );
 	}
@@ -3750,9 +3873,9 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 		# write report title
 		.write( .tag( "title" ), file );
 		.write( report$title, file );
-		if ( "subTitle" %in% names( report ) && !is.null( report$subTitle ) && !is.na( report$subTitle ) ) 
+		if ( !is.na( getReportSubTitle( report ) ) ) 
 		{
-			.write( " - ", report$subTitle, file );		
+			.write( " - ", getReportSubTitle( report ), file );		
 		}							
 		.write( .tag( "/title" ), file );					
 		
@@ -3914,15 +4037,19 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 	# write title
 	.write( .tag( "div", class="title" ), report$title, .tag( "/div" ), file );
 	
-	if ( !is.null( report$subTitle ) && !is.na( report$subTitle ) ) 
+	if ( !is.na( getReportSubTitle( report ) ) ) 
 	{
-		.write( .tag( "div", class="subtitle" ), report$subTitle, .tag( "/div" ), file );
+		.write( .tag( "div", class="subtitle" ), getReportSubTitle( report ), .tag( "/div" ), file );
 	}	
 	
-	# write maintainer info
-	.writeMaintainerInformation( report, file );
+	# write report header
+	.writeCollectionDateAndVersion( report, file );
+	.writeMaintainerInformationToggle( report, file );
+	.writeDoiCitationInformationToggle( report, file );
+	.writeDoi( report, file );
 	
-	# write DOI info
+	# write maintainer and DOI info content
+	.writeMaintainerInformation( report, file );
 	.writeDoiCitationInformation( report, file );			
 	
 	
@@ -4014,12 +4141,77 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 }
 
 
+.writeCollectionDateAndVersion <- function( report, file, cssClass="report-header" )
+{
+	if ( !is.na( getCollectionDate( report ) ) || !is.na( getCollectionVersion( report ) ) )
+	{
+		.write( .tag( "div", other="title=\"Report collection information\"", class=cssClass ), file );
+	}
+	
+	if ( !is.na( getCollectionDate( report ) ) )
+	{
+		.write( getCollectionDate( report ), file );
+	}
+
+	if ( !is.na( getCollectionDate( report ) ) && !is.na( getCollectionVersion( report ) ) )
+	{
+		.write( "&nbsp;|&nbsp;", file );
+	}
+
+	if ( !is.na( getCollectionVersion( report ) ) )
+	{
+		.write( getCollectionVersion( report ), file );
+	}
+		
+	if ( !is.na( getCollectionDate( report ) ) || !is.na( getCollectionVersion( report ) ) )
+	{
+		.write( .tag( "/div" ), file );
+	}
+}
+
+
+.getDoiResolver <- function(report)
+{
+	doiResolver <- getDoiResolver( report );
+	
+	if ( is.na( doiResolver ) )
+	{
+		doiResolver <- DEFAULT.DOI.RESOLVER;
+	}
+	
+	return ( doiResolver );
+}
+
+
+.writeDoi <- function( report, file, cssClass="report-header" )
+{
+	# write DOI link
+	if ( !is.na( getDoi( report ) ) )
+	{
+		.write( .tag( "div", class=cssClass ), file );
+		.write( asLink( url=.concat( .getDoiResolver(report), "/", getDoi( report ) ), .concat( "doi:", getDoi( report ) ) ), file )
+		.write( .tag( "/div" ), file );		
+	}
+}
+
+
+.writeMaintainerInformationToggle <- function( report, file, cssClass="report-header report-header-toggle" )
+{
+	# write maintainer information	
+	if ( !is.na( getMaintainerName( report ) ) )
+	{
+		.write( .tag( "div", id="maintainer-information-toggle", other="title=\"Click to toggle maintainer information\"", class=cssClass ), file );
+		.write( "Maintainer Information", file );
+		.write( .tag( "/div" ), file );		
+	}
+}
+		
 .writeMaintainerInformation <- function( report, file, cssClass="maintainer" )
 {
 	# write maintainer information	
 	if ( !is.na( getMaintainerName( report ) ) )
 	{
-		.write( .tag( "div", class=cssClass ), file );
+		.write( .tag( "div", id="maintainer-information", class=cssClass ), file );
 		
 		if ( !is.na( getMaintainerEmail( report ) ) )
 		{
@@ -4040,18 +4232,24 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 }
 
 
+.writeDoiCitationInformationToggle <- function( report, file, cssClass="report-header report-header-toggle" )
+{
+	# write DOI and citation info
+	if ( !is.na( getDoi( report ) ) )
+	{
+		.write( .tag( "div", id="citation-information-toggle", other="title=\"Click to toggle citation information\"", class=cssClass ), file );
+		.write( "Citation Information", file );
+		.write( .tag( "/div" ), file );				
+	}
+}
+		
+
 .writeDoiCitationInformation <- function( report, file, cssClass="citation" )
 {
 	# write DOI and citation info
 	if ( !is.na( getDoi( report ) ) )
 	{
-		.write( .tag( "div", class=cssClass ), file );
-		
-		doiResolver <- getDoiResolver( report );
-		if ( is.na( doiResolver ) )
-		{
-			doiResolver <- DEFAULT.DOI.RESOLVER;
-		}
+		.write( .tag( "div", id="citation-information", class=cssClass ), file );
 		
 		.write( "<i>Cite as</i> ", file );
 		
@@ -4080,7 +4278,7 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 			.write( .concat( getDoiPublisher( report ), ". " ), file );			
 		}
 		
-		.write( asLink( url=.concat( doiResolver, "/", getDoi( report ) ), .concat( "doi:", getDoi( report ) ) ), file )
+		.write( asLink( url=.concat( .getDoiResolver(report), "/", getDoi( report ) ), .concat( "doi:", getDoi( report ) ) ), file )
 				
 		.write( .tag( "/div" ), file );		
 	}

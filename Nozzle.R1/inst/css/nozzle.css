@@ -1,7 +1,7 @@
 /*
  * Nozzle R Package - CSS Styles
  *
- * Copyright 2011-2012, Havard Medical School / Broad Institute
+ * Copyright 2011-2013, Havard Medical School / Broad Institute
  * Authored and maintained by Nils Gehlenborg (nils@hms.harvard.edu)
  */
 
@@ -301,11 +301,18 @@ body {
 
 
 .report .citation {
-	margin-top: 10px;
-	margin-bottom: 15px;
+	margin-top: 4px;
+	margin-bottom: 5px;
 	font: small Georgia, "Times New Roman", Times, serif;
 	color: #666;
 	display: inline;
+	padding: 4px;
+	border: 1px solid #ddd;
+	background: #f0f0f0; 	 
+}
+
+.report #citation-information {
+	display: none;	
 }
 
 .report .citation a {
@@ -317,12 +324,49 @@ body {
 	/* for freeform HTML elements */
 }
 
+.report-header {
+	margin-top: 20px;
+	margin-bottom: 0px;
+	margin-right: 10px;
+	padding-bottom: 4px;
+	font: small Georgia, "Times New Roman", Times, serif;
+	color: #666;
+	display: inline;
+}
+
+.report-header a {
+	color: #666;
+}
+
+.report-header a:visited {
+	color: #666;
+}
+
+
+.report-header-toggle {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.report-header-toggle.active {
+	padding-bottom: 0px;
+	border-bottom: 5px solid #ddd;
+	text-decoration: none;
+}
+
+.report #maintainer-information {
+	display: none;
+}
+
 .report .maintainer {
-	margin-top: 15px;
-	margin-bottom: 5px;
+	margin-top: 4px;
+	margin-bottom: 5px;	
 	font: small Georgia, "Times New Roman", Times, serif;
 	color: #666;
 	font-style: normal;
+	padding: 4px;
+	border: 1px solid #ddd;
+	background: #f0f0f0; 	 
 }
 
 .report .maintainer a {

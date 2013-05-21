@@ -58,7 +58,11 @@ write.table( randomData, file=paste( "reports/", randomDataFile, sep="" ), quote
 #===================================================================================================
 
 report1 <- newReport( "Nozzle Demo Report 1" );
-report1 <- setReportSubTitle( report1, "A very extensive example" );
+report1 <- setReportSubTitle( report1, "A report that showcases all elements that can be included in a Nozzle report" );
+
+report1 <- setCollectionDate( report1, "21 May 2013" );
+report1 <- setCollectionVersion( report1, "Demo Collection Version 1" );
+
 
 # --- add a permanent DOI for this report ---
 
@@ -360,8 +364,7 @@ writeReport( report1, filename="reports/nozzle1_private", level=PROTECTION.PRIVA
 # Examples for Developers
 # write a "debug" development version that uses external JS or external CSS for rapid development
 # writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
-#	debugJavaScript="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/js/nozzle.js" );
-# writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
+#	debugJavaScript="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/js/nozzle.js",
 #	debugCss="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/css/nozzle.css" );
 
 # clean up the R workspace - we are going to experiment with exported elements	

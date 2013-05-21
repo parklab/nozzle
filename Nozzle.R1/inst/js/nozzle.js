@@ -1,7 +1,7 @@
 /*
  * Nozzle R Package - JavaScript Library
  *
- * Copyright 2011-2012, Harvard Medical School / Broad Institute
+ * Copyright 2011-2013, Harvard Medical School / Broad Institute
  * Authored and maintained by Nils Gehlenborg (nils@hms.harvard.edu)
  */
 
@@ -273,6 +273,18 @@ function applyFilePrefixPostfix( prefix, postfix )
 				
 	};
 	
+	var createReportHeaderToggleButtons = function() {
+		$( "#maintainer-information-toggle" ).click( function( event ) {
+			event.preventDefault();
+			toggleMaintainerInformation();			
+		});				
+		$( "#citation-information-toggle" ).click( function( event ) {
+			event.preventDefault();
+			toggleCitationInformation();			
+		});				
+
+	}
+	
 	// create button to open/close sections/subsections
 	var createContentsToggleButtons = function() {
 	
@@ -294,6 +306,36 @@ function applyFilePrefixPostfix( prefix, postfix )
 	
 		$( ".button.contenttoggle" ).remove();
 	};
+	
+	var toggleMaintainerInformation = function() {
+		 if ( $( "#citation-information" ).is(":visible") ) {
+		 	toggleCitationInformation();
+		 }
+
+		 if ( $( "#maintainer-information" ).is(":visible") ) {
+		 	$( "#maintainer-information" ).slideUp( 200 );				 	
+		 	$( "#maintainer-information-toggle" ).removeClass( "active" );				 	
+		 }
+		 else {
+		 	$( "#maintainer-information" ).slideDown( 200 );
+		 	$( "#maintainer-information-toggle" ).addClass( "active" );				 	
+		 }
+	}
+
+	var toggleCitationInformation = function() {
+		 if ( $( "#maintainer-information" ).is(":visible") ) {
+		 	toggleMaintainerInformation();
+		 }
+		
+		 if ( $( "#citation-information" ).is(":visible") ) {
+		 	$( "#citation-information" ).slideUp( 200 );	
+		 	$( "#citation-information-toggle" ).removeClass( "active" );				 	
+		 }
+		 else {
+		 	$( "#citation-information" ).slideDown( 200 );				 	
+		 	$( "#citation-information-toggle" ).addClass( "active" );				 	
+		 }
+	}
 
 		   			
 	var toggleAllContents = function( animation, mode ) {
@@ -556,6 +598,7 @@ function reloadStylesheets() {
 	
 	
 	createContentsToggleButtons();
+	createReportHeaderToggleButtons();
 	createContentsSummaryBar();
 	createEvidenceToggleButtons();
 	createNozzleMenu();	
