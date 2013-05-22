@@ -42,7 +42,7 @@ NULL
 
 .nozzleEnv <- new.env();
 
-.PACKAGE.VERSION <- "1.1-0";
+.PACKAGE.VERSION <- "1.2-0";
 
 .ELEMENT.REPORT <- "_report_";
 .ELEMENT.SECTION <- "_section_";
