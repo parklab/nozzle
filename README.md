@@ -6,7 +6,7 @@ A paper describing the package was published in [Bioinformatics](http://bioinfor
 
 > N Gehlenborg, MS Noble, G Getz, L Chin and PJ Park, "Nozzle: a report generation toolkit for data analysis pipelines", _Bioinformatics_ __29__:1089-1091 (2013)
 
-A [_nozzleized_ version of the preprint](http://gdac.broadinstitute.org/docs/nozzle/reports/paper.html) is available on the Nozzle site at the Broad Institute and the [source code](https://github.com/parklab/Nozzle/blob/develop/examples/paper.R) is included in this repository.
+A [_nozzleized_ version of the preprint](http://gdac.broadinstitute.org/docs/nozzle/reports/paper.html) is available on the [Nozzle site at the Broad Institute](http://gdac.broadinstitute.org) and the [source code](https://github.com/parklab/Nozzle/blob/develop/examples/paper.R) is included in this repository.
 
 ### About the Name
 
