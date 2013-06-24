@@ -354,7 +354,11 @@ report3 <- setCopyright( report3, owner="Nils Gehlenborg", year=2013 );
 writeReport( report3, filename="reports/nozzle3", level=PROTECTION.PRIVATE );
 
 
-# --- HTML and RData file generation for reports 1 through 3 ---
+# add related reports to report 1
+report1 <- addRelatedReport( report1, getReportTitle( report2 ), "nozzle2.html" );
+report1 <- addRelatedReport( report1, getReportTitle( report3 ), "nozzle3.html" );
+
+# --- HTML and RData file generation for report 1 ---
 
 writeReport( report1, filename="reports/nozzle1" );
 writeReport( report1, filename="reports/nozzle1_public", level=PROTECTION.PUBLIC ); # default
@@ -363,7 +367,7 @@ writeReport( report1, filename="reports/nozzle1_private", level=PROTECTION.PRIVA
 
 # Examples for Developers
 # write a "debug" development version that uses external JS or external CSS for rapid development
-# writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
+#writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
 #	debugJavaScript="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/js/nozzle.js",
 #	debugCss="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/css/nozzle.css" );
 

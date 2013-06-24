@@ -1,3 +1,4 @@
+export(addRelatedReport)
 export(addTo)
 export(addToInput)
 export(addToIntroduction)

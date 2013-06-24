@@ -14,8 +14,8 @@
 #' \tabular{ll}{
 #' Package: \tab Nozzle.R1\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.2-0\cr
-#' Date: \tab 2013-05-15\cr
+#' Version: \tab 1.3-0\cr
+#' Date: \tab 2013-06-23\cr
 #' License: \tab LGPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -42,7 +42,7 @@ NULL
 
 .nozzleEnv <- new.env();
 
-.PACKAGE.VERSION <- "1.2-0";
+.PACKAGE.VERSION <- "1.3-0";
 
 .ELEMENT.REPORT <- "_report_";
 .ELEMENT.SECTION <- "_section_";
@@ -730,7 +730,7 @@ newReport <- function( ..., version=0 )
 	references$domId <- "references";
 	
 	meta <- newSection( "Meta Information", class="meta" )
-	meta$domId <- "meta";		
+	meta$domId <- "meta";
 	
 	# If a new predefined section is added here a ".hasPredefinedXXXSection" function needs to be added below as well as an an "addToXXX" function.
 	
@@ -862,6 +862,9 @@ newCustomReport <- function( ..., version=0 )
 	
 	element$navigation$previousUrl <- NA;
 	element$navigation$previousName <- NA;
+	
+	# report navigation: related reports matrix (name: STRING, url: STRING, significant findings: BOOLEAN)
+	element$relatedReports <- matrix( NA, nrow=0, ncol=3 );	
 		
 	return ( element );
 }
@@ -931,6 +934,29 @@ setParentReport <- function( report, url, ... )
 	
 	return ( report );
 }
+
+
+#' Add the URL, title, and signficance status of a related report, e.g. one summarizing the same type of analysis but on a different input set. 
+#' @param report Report object.
+#' @param name Name of the related report.
+#' @param url URL of the related report (may be relative).
+#' @param isSignificant Flag indicating whether the related report contains significant findings.
+#' @export
+#' @return Updated report element.
+#' 
+#' @author nils
+addRelatedReport <- function( report, name, url, isSignificant=FALSE )
+{	
+	if ( is.null( report$relatedReports ) )
+	{
+		report$relatedReports <- matrix( NA, nrow=0, ncol=3 );
+	}
+	
+	report$relatedReports = rbind( report$relatedReports, c( name=name, url=url, isSignificant=isSignificant ) )
+	
+	return ( report );
+}
+
 
 
 #' Get the title of \code{report}.
@@ -4017,6 +4043,14 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 	.write( "<script type=\"text/javascript\">", file );
 	.writeJsonElement( "nozzleMeta", report$meta, file );
 	.writeJsonElement( "nozzleNavigation", report$navigation, file );
+	if ( !is.null( report$relatedReports ) )
+	{
+		.writeJsonMatrix( "nozzleRelatedReports", report$relatedReports, file );		
+	}
+	else
+	{
+		.writeJsonMatrix( "nozzleRelatedReports", matrix( NA, nrow=0, ncol=3 ), file );				
+	}
 	.write( "</script>", file );	
 	
 	# === REPORT META END ===	
@@ -4297,6 +4331,58 @@ writeReport <- function( report, filename=DEFAULT.REPORT.FILENAME, debug=FALSE, 
 	
 	.write( "};", file );		
 }
+
+
+# write rows of matrix as an array of objects, using column header as field names
+.writeJsonMatrix <- function( jsVariable, element, file )
+{	
+	.write( "var ", jsVariable, " = [", file );
+	
+	if ( dim( element )[1] > 0 && dim( element )[2] > 0 )
+	{
+		for ( r in 1:dim( element )[1] )
+		{
+			.write( "   { ", file, nobreak=T );			
+			
+			for ( c in 1:dim( element )[2] )
+			{
+				.write( "\"", colnames(element)[c], "\"", ": ", file, nobreak=T );
+				
+				if ( is.numeric( element[r,c] ) )
+				{
+					.write( element[r,c], file, nobreak=T )
+				}
+				else if ( element[r,c] == "TRUE" )
+				{
+					.write( "true", file, nobreak=T )
+				}
+				else if ( element[r,c] == "FALSE" )
+				{
+					.write( "false", file, nobreak=T )
+				}
+				else 
+				{
+					.write( "\"", element[r,c], "\"", file, nobreak=T )				
+				}
+
+				if ( c < dim( element )[2] )
+				{
+					.write( ", ", file, nobreak=T );							
+				}				
+			}
+			
+			.write( " }", file, nobreak=T );
+			
+			if ( r < dim( element )[1] )
+			{
+				.write( ",", file );							
+			}
+		}			
+	}	
+	.write( "", file );
+	.write( "];", file );			
+}
+
 
 
 .writeJsonNumeric <- function( name, value, file, indent=0 )

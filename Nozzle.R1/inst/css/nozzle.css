@@ -37,7 +37,6 @@ li p {
 	text-transform: uppercase;	
 }
 
-
 .menuitem {
 	display: inline-block;
 	padding-left: 5px;
@@ -50,6 +49,62 @@ li p {
 	cursor: pointer;
 	border-radius: 0.55ex;
 	background-color: #eeeeee;
+}
+
+ul.submenu {
+	display: inline;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+ul.submenu, ul.submenu li, ul.submenu ul {
+	list-style: none;	
+}
+
+ul.submenu ul {
+	visibility: hidden;
+	position: absolute;
+	top: 1.75em;
+	z-index: 598;
+	padding-right: 5px;
+	padding-left: 5px;
+	margin-left: -6px; 
+	border: 1px solid #ccc;
+	//border-top: none;
+	color: #666666;	
+	cursor: pointer;
+	border-bottom-left-radius: 0.55ex;
+	border-bottom-right-radius: 0.55ex;
+	background-color: #efefef;
+	-webkit-box-shadow: 0px 2px 4px black;
+	-moz-box-shadow: 0px 2px 4px black;
+	-opera-box-shadow: 0px 2px 4px black;
+	box-shadow: 0px 2px 4px black;		
+}
+
+ul.submenu ul li {
+	float: none;
+	text-transform: none;
+	line-height: 2em;	
+}
+
+ul.submenu ul li:hover {
+	text-decoration: underline;
+}
+
+ul.submenu .submenuhead:hover {
+	/*
+	-webkit-box-shadow: 0px 0px 0px black;
+	-moz-box-shadow: 0px 0px 0px black;
+	-opera-box-shadow: 0px 0px 0px black;
+	box-shadow: 0px 0px 0px black;
+	*/
+	z-index: -600;
+	border-bottom-left-radius: 0ex;		
+}
+ 
+ul.submenu .submenuhead:hover > ul {
+	visibility: visible;	
 }
 
 .menuitem a {
@@ -594,6 +649,15 @@ div.significant {
 	/*background-color: white;*/
 }
 
+
+span.summary-small {
+	width: 6px;
+	height: 6px;
+	display: inline-block;
+	position: relative;
+	border-radius: 15ex;
+	top: -1px;
+}
 
 span.summary {
 	color: #919191;

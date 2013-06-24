@@ -387,6 +387,29 @@ function applyFilePrefixPostfix( prefix, postfix )
 			menu += "<div class=\"menuitem deactivated\">&gt;</div>";
 		}
 
+		if ( nozzleRelatedReports != null && nozzleRelatedReports.length > 0 ) {
+			menu += "<ul class=\"submenu\"><li id=\"menu_related_reports_button\" class=\"menuitem submenuhead\">" + nozzleRelatedReports.length + " Related Reports"; 
+
+			menu += "<ul id=\"menu_related_reports_list\">";
+			for ( var i = 0; i < nozzleRelatedReports.length; ++i ) {
+				menu += "<li class=\"submenuitem\"><a href=\"" + nozzleRelatedReports[i].url + "\">" + nozzleRelatedReports[i].name + "</a>"
+
+				if ( nozzleRelatedReports[i].isSignificant ) {
+					menu += "&nbsp;<span class=\"summary-small significant\" title=\"Report contains findings that crossed a significance threshold.\"></span>";
+				} 				
+				
+				menu += "</li>" ;
+				
+			}
+			menu += "</ul>"; // submenu			
+			
+			menu += "</li></ul>"; // submenuhead
+			
+		}
+		else {
+			// there are no related reports, ignore
+		}
+
 		menu += "<div class=\"menuitem separator\"></div>";
 		
 		menu += "<div class=\"menuitem\" id=\"menu_expand_all\">Expand All</div>\
@@ -411,6 +434,12 @@ function applyFilePrefixPostfix( prefix, postfix )
 		menu += "</div></div>";
 
 		getFrame().prepend( menu );
+
+		/*
+		$( "#menu_related_reports_button" ).hover( function() {
+			$( "#menu_related_reports_list" ).show();	
+		});
+		*/
 		
 		$( "#menu_expand_all" ).click( function() {
 			toggleAllContents( true, ToggleMode.SHOW );
