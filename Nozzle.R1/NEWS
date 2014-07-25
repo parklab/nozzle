@@ -1,3 +1,10 @@
+Release R1-1.4-0 / 25 June 2014
+
+- User-defined default expansion for sections and subsections is now supported
+  by the newSection() and newSubSection() parameter 'expanded'. 
+
+-----------------
+
 Release R1-1.3-0 / 23 June 2013
 
 - Added support to add and display of "related reports", e.g. the reports that

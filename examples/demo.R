@@ -318,10 +318,10 @@ report2 <- setPreviousReport( report2, "nozzle1.html", "Demo 1" );
 report2 <- addTo( report2, addTo( newSection( "My Introduction" ), newParagraph( "Hello World! This is a paragraph of text!" ) ) );
 report2 <- addTo( report2, addTo( newSection( "My Methods" ), method2 ) );
 
-report2 <- addTo( report2, addTo( newSection( "My Results", class="results" ),
+report2 <- addTo( report2, addTo( newSection( "My Results", class="results", expanded=TRUE ),
 				addTo( newSubSection( "Nozzle Figure" ), figure1, figure2 ),
 				addTo( newSubSection( "Nozzle Table" ), table1, table4, table3, table5 ), 
-				addTo( newSubSection( "Nozzle Text" ), paragraph1, list, paragraph2, paragraphPublic,
+				addTo( newSubSection( "Nozzle Text", expanded=TRUE ), paragraph1, list, paragraph2, paragraphPublic,
 							paragraphGroup, paragraphPrivate ),
 				addTo( addTo( newSubSection( "Nozzle Results" ), newParagraph( "A result: ", asSummary( result4 ), ", yay!" ) ) ) ) ); 
 
@@ -367,7 +367,7 @@ writeReport( report1, filename="reports/nozzle1_private", level=PROTECTION.PRIVA
 
 # Examples for Developers
 # write a "debug" development version that uses external JS or external CSS for rapid development
-#writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
+# writeReport( report1, filename="reports/nozzle1_debug", debug=TRUE, level=PROTECTION.PRIVATE,
 #	debugJavaScript="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/js/nozzle.js",
 #	debugCss="/Users/nils/Projects/Nozzle/Nozzle.R1/inst/css/nozzle.css" );
 

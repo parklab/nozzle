@@ -9,8 +9,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab Nozzle.R1\cr Type: \tab
-  Package\cr Version: \tab 1.3-0\cr Date: \tab
-  2013-06-23\cr License: \tab LGPL (>= 2)\cr LazyLoad: \tab
+  Package\cr Version: \tab 1.4-0\cr Date: \tab
+  2014-07-24\cr License: \tab LGPL (>= 2)\cr LazyLoad: \tab
   yes\cr }
 
   Nozzle was designed to facilitate summarization and rapid

@@ -3,7 +3,7 @@
 \title{Create a new section element.}
 \usage{
   newSection(..., class = "", exportId = NULL,
-    protection = PROTECTION.PUBLIC)
+    protection = PROTECTION.PUBLIC, expanded = FALSE)
 }
 \arguments{
   \item{...}{Strings that will be concatenated to form the
@@ -19,6 +19,9 @@
 
   \item{protection}{Procection level. One of
   PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.}
+
+  \item{expanded}{Whether the section should expanded by
+  default or not.}
 }
 \value{
   New element.

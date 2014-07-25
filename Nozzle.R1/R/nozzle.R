@@ -4,7 +4,7 @@
 # Harvard Medical School, Center for Biomedical Informatics
 # Broad Institute, Cancer Program
 #
-# Copyright (c) 2011-2013. All rights reserved.
+# Copyright (c) 2011-2014. All rights reserved.
 #
 # TODO: add default state (open/closed) for sections (per default all will be closed in custom reports)
 
@@ -14,8 +14,8 @@
 #' \tabular{ll}{
 #' Package: \tab Nozzle.R1\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.3-0\cr
-#' Date: \tab 2013-06-23\cr
+#' Version: \tab 1.4-0\cr
+#' Date: \tab 2014-07-25\cr
 #' License: \tab LGPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -708,16 +708,16 @@ newReport <- function( ..., version=0 )
 		element <- .newGeneralReport( "Nozzle Report", version=version );
 	}
 	
-	overview <- newSection( "Overview" );
+	overview <- newSection( "Overview", expanded=TRUE );
 	overview$domId <- "overview";
 	
 	introduction <- newSubSection( "Introduction" );
 	introduction$domId <- "introduction";
 	
-	summary <- newSubSection( "Summary" );
+	summary <- newSubSection( "Summary", expanded=TRUE );
 	summary$domId  <- "summary";
 	
-	results <- newSection( "Results", class="results" );
+	results <- newSection( "Results", class="results", expanded=TRUE );
 	results$domId  <- "results";
 	
 	methods <- newSection( "Methods & Data" );
@@ -2492,12 +2492,17 @@ addToMeta <- function( report, ... )
 #' @param class If set to SECTION.CLASS.RESULTS, results can be reported in this section. If set to SECTION.CLASS.META the section will be a meta data section. 
 #' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
 #' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
+#' @param expanded Whether the section should expanded by default or not. 
 #' @export
 #' @return New element.
 #' 
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
-newSection <- function( ..., class="", exportId=NULL, protection=PROTECTION.PUBLIC )
+newSection <- function( ..., class="", exportId=NULL, protection=PROTECTION.PUBLIC, expanded=FALSE )
 {
+	if ( expanded ) {
+		class <- .concat( class, " visible" );
+	}
+
 	return ( .newElement( .ELEMENT.SECTION, .concat( ... ), class=class, exportId=exportId, protection=protection ) );
 }
 
@@ -2506,13 +2511,20 @@ newSection <- function( ..., class="", exportId=NULL, protection=PROTECTION.PUBL
 #' @param ... Strings that will be concatenated to form the subsection title. 
 #' @param exportId Unique string to identify this element. Used to retrieve the element using \code{getExportedElement}. 
 #' @param protection Procection level. One of PROTECTION.PUBLIC, PROTECTION.GROUP, PROTECTION.PRIVATE.
+#' @param expanded Whether the section should expanded by default or not. This will not affect the state of parent sections.
 #' @export
 #' @return New element.
 #' 
 #' @author Nils Gehlenborg \email{nils@@hms.harvard.edu}
-newSubSection <- function( ..., exportId=NULL, protection=PROTECTION.PUBLIC )
+newSubSection <- function( ..., exportId=NULL, protection=PROTECTION.PUBLIC, expanded=FALSE )
 {
-	return ( .newElement( .ELEMENT.SUBSECTION, .concat( ... ), exportId=exportId, protection=protection ) );
+	class <- "";
+
+	if ( expanded ) {
+		class <- "visible";
+	}
+
+	return ( .newElement( .ELEMENT.SUBSECTION, .concat( ... ), class=class, exportId=exportId, protection=protection ) );
 }
 
 

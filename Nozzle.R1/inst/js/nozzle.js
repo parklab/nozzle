@@ -1,7 +1,7 @@
 /*
  * Nozzle R Package - JavaScript Library
  *
- * Copyright 2011-2013, Harvard Medical School / Broad Institute
+ * Copyright 2011-2014, Harvard Medical School / Broad Institute
  * Authored and maintained by Nils Gehlenborg (nils@hms.harvard.edu)
  */
 
@@ -201,7 +201,8 @@ function applyFilePrefixPostfix( prefix, postfix )
 	ToggleMode = {
 	    TOGGLE: 0,
 	    SHOW: 1,
-	    HIDE: 2
+	    HIDE: 2,
+	    INITIALIZE: 3
 	};	
 	
 	var toggleContents = function( section, animation, mode, target )
@@ -227,6 +228,25 @@ function applyFilePrefixPostfix( prefix, postfix )
 			
 			switch ( mode )
 			{
+				case ToggleMode.INITIALIZE:
+					if ( section.hasClass( "visible" ) )
+					{
+						console.log( "Showing section ", section );
+						body.show();
+						if ( summarySignificant !== undefined )
+						{
+							summarySignificant.addClass( "deactivated" );
+						}					
+					}
+
+					if ( !section.hasClass( "visible" ) )
+					{
+						body.hide();
+					}
+
+					button.text( section.hasClass( "visible" ) ? "-" : "+" );					
+					button.attr( "title", section.hasClass( "visible" ) ? "Click to collapse" : "Click to expand" );					
+					break;
 				case ToggleMode.TOGGLE:
 					if ( subSections.length == 1 )
 					{
@@ -291,7 +311,6 @@ function applyFilePrefixPostfix( prefix, postfix )
 		var sectionheaders = $( "#" + reportId + " .sectionheader" ).not( ".evidence .sectionheader, .subsubsection .sectionheader" );
 		
 		sectionheaders.prepend( "<span class=\"button contenttoggle\"><a>" + "-" + "</a></span>" );
-		sectionheaders.parent().addClass( "visible" );
 		
 		var buttons = $( "#" + reportId + " .button.contenttoggle" );
 		
@@ -826,9 +845,9 @@ function reloadStylesheets() {
 	} );
 
 	var toggleDefaultState = function( animate )	{	
-		toggleAllContents( animate, ToggleMode.HIDE );	   			
-		toggleContents( $( "#overview_" + reportId + ", #summary_" + reportId ), animate );				
-		toggleContents( $( "#results_" + reportId ), animate );				
+		toggleAllContents( animate, ToggleMode.INITIALIZE );
+		//toggleContents( $( "#overview_" + reportId + ", #summary_" + reportId ), animate );				
+		//toggleContents( $( "#results_" + reportId ), animate );
 	};
 		
 	toggleDefaultState( false );
