@@ -1,4 +1,4 @@
-# Nozzle
+# Nozzle [![](http://www.r-pkg.org/badges/version/Nozzle.R1)](http://cran.rstudio.com/web/packages/Nozzle.R1/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/Nozzle.R1)](http://cranlogs.r-pkg.org/badges/grand-total/Nozzle.R1)
 
 Nozzle is an [R package](http://www.r-project.org) that provides an API to generate HTML reports with dynamic user interface elements based on JavaScript and CSS (Cascading Style Sheets). Nozzle was designed to facilitate summarization and rapid browsing of complex results in data analysis pipelines where multiple analyses are performed frequently on big data sets. The package can be applied to any project where user-friendly reports need to be created.
 
