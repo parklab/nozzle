@@ -179,7 +179,7 @@ RDATA.REPORT <- "rdata";
 
 #' Default DOI resolver URL.
 #' @export
-DEFAULT.DOI.RESOLVER <- "http://dx.doi.org"
+DEFAULT.DOI.RESOLVER <- "https://doi.org"
 
 
 .REFERENCE.STRING <- "#'REF#'";
@@ -2069,9 +2069,9 @@ getDoiVersion <- function( report )
 
 
 
-#' Set the DOI resolver URL (e.g. http://dx.doi.org) for \code{report}. The URL must not end with a slash!
+#' Set the DOI resolver URL (e.g. https://doi.org) for \code{report}. The URL must not end with a slash!
 #' @param report Report element.
-#' @param url The resolver URL (without a trailing slash). The default is "http://dx.doi.org". 
+#' @param url The resolver URL (without a trailing slash). The default is "https://doi.org". 
 #' @export
 #' @return Updated report element.
 #' 
@@ -2089,7 +2089,7 @@ setDoiResolver <- function( report, url )
 }
 
 
-#' Get the DOI resolver URL (e.g. http://dx.doi.org) for \code{report}.
+#' Get the DOI resolver URL (e.g. https://doi.org) for \code{report}.
 #' @param report Report element.
 #' @export
 #' @return Document object identifier (DOI) resolver URL for \code{report}.
